@@ -20,10 +20,8 @@ class ArtistSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Open keyboard upon
-        
-        
-        
+        // keyboard should appear upon view loading
+        searchBar.becomeFirstResponder()
         
     }
 
@@ -40,11 +38,12 @@ class ArtistSearchViewController: UIViewController {
 extension ArtistSearchViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        performSearch(nil)
+        performSearch(searchBar.text!)
     }
     
-    func performSearch(recentSearch: String?) {
+    func performSearch(searchText: String) {
         
+        print(searchText)
         // TO DO: add search functionality
         
         searchBar.resignFirstResponder()
