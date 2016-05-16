@@ -10,9 +10,21 @@ import UIKit
 
 class ArtistSearchViewController: UIViewController {
 
+    // MARK: - Properties
+    
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    
+    // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        // Open keyboard upon
+        
+        
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -22,4 +34,22 @@ class ArtistSearchViewController: UIViewController {
 
 
 }
+
+
+
+extension ArtistSearchViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        performSearch(nil)
+    }
+    
+    func performSearch(recentSearch: String?) {
+        
+        // TO DO: add search functionality
+        
+        searchBar.resignFirstResponder()
+    }
+
+}
+
 
