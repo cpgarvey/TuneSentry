@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ArtistSearchViewController.swift
 //  TuneSentry
 //
 //  Created by Chris Garvey on 5/15/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ArtistSearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
