@@ -17,6 +17,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ABR-el-4Xv">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="wDM-tK-Nk7"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="KyU-Ds-cUw"/>
+                                </connections>
+                            </tableView>
                             <searchBar contentMode="redraw" placeholder="search artist name..." translatesAutoresizingMaskIntoConstraints="NO" id="ShQ-PU-D7n">
                                 <rect key="frame" x="0.0" y="64" width="600" height="44"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -28,13 +36,18 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ShQ-PU-D7n" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="2lq-zU-XaK"/>
+                            <constraint firstItem="ABR-el-4Xv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="8Pi-hh-fqv"/>
                             <constraint firstItem="ShQ-PU-D7n" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Auo-RY-ZWH"/>
+                            <constraint firstItem="ABR-el-4Xv" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="E54-zC-n1S"/>
                             <constraint firstAttribute="trailing" secondItem="ShQ-PU-D7n" secondAttribute="trailing" id="QD8-rh-Soh"/>
+                            <constraint firstAttribute="trailing" secondItem="ABR-el-4Xv" secondAttribute="trailing" id="gJi-vx-Gg8"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ABR-el-4Xv" secondAttribute="bottom" id="peh-VL-jGa"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Artist Search" id="t1P-s5-JkN"/>
                     <connections>
                         <outlet property="searchBar" destination="ShQ-PU-D7n" id="bIi-jg-l6F"/>
+                        <outlet property="tableView" destination="ABR-el-4Xv" id="sXH-hc-oGF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
