@@ -15,6 +15,8 @@ class ArtistSearchViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
+    let search = AppleClient()
+    
     
     // MARK: - Life Cycle
     
@@ -23,7 +25,30 @@ class ArtistSearchViewController: UIViewController {
         
         // keyboard should appear upon view loading
         searchBar.becomeFirstResponder()
+    
+        // set the contentInset so that the first rows of the table always fully appears: 44 pts (search bar) 
+        tableView.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
         
+        var cellNib = UINib(nibName: TableViewCellIdentifiers.searchingCell, bundle: nil)
+        tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.searchingCell)
+        
+        cellNib = UINib(nibName: TableViewCellIdentifiers.nothingFoundCell, bundle: nil)
+        tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.nothingFoundCell)
+        
+        cellNib = UINib(nibName: TableViewCellIdentifiers.searchResultCell, bundle: nil)
+        tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.searchResultCell)
+        
+        // adjust the row height of the table to accomodate our custom nibs
+        tableView.rowHeight = 80
+    }
+    
+    
+    // MARK: - Struct for Cell Identifiers
+    
+    struct TableViewCellIdentifiers {
+        static let searchResultCell = "SearchResultCell"
+        static let nothingFoundCell = "NothingFoundCell"
+        static let searchingCell = "SearchingCell"
     }
 
 
@@ -44,7 +69,16 @@ extension ArtistSearchViewController: UISearchBarDelegate {
         print(searchText)
         
         // TO DO: add search functionality
+        // iTunes API: https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/#searching
         
+        search.performSearchForText(searchText, completion: {
+            success, error in
+            
+            if !success {
+                //self.showNetworkError()
+            }
+            self.tableView.reloadData()
+        })
         
         tableView.reloadData()
         searchBar.resignFirstResponder()
@@ -57,14 +91,46 @@ extension ArtistSearchViewController: UISearchBarDelegate {
 
 extension ArtistSearchViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        switch search.state {
+        case .NotSearchedYet:
+            return 0
+        case .Searching:
+            return 1
+        case .NoResults:
+            return 1
+        case .Results(let list):
+            // bind the search result array associated with .Results to a temp variable so that you can read how many items are in that associated value
+            return list.count
+        }
     }
     
     func tableView(tableView:UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        // return a cell depending on what the search state is...
-        let cell = UITableViewCell()
-        return cell
+        switch search.state {
+            
+        // switch is supposed to be exhaustive, so have .NotSearcedYet even though it should never be reached
+        case .NotSearchedYet:
+            fatalError("Should never get here")
+            
+        case .Searching:
+            print("reached")
+            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchingCell, forIndexPath: indexPath)
+            let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
+            spinner.startAnimating()
+            return cell
+            
+        case .NoResults:
+            return tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.nothingFoundCell, forIndexPath: indexPath)
+            
+        case .Results(let list):
+            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
+            let searchResult = list[indexPath.row]
+            cell.artistNameLabel.text = searchResult.artistName
+            cell.genreLabel.text = searchResult.genre
+            return cell
+
+        }
+        
     }
     
 }
@@ -83,10 +149,12 @@ extension ArtistSearchViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         
-        // check the search state... if it hasn't searched yet, is loading, or didn't return any results then return nil
-        return nil
-        
-        // otherwise if there are results, then allow the user to select those results...
+        switch search.state {
+        case .NotSearchedYet, .Searching, .NoResults:
+            return nil
+        case .Results: //you don't need to bind the array here because you're not using it for anything
+            return indexPath
+        }
     }
     
     

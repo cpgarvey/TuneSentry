@@ -12,6 +12,13 @@
 		F22CFDFC1CE9635B006CD3BC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F22CFDFA1CE9635B006CD3BC /* Main.storyboard */; };
 		F22CFDFE1CE9635B006CD3BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F22CFDFD1CE9635B006CD3BC /* Assets.xcassets */; };
 		F22CFE011CE9635B006CD3BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F22CFDFF1CE9635B006CD3BC /* LaunchScreen.storyboard */; };
+		F23FD5CE1CEB674A00E1D5B8 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23FD5CD1CEB674A00E1D5B8 /* SearchResult.swift */; };
+		F23FD5D11CEC2E3C00E1D5B8 /* SearchingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */; };
+		F23FD5D31CEC360F00E1D5B8 /* NothingFoundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */; };
+		F23FD5D51CEC370900E1D5B8 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F23FD5D41CEC370900E1D5B8 /* SearchResultCell.xib */; };
+		F23FD5D71CEC38DE00E1D5B8 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23FD5D61CEC38DE00E1D5B8 /* SearchResultCell.swift */; };
+		F2E8CD831CEADE4300313C2B /* AppleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8CD821CEADE4300313C2B /* AppleClient.swift */; };
+		F2E8CD891CEAE19900313C2B /* AppleConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8CD881CEAE19900313C2B /* AppleConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +29,13 @@
 		F22CFDFD1CE9635B006CD3BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F22CFE001CE9635B006CD3BC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F22CFE021CE9635B006CD3BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F23FD5CD1CEB674A00E1D5B8 /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
+		F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchingCell.xib; sourceTree = "<group>"; };
+		F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NothingFoundCell.xib; sourceTree = "<group>"; };
+		F23FD5D41CEC370900E1D5B8 /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
+		F23FD5D61CEC38DE00E1D5B8 /* SearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
+		F2E8CD821CEADE4300313C2B /* AppleClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleClient.swift; sourceTree = "<group>"; };
+		F2E8CD881CEAE19900313C2B /* AppleConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,13 +69,60 @@
 			isa = PBXGroup;
 			children = (
 				F22CFDF61CE9635B006CD3BC /* AppDelegate.swift */,
-				F22CFDF81CE9635B006CD3BC /* ArtistSearchViewController.swift */,
+				F2E8CD841CEADE5300313C2B /* Model */,
+				F2E8CD851CEADE5B00313C2B /* View */,
+				F2E8CD861CEADE6100313C2B /* Controller */,
 				F22CFDFA1CE9635B006CD3BC /* Main.storyboard */,
 				F22CFDFD1CE9635B006CD3BC /* Assets.xcassets */,
 				F22CFDFF1CE9635B006CD3BC /* LaunchScreen.storyboard */,
 				F22CFE021CE9635B006CD3BC /* Info.plist */,
 			);
 			path = TuneSentry;
+			sourceTree = "<group>";
+		};
+		F23FD5CF1CEB675000E1D5B8 /* Data Objects */ = {
+			isa = PBXGroup;
+			children = (
+				F23FD5CD1CEB674A00E1D5B8 /* SearchResult.swift */,
+			);
+			name = "Data Objects";
+			sourceTree = "<group>";
+		};
+		F2E8CD841CEADE5300313C2B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F2E8CD871CEADE8100313C2B /* Client */,
+				F23FD5CF1CEB675000E1D5B8 /* Data Objects */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		F2E8CD851CEADE5B00313C2B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */,
+				F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */,
+				F23FD5D41CEC370900E1D5B8 /* SearchResultCell.xib */,
+				F23FD5D61CEC38DE00E1D5B8 /* SearchResultCell.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		F2E8CD861CEADE6100313C2B /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F22CFDF81CE9635B006CD3BC /* ArtistSearchViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		F2E8CD871CEADE8100313C2B /* Client */ = {
+			isa = PBXGroup;
+			children = (
+				F2E8CD821CEADE4300313C2B /* AppleClient.swift */,
+				F2E8CD881CEAE19900313C2B /* AppleConstants.swift */,
+			);
+			name = Client;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -124,7 +185,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F22CFE011CE9635B006CD3BC /* LaunchScreen.storyboard in Resources */,
+				F23FD5D31CEC360F00E1D5B8 /* NothingFoundCell.xib in Resources */,
 				F22CFDFE1CE9635B006CD3BC /* Assets.xcassets in Resources */,
+				F23FD5D11CEC2E3C00E1D5B8 /* SearchingCell.xib in Resources */,
+				F23FD5D51CEC370900E1D5B8 /* SearchResultCell.xib in Resources */,
 				F22CFDFC1CE9635B006CD3BC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,7 +200,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2E8CD831CEADE4300313C2B /* AppleClient.swift in Sources */,
 				F22CFDF91CE9635B006CD3BC /* ArtistSearchViewController.swift in Sources */,
+				F23FD5CE1CEB674A00E1D5B8 /* SearchResult.swift in Sources */,
+				F2E8CD891CEAE19900313C2B /* AppleConstants.swift in Sources */,
+				F23FD5D71CEC38DE00E1D5B8 /* SearchResultCell.swift in Sources */,
 				F22CFDF71CE9635B006CD3BC /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -287,6 +355,7 @@
 				F22CFE071CE9635B006CD3BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
