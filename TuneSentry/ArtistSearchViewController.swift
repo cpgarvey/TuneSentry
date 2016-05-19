@@ -29,6 +29,7 @@ class ArtistSearchViewController: UIViewController {
         // set the contentInset so that the first rows of the table always fully appears: 44 pts (search bar) 
         tableView.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
         
+        // load the nibs
         var cellNib = UINib(nibName: TableViewCellIdentifiers.searchingCell, bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.searchingCell)
         
@@ -37,6 +38,9 @@ class ArtistSearchViewController: UIViewController {
         
         cellNib = UINib(nibName: TableViewCellIdentifiers.searchResultCell, bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.searchResultCell)
+        
+        cellNib = UINib(nibName: TableViewCellIdentifiers.errorCell, bundle: nil)
+        tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.errorCell)
         
         // adjust the row height of the table to accomodate our custom nibs
         tableView.rowHeight = 80
@@ -49,6 +53,7 @@ class ArtistSearchViewController: UIViewController {
         static let searchResultCell = "SearchResultCell"
         static let nothingFoundCell = "NothingFoundCell"
         static let searchingCell = "SearchingCell"
+        static let errorCell = "ErrorCell"
     }
 
 
@@ -75,7 +80,7 @@ extension ArtistSearchViewController: UISearchBarDelegate {
             success, error in
             
             if !success {
-                //self.showNetworkError()
+                // do anything with this?
             }
             self.tableView.reloadData()
         })
@@ -94,9 +99,7 @@ extension ArtistSearchViewController: UITableViewDataSource {
         switch search.state {
         case .NotSearchedYet:
             return 0
-        case .Searching:
-            return 1
-        case .NoResults:
+        case .Searching, .Error, .NoResults:
             return 1
         case .Results(let list):
             // bind the search result array associated with .Results to a temp variable so that you can read how many items are in that associated value
@@ -119,6 +122,9 @@ extension ArtistSearchViewController: UITableViewDataSource {
             spinner.startAnimating()
             return cell
             
+        case .Error:
+            return tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.errorCell, forIndexPath: indexPath)
+        
         case .NoResults:
             return tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.nothingFoundCell, forIndexPath: indexPath)
             
@@ -150,7 +156,7 @@ extension ArtistSearchViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         
         switch search.state {
-        case .NotSearchedYet, .Searching, .NoResults:
+        case .NotSearchedYet, .Error, .Searching, .NoResults:
             return nil
         case .Results: //you don't need to bind the array here because you're not using it for anything
             return indexPath

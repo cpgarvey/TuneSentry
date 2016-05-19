@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F21257AA1CED5F5C00FD0200 /* ErrorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F21257A91CED5F5C00FD0200 /* ErrorCell.xib */; };
 		F22CFDF71CE9635B006CD3BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F22CFDF61CE9635B006CD3BC /* AppDelegate.swift */; };
 		F22CFDF91CE9635B006CD3BC /* ArtistSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F22CFDF81CE9635B006CD3BC /* ArtistSearchViewController.swift */; };
 		F22CFDFC1CE9635B006CD3BC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F22CFDFA1CE9635B006CD3BC /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F21257A91CED5F5C00FD0200 /* ErrorCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ErrorCell.xib; sourceTree = "<group>"; };
 		F22CFDF31CE9635A006CD3BC /* TuneSentry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TuneSentry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F22CFDF61CE9635B006CD3BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F22CFDF81CE9635B006CD3BC /* ArtistSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistSearchViewController.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			children = (
 				F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */,
 				F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */,
+				F21257A91CED5F5C00FD0200 /* ErrorCell.xib */,
 				F23FD5D41CEC370900E1D5B8 /* SearchResultCell.xib */,
 				F23FD5D61CEC38DE00E1D5B8 /* SearchResultCell.swift */,
 			);
@@ -187,6 +190,7 @@
 				F22CFE011CE9635B006CD3BC /* LaunchScreen.storyboard in Resources */,
 				F23FD5D31CEC360F00E1D5B8 /* NothingFoundCell.xib in Resources */,
 				F22CFDFE1CE9635B006CD3BC /* Assets.xcassets in Resources */,
+				F21257AA1CED5F5C00FD0200 /* ErrorCell.xib in Resources */,
 				F23FD5D11CEC2E3C00E1D5B8 /* SearchingCell.xib in Resources */,
 				F23FD5D51CEC370900E1D5B8 /* SearchResultCell.xib in Resources */,
 				F22CFDFC1CE9635B006CD3BC /* Main.storyboard in Resources */,

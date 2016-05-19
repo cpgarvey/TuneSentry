@@ -18,6 +18,7 @@ class AppleClient: NSObject {
     enum SearchState {
         case NotSearchedYet
         case Searching
+        case Error
         case NoResults
         case Results([SearchResult]) // the .Results case has an "associated value" of an array of Artists
     }
@@ -79,6 +80,8 @@ class AppleClient: NSObject {
                     
                     success = true
                             print(dictionary)
+                } else {
+                    self.state = .Error
                 }
                 
                 dispatch_async(dispatch_get_main_queue()) {
