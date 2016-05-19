@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,37 +16,65 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tYu-Ei-9H6">
-                        <rect key="frame" x="8" y="8" width="304" height="22"/>
+                        <rect key="frame" x="8" y="8" width="150" height="22"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="22" id="Xop-Jj-b7j"/>
+                            <constraint firstAttribute="width" constant="150" id="479-IX-ReT"/>
+                            <constraint firstAttribute="height" constant="22" id="lte-pa-w37"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Genre" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kv0-Ko-C7w">
-                        <rect key="frame" x="8" y="38" width="304" height="18"/>
+                        <rect key="frame" x="8" y="38" width="150" height="18"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="18" id="qfz-d8-XMc"/>
+                            <constraint firstAttribute="width" constant="150" id="MOg-hH-3EA"/>
+                            <constraint firstAttribute="height" constant="18" id="tKA-vG-bmn"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Os6-ZL-nzN">
+                        <rect key="frame" x="166" y="8" width="148" height="28"/>
+                        <color key="backgroundColor" red="0.792156862745098" green="0.86274509803921573" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="28" id="ZcY-LN-HBJ"/>
+                            <constraint firstAttribute="width" constant="148" id="e0k-dk-mo7"/>
+                        </constraints>
+                        <inset key="contentEdgeInsets" minX="2" minY="0.0" maxX="2" maxY="0.0"/>
+                        <state key="normal" title="View Artist in iTunes"/>
+                        <connections>
+                            <action selector="openArtistUrl:" destination="gsI-i3-Vu7" eventType="touchUpInside" id="Iun-gz-EdU"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NcW-mk-Wj6">
+                        <rect key="frame" x="166" y="43" width="148" height="28"/>
+                        <color key="backgroundColor" red="0.79215686269999996" green="0.86274509799999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="148" id="XKN-5A-lsF"/>
+                            <constraint firstAttribute="height" constant="28" id="fNx-lX-4qb"/>
+                        </constraints>
+                        <inset key="contentEdgeInsets" minX="2" minY="0.0" maxX="2" maxY="0.0"/>
+                        <state key="normal" title="Add Artist to Tracker"/>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="kv0-Ko-C7w" secondAttribute="bottom" constant="21" id="1Nu-QJ-HDU"/>
-                    <constraint firstItem="tYu-Ei-9H6" firstAttribute="top" secondItem="8rB-yu-arN" secondAttribute="top" constant="8" id="D5O-uZ-mKh"/>
-                    <constraint firstItem="kv0-Ko-C7w" firstAttribute="top" secondItem="tYu-Ei-9H6" secondAttribute="bottom" constant="8" id="IMl-5y-ku4"/>
-                    <constraint firstAttribute="trailing" secondItem="kv0-Ko-C7w" secondAttribute="trailing" constant="8" id="TAZ-Ls-wve"/>
-                    <constraint firstItem="tYu-Ei-9H6" firstAttribute="leading" secondItem="8rB-yu-arN" secondAttribute="leading" constant="8" id="WiF-NO-8dB"/>
-                    <constraint firstAttribute="trailing" secondItem="tYu-Ei-9H6" secondAttribute="trailing" constant="8" id="bsc-6H-URX"/>
-                    <constraint firstItem="kv0-Ko-C7w" firstAttribute="leading" secondItem="8rB-yu-arN" secondAttribute="leading" constant="8" id="hPL-fS-M1N"/>
+                    <constraint firstAttribute="topMargin" secondItem="Os6-ZL-nzN" secondAttribute="top" id="49Q-aq-fHM"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="NcW-mk-Wj6" secondAttribute="bottom" id="BsL-eB-6ZM"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Os6-ZL-nzN" secondAttribute="trailing" constant="-2" id="IGr-ak-8nc"/>
+                    <constraint firstAttribute="leadingMargin" secondItem="kv0-Ko-C7w" secondAttribute="leading" id="KUj-3n-psE"/>
+                    <constraint firstAttribute="leadingMargin" secondItem="tYu-Ei-9H6" secondAttribute="leading" id="R2o-Z2-y2i"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="kv0-Ko-C7w" secondAttribute="bottom" constant="15" id="SmV-L2-fc5"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="NcW-mk-Wj6" secondAttribute="trailing" constant="-2" id="d7v-Jq-EFb"/>
+                    <constraint firstAttribute="topMargin" secondItem="tYu-Ei-9H6" secondAttribute="top" id="gtf-R0-VK6"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="addArtistToTracker" destination="NcW-mk-Wj6" id="jEg-7z-PA0"/>
                 <outlet property="artistNameLabel" destination="tYu-Ei-9H6" id="zkp-RY-wpA"/>
                 <outlet property="genreLabel" destination="kv0-Ko-C7w" id="FMe-Tt-u1M"/>
+                <outlet property="viewIniTunesButton" destination="Os6-ZL-nzN" id="WBt-DZ-nrw"/>
             </connections>
             <point key="canvasLocation" x="527" y="341"/>
         </tableViewCell>

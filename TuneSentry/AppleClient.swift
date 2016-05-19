@@ -164,7 +164,8 @@ class AppleClient: NSObject {
         
         //searchResult.artistID = dictionary["artistID"] as! Int64
         searchResult.artistName = dictionary["artistName"] as! String
-                
+        searchResult.artistLinkUrl = dictionary["artistLinkUrl"] as! String
+        
         if let genre = dictionary["primaryGenreName"] as? String {
             searchResult.genre = genre
         }

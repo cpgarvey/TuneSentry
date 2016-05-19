@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F21257AA1CED5F5C00FD0200 /* ErrorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F21257A91CED5F5C00FD0200 /* ErrorCell.xib */; };
+		F21257AC1CED8D1900FD0200 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21257AB1CED8D1900FD0200 /* Alert.swift */; };
 		F22CFDF71CE9635B006CD3BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F22CFDF61CE9635B006CD3BC /* AppDelegate.swift */; };
 		F22CFDF91CE9635B006CD3BC /* ArtistSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F22CFDF81CE9635B006CD3BC /* ArtistSearchViewController.swift */; };
 		F22CFDFC1CE9635B006CD3BC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F22CFDFA1CE9635B006CD3BC /* Main.storyboard */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		F21257A91CED5F5C00FD0200 /* ErrorCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ErrorCell.xib; sourceTree = "<group>"; };
+		F21257AB1CED8D1900FD0200 /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		F22CFDF31CE9635A006CD3BC /* TuneSentry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TuneSentry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F22CFDF61CE9635B006CD3BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F22CFDF81CE9635B006CD3BC /* ArtistSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistSearchViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				F21257A91CED5F5C00FD0200 /* ErrorCell.xib */,
 				F23FD5D41CEC370900E1D5B8 /* SearchResultCell.xib */,
 				F23FD5D61CEC38DE00E1D5B8 /* SearchResultCell.swift */,
+				F21257AB1CED8D1900FD0200 /* Alert.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 				F2E8CD891CEAE19900313C2B /* AppleConstants.swift in Sources */,
 				F23FD5D71CEC38DE00E1D5B8 /* SearchResultCell.swift in Sources */,
 				F22CFDF71CE9635B006CD3BC /* AppDelegate.swift in Sources */,
+				F21257AC1CED8D1900FD0200 /* Alert.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

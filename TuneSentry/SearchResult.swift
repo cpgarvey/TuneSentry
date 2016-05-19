@@ -13,5 +13,6 @@ class SearchResult {
     //var artistID: Int64 = 0
     var artistName = ""
     var genre = ""
+    var artistLinkUrl = ""
 
 }

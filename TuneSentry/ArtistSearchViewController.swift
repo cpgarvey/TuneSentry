@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ArtistSearchViewController: UIViewController {
+class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
 
     // MARK: - Properties
     
@@ -54,6 +54,12 @@ class ArtistSearchViewController: UIViewController {
         static let nothingFoundCell = "NothingFoundCell"
         static let searchingCell = "SearchingCell"
         static let errorCell = "ErrorCell"
+    }
+    
+    // MARK: - SearchResultCell Delegate Method
+    
+    func showUrlError(errorMessage: String) {
+        presentViewController(alert(errorMessage), animated: true, completion: nil)
     }
 
 
@@ -133,6 +139,8 @@ extension ArtistSearchViewController: UITableViewDataSource {
             let searchResult = list[indexPath.row]
             cell.artistNameLabel.text = searchResult.artistName
             cell.genreLabel.text = searchResult.genre
+            cell.delegate = self
+            cell.artistUrl = searchResult.artistLinkUrl
             return cell
 
         }
