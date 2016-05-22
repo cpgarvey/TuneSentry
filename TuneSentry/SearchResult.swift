@@ -14,5 +14,9 @@ class SearchResult {
     var artistName = ""
     var genre = ""
     var artistLinkUrl = ""
+    
+    var inWatchlist = false
+    
+    static var artistWatchList = [SearchResult]()
 
 }

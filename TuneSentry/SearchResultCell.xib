@@ -22,7 +22,7 @@
                             <constraint firstAttribute="height" constant="22" id="lte-pa-w37"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Genre" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kv0-Ko-C7w">
@@ -57,6 +57,9 @@
                         </constraints>
                         <inset key="contentEdgeInsets" minX="2" minY="0.0" maxX="2" maxY="0.0"/>
                         <state key="normal" title="Add Artist to Tracker"/>
+                        <connections>
+                            <action selector="addArtistToWatchlist:" destination="gsI-i3-Vu7" eventType="touchUpInside" id="PsY-7D-F2c"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>

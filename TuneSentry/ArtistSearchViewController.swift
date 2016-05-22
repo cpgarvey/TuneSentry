@@ -56,13 +56,25 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         static let errorCell = "ErrorCell"
     }
     
-    // MARK: - SearchResultCell Delegate Method
+    // MARK: - SearchResultCell Delegate Methods
     
     func showUrlError(errorMessage: String) {
         presentViewController(alert(errorMessage), animated: true, completion: nil)
     }
 
+    func showHUD(action: HudView.WatchlistAction) {
+        
+        HudView.actionType = action
+        
+        let hudView = HudView.hudInView(navigationController!.view, animated: true)
+        hudView.userInteractionEnabled = false
+        afterDelay(0.6) {
+            hudView.hideAnimated(true)
+        }
+        hudView.userInteractionEnabled = true
+    }
 
+    
 }
 
 
@@ -137,10 +149,11 @@ extension ArtistSearchViewController: UITableViewDataSource {
         case .Results(let list):
             let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
             let searchResult = list[indexPath.row]
+            cell.delegate = self
             cell.artistNameLabel.text = searchResult.artistName
             cell.genreLabel.text = searchResult.genre
-            cell.delegate = self
             cell.artistUrl = searchResult.artistLinkUrl
+            cell.inWatchlist = searchResult.inWatchlist
             return cell
 
         }

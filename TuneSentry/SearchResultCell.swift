@@ -11,6 +11,7 @@ import UIKit
 
 protocol SearchResultCellDelegate: class {
     func showUrlError(errorMessage: String)
+    func showHUD(action: HudView.WatchlistAction)
 }
 
 class SearchResultCell: UITableViewCell {
@@ -23,6 +24,7 @@ class SearchResultCell: UITableViewCell {
     @IBOutlet weak var addArtistToTracker: UIButton!
     
     var artistUrl: String?
+    var inWatchlist = false
     
     weak var delegate: SearchResultCellDelegate?
     
@@ -38,7 +40,7 @@ class SearchResultCell: UITableViewCell {
     }
 
     
-    // MARK: - Action
+    // MARK: - Actions
     
     @IBAction func openArtistUrl(sender: UIButton) {
         
@@ -51,6 +53,18 @@ class SearchResultCell: UITableViewCell {
             delegate?.showUrlError("There was an error opening this Artist in iTunes.")
         }
     }
+    
+    
+    @IBAction func addArtistToWatchlist(sender: UIButton) {
+        
+        if inWatchlist {
+            delegate?.showHUD(HudView.WatchlistAction.Remove)
+        } else {
+            delegate?.showHUD(HudView.WatchlistAction.Add)
+        }
+        
+    }
+    
     
     
 }
