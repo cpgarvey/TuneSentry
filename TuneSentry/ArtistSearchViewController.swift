@@ -78,20 +78,25 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
 }
 
 
-
 // MARK: - Search Bar Delegate
 
 extension ArtistSearchViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
         performSearch(searchBar.text!)
     }
     
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        performSearch(searchBar.text!)
+    }
+    
+    // shouldn't this method be in the main class?
     func performSearch(searchText: String) {
         
         print(searchText)
         
-        // TO DO: add search functionality
         // iTunes API: https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/#searching
         
         search.performSearchForText(searchText, completion: {
@@ -102,9 +107,6 @@ extension ArtistSearchViewController: UISearchBarDelegate {
             }
             self.tableView.reloadData()
         })
-        
-        tableView.reloadData()
-        searchBar.resignFirstResponder()
     }
 
 }

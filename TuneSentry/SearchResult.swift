@@ -17,6 +17,4 @@ class SearchResult {
     
     var inWatchlist = false
     
-    static var artistWatchList = [SearchResult]()
-
 }
