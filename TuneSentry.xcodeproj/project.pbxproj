@@ -19,6 +19,11 @@
 		F23FD5D31CEC360F00E1D5B8 /* NothingFoundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */; };
 		F23FD5D51CEC370900E1D5B8 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F23FD5D41CEC370900E1D5B8 /* SearchResultCell.xib */; };
 		F23FD5D71CEC38DE00E1D5B8 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23FD5D61CEC38DE00E1D5B8 /* SearchResultCell.swift */; };
+		F279E5CB1CF51C6400BFCDF0 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F279E5C91CF51C6400BFCDF0 /* DataModel.xcdatamodeld */; };
+		F279E5CD1CF51ED800BFCDF0 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = F279E5CC1CF51ED800BFCDF0 /* Artist.swift */; };
+		F279E5CF1CF51F2900BFCDF0 /* NewRelease.swift in Sources */ = {isa = PBXBuildFile; fileRef = F279E5CE1CF51F2900BFCDF0 /* NewRelease.swift */; };
+		F279E5D11CF5211A00BFCDF0 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = F279E5D01CF5211A00BFCDF0 /* Track.swift */; };
+		F27C4FA21CF422AA004BA0E4 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27C4FA11CF422AA004BA0E4 /* CoreDataStackManager.swift */; };
 		F27CA3761CEEB3B1006EC066 /* HudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27CA3751CEEB3B1006EC066 /* HudView.swift */; };
 		F2E8CD831CEADE4300313C2B /* AppleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8CD821CEADE4300313C2B /* AppleClient.swift */; };
 		F2E8CD891CEAE19900313C2B /* AppleConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8CD881CEAE19900313C2B /* AppleConstants.swift */; };
@@ -39,6 +44,11 @@
 		F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NothingFoundCell.xib; sourceTree = "<group>"; };
 		F23FD5D41CEC370900E1D5B8 /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
 		F23FD5D61CEC38DE00E1D5B8 /* SearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
+		F279E5CA1CF51C6400BFCDF0 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		F279E5CC1CF51ED800BFCDF0 /* Artist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
+		F279E5CE1CF51F2900BFCDF0 /* NewRelease.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewRelease.swift; sourceTree = "<group>"; };
+		F279E5D01CF5211A00BFCDF0 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
+		F27C4FA11CF422AA004BA0E4 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
 		F27CA3751CEEB3B1006EC066 /* HudView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudView.swift; sourceTree = "<group>"; };
 		F2E8CD821CEADE4300313C2B /* AppleClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleClient.swift; sourceTree = "<group>"; };
 		F2E8CD881CEAE19900313C2B /* AppleConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleConstants.swift; sourceTree = "<group>"; };
@@ -89,7 +99,12 @@
 		F23FD5CF1CEB675000E1D5B8 /* Data Objects */ = {
 			isa = PBXGroup;
 			children = (
+				F27C4FA11CF422AA004BA0E4 /* CoreDataStackManager.swift */,
 				F23FD5CD1CEB674A00E1D5B8 /* SearchResult.swift */,
+				F279E5C91CF51C6400BFCDF0 /* DataModel.xcdatamodeld */,
+				F279E5CC1CF51ED800BFCDF0 /* Artist.swift */,
+				F279E5CE1CF51F2900BFCDF0 /* NewRelease.swift */,
+				F279E5D01CF5211A00BFCDF0 /* Track.swift */,
 			);
 			name = "Data Objects";
 			sourceTree = "<group>";
@@ -211,13 +226,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				F2E8CD831CEADE4300313C2B /* AppleClient.swift in Sources */,
+				F279E5CB1CF51C6400BFCDF0 /* DataModel.xcdatamodeld in Sources */,
+				F279E5CF1CF51F2900BFCDF0 /* NewRelease.swift in Sources */,
 				F22CFDF91CE9635B006CD3BC /* ArtistSearchViewController.swift in Sources */,
+				F27C4FA21CF422AA004BA0E4 /* CoreDataStackManager.swift in Sources */,
 				F23FD5CE1CEB674A00E1D5B8 /* SearchResult.swift in Sources */,
 				F2E8CD891CEAE19900313C2B /* AppleConstants.swift in Sources */,
 				F27CA3761CEEB3B1006EC066 /* HudView.swift in Sources */,
 				F23FD5D71CEC38DE00E1D5B8 /* SearchResultCell.swift in Sources */,
 				F22CFDF71CE9635B006CD3BC /* AppDelegate.swift in Sources */,
+				F279E5D11CF5211A00BFCDF0 /* Track.swift in Sources */,
 				F21257AC1CED8D1900FD0200 /* Functions.swift in Sources */,
+				F279E5CD1CF51ED800BFCDF0 /* Artist.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,6 +390,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		F279E5C91CF51C6400BFCDF0 /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F279E5CA1CF51C6400BFCDF0 /* DataModel.xcdatamodel */,
+			);
+			currentVersion = F279E5CA1CF51C6400BFCDF0 /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = F22CFDEB1CE9635A006CD3BC /* Project object */;
 }

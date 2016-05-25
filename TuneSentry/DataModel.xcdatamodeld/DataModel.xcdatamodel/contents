@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
+    <entity name="Artist" representedClassName=".Artist" syncable="YES">
+        <attribute name="artistID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="artistLinkUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="artistName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="primaryGenreName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="releaseCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="newReleases" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NewRelease" inverseName="artist" inverseEntity="NewRelease" syncable="YES"/>
+    </entity>
+    <entity name="NewRelease" representedClassName=".NewRelease" syncable="YES">
+        <attribute name="artworkUrl30" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="artworkUrl60" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="artworkUrl100" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="collectionID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="collectionName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="collectionType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="collectionViewUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="releaseDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="trackCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Artist" inverseName="newReleases" inverseEntity="Artist" syncable="YES"/>
+        <relationship name="tracks" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Track" inverseName="newRelease" inverseEntity="Track" syncable="YES"/>
+    </entity>
+    <entity name="Track" representedClassName=".Track" syncable="YES">
+        <attribute name="previewUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="trackName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="newRelease" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NewRelease" inverseName="tracks" inverseEntity="NewRelease" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Artist" positionX="-63" positionY="-18" width="128" height="135"/>
+        <element name="NewRelease" positionX="-54" positionY="27" width="128" height="225"/>
+        <element name="Track" positionX="-36" positionY="45" width="128" height="90"/>
+    </elements>
+</model>

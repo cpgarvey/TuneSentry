@@ -10,7 +10,7 @@ import Foundation
 
 class SearchResult {
     
-    //var artistID: Int64 = 0
+    var artistID: Int64 = 0
     var artistName = ""
     var genre = ""
     var artistLinkUrl = ""
