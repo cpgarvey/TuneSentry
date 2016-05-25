@@ -11,7 +11,8 @@ import UIKit
 
 protocol SearchResultCellDelegate: class {
     func showUrlError(errorMessage: String)
-    func showHUD(action: HudView.WatchlistAction)
+    func addArtistToWatchlist(searchResult: SearchResult)
+    func removeArtistFromWatchlist(searchResult: SearchResult)
 }
 
 class SearchResultCell: UITableViewCell {
@@ -24,6 +25,8 @@ class SearchResultCell: UITableViewCell {
     @IBOutlet weak var addArtistToTracker: UIButton!
     
     var artistUrl: String?
+    var artistId: Int?
+    var searchResult: SearchResult?
     var inWatchlist = false
     
     weak var delegate: SearchResultCellDelegate?
@@ -58,13 +61,11 @@ class SearchResultCell: UITableViewCell {
     @IBAction func addArtistToWatchlist(sender: UIButton) {
         
         if inWatchlist {
-            delegate?.showHUD(HudView.WatchlistAction.Remove)
+            delegate?.removeArtistFromWatchlist(searchResult!)
         } else {
-            delegate?.showHUD(HudView.WatchlistAction.Add)
+            delegate?.addArtistToWatchlist(searchResult!)
         }
         
     }
-    
-    
     
 }

@@ -10,9 +10,9 @@ import Foundation
 
 class SearchResult {
     
-    var artistID: Int64 = 0
+    var artistId: Int = 0
     var artistName = ""
-    var genre = ""
+    var primaryGenreName = ""
     var artistLinkUrl = ""
     
     var inWatchlist = false

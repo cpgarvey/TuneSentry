@@ -18,7 +18,7 @@ extension AppleClient {
         static let ApiScheme = "https"
         static let ApiHost = "itunes.apple.com"
         static let ApiPathSearch = "/search"
-        //static let ApiPathLookup = "/lookup"
+        static let ApiPathLookup = "/lookup"
         
         /* Method Arguments */
         static let LIMIT = "200"

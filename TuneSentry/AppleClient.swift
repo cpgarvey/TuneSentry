@@ -11,6 +11,7 @@ import UIKit
 
 
 typealias SearchComplete = (success: Bool, errorString: String?) -> Void
+typealias LookupComplete = (success: Bool, releaseCount: Int?, errorString: String?) -> Void
 
 class AppleClient: NSObject {
     
@@ -26,7 +27,8 @@ class AppleClient: NSObject {
     /* Use set parameter on private variable to indicate that other objects can read the variable but cannot assign new values to it */
     private(set) var state: SearchState = .NotSearchedYet
     
-    private var dataTask: NSURLSessionDataTask? = nil
+    private var dataTaskSearch: NSURLSessionDataTask? = nil
+    private var dataTaskLookup: NSURLSessionDataTask? = nil
     
     
     // MARK: - API Functionality
@@ -49,7 +51,7 @@ class AppleClient: NSObject {
             
             
             // if there is an active data task, then cancel it
-            dataTask?.cancel()
+            dataTaskSearch?.cancel()
             
             // activate the network activity indicator
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
@@ -57,9 +59,9 @@ class AppleClient: NSObject {
             // set the state of the search
             state = .Searching
             
-            let url = constructSearchURL(withTermDictionary)
+            let url = constructSearchURL(withTermDictionary, search: true)
             let session = NSURLSession.sharedSession()
-            dataTask = session.dataTaskWithURL(url, completionHandler: { data, response, error in
+            dataTaskSearch = session.dataTaskWithURL(url, completionHandler: { data, response, error in
                 self.state = .NotSearchedYet
                 var success = false
                 if let error = error where error.code == -999 {
@@ -70,7 +72,7 @@ class AppleClient: NSObject {
                     where httpResponse.statusCode == 200,
                     let data = data, dictionary = self.parseJSON(data) {
                     
-                    var searchResults = self.parseDictionary(dictionary)
+                    var searchResults = self.parseDictionaryForSearch(dictionary)
                     if searchResults.isEmpty {
                         self.state = .NoResults
                     } else {
@@ -79,7 +81,8 @@ class AppleClient: NSObject {
                     }
                     
                     success = true
-                            print(dictionary)
+                    print(dictionary)
+                    
                 } else {
                     self.state = .Error
                 }
@@ -90,20 +93,58 @@ class AppleClient: NSObject {
                 }
             })
             
-            dataTask?.resume()
+            dataTaskSearch?.resume()
         }
     }
     
     
-    // MARK: - Helper Functions
+    func performLookupForArtistId(artistId: Int, completion: LookupComplete) {
+        
+        /* Set the parameters of the search */
+        let methodArguments = [
+            "id": String(artistId)
+        ]
+        
+        let url = constructSearchURL(methodArguments, search: false)
+        let session = NSURLSession.sharedSession()
+        dataTaskLookup = session.dataTaskWithURL(url, completionHandler: { data, response, error in
+            
+            if let httpResponse = response as? NSHTTPURLResponse
+                where httpResponse.statusCode == 200,
+                let data = data, dictionary = self.parseJSON(data) {
+                
+                guard let releaseCount = dictionary["resultCount"] as? Int else {
+                    completion(success: false, releaseCount: nil, errorString: "resultCount failed")
+                    return
+                }
+                
+                completion(success: true, releaseCount: (releaseCount - 1), errorString: nil)
+                
+            } else {
+                completion(success: false, releaseCount: nil, errorString: "Unable to lookup artist")
+            }
+            
+        })
+        
+        dataTaskLookup?.resume()
     
+    }
+
+
+    // MARK: - Helper Functions
+
     /* Construct a iTunes Search URL from parameters */
-    func constructSearchURL(parameters: [String:AnyObject]?) -> NSURL {
+    func constructSearchURL(parameters: [String:AnyObject]?, search: Bool) -> NSURL {
         
         let components = NSURLComponents()
         components.scheme = Constants.ApiScheme
         components.host = Constants.ApiHost
-        components.path = Constants.ApiPathSearch
+        if search {
+            components.path = Constants.ApiPathSearch
+        } else {
+            components.path = Constants.ApiPathLookup
+        }
+        
         components.queryItems = [NSURLQueryItem]()
         
         if parameters != nil {
@@ -131,7 +172,7 @@ class AppleClient: NSObject {
     }
     
     /* Parse the JSON */
-    private func parseDictionary(dictionary: [String: AnyObject]) -> [SearchResult] {
+    private func parseDictionaryForSearch(dictionary: [String: AnyObject]) -> [SearchResult] {
         
         guard let array = dictionary["results"] as? [AnyObject] else {
             print("Expected 'results' array")
@@ -146,7 +187,7 @@ class AppleClient: NSObject {
                 
                 var searchResult: SearchResult?
                 
-                searchResult = parseArtist(resultDict)
+                searchResult = parseSearchResult(resultDict)
                 
                 if let result = searchResult {
                     searchResults.append(result)
@@ -158,16 +199,20 @@ class AppleClient: NSObject {
         return searchResults
     }
     
-    /* Parse the artist dictionary */
-    private func parseArtist(dictionary: [String: AnyObject]) -> SearchResult {
+    
+    /* Parse the search result dictionary */
+    private func parseSearchResult(dictionary: [String: AnyObject]) -> SearchResult {
         let searchResult = SearchResult()
-        
-        //searchResult.artistID = dictionary["artistID"] as! Int64
+
+        if let artistId = dictionary["artistId"] as? Int {
+            searchResult.artistId = artistId
+            print("artistID Success!")
+        }
         searchResult.artistName = dictionary["artistName"] as! String
         searchResult.artistLinkUrl = dictionary["artistLinkUrl"] as! String
         
         if let genre = dictionary["primaryGenreName"] as? String {
-            searchResult.genre = genre
+            searchResult.primaryGenreName = genre
         }
         
         return searchResult

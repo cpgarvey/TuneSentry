@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
 
@@ -16,6 +17,10 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     @IBOutlet weak var tableView: UITableView!
     
     let search = AppleClient()
+    
+    lazy var sharedContext: NSManagedObjectContext = {
+        return CoreDataStackManager.sharedInstance().managedObjectContext
+    }()
     
     
     // MARK: - Life Cycle
@@ -56,12 +61,45 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         static let errorCell = "ErrorCell"
     }
     
+    
     // MARK: - SearchResultCell Delegate Methods
     
     func showUrlError(errorMessage: String) {
         presentViewController(alert(errorMessage), animated: true, completion: nil)
     }
-
+    
+    func addArtistToWatchlist(searchResult: SearchResult) {
+        
+        /* create an Artist object and save it to Core Data */
+        let _ = Artist(searchResult: searchResult, context: sharedContext)
+        
+        /* show HUD indicating to user that Artist was saved */
+        showHUD(HudView.WatchlistAction.Add)
+    }
+    
+    func removeArtistFromWatchlist(searchResult: SearchResult) {
+        // remove the artist from the watchlist
+    }
+    
+    
+    // MARK: - Helper Methods
+    
+    func performSearch(searchText: String) {
+        
+        print(searchText)
+        
+        // iTunes API: https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/#searching
+        
+        search.performSearchForText(searchText, completion: {
+            success, error in
+            
+            if !success {
+                // do anything with this?
+            }
+            self.tableView.reloadData()
+        })
+    }
+    
     func showHUD(action: HudView.WatchlistAction) {
         
         HudView.actionType = action
@@ -74,7 +112,6 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         hudView.userInteractionEnabled = true
     }
 
-    
 }
 
 
@@ -90,23 +127,6 @@ extension ArtistSearchViewController: UISearchBarDelegate {
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         performSearch(searchBar.text!)
-    }
-    
-    // shouldn't this method be in the main class?
-    func performSearch(searchText: String) {
-        
-        print(searchText)
-        
-        // iTunes API: https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/#searching
-        
-        search.performSearchForText(searchText, completion: {
-            success, error in
-            
-            if !success {
-                // do anything with this?
-            }
-            self.tableView.reloadData()
-        })
     }
 
 }
@@ -151,10 +171,13 @@ extension ArtistSearchViewController: UITableViewDataSource {
         case .Results(let list):
             let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
             let searchResult = list[indexPath.row]
+            
             cell.delegate = self
             cell.artistNameLabel.text = searchResult.artistName
-            cell.genreLabel.text = searchResult.genre
+            cell.genreLabel.text = searchResult.primaryGenreName
             cell.artistUrl = searchResult.artistLinkUrl
+            cell.artistId = searchResult.artistId
+            cell.searchResult = searchResult
             cell.inWatchlist = searchResult.inWatchlist
             return cell
 

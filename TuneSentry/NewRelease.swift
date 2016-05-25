@@ -12,9 +12,9 @@ import CoreData
 class NewRelease: NSManagedObject {
     
     @NSManaged var collectionType: String
-    @NSManaged var collectionID: Int64
+    @NSManaged var collectionID: Int
     @NSManaged var collectionName: String
-    @NSManaged var trackCount: Int64
+    @NSManaged var trackCount: Int
     @NSManaged var releaseDate: String
     @NSManaged var country: String
     @NSManaged var collectionViewUrl: String
