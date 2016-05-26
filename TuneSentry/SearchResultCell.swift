@@ -24,16 +24,14 @@ class SearchResultCell: UITableViewCell {
     @IBOutlet weak var viewIniTunesButton: UIButton!
     @IBOutlet weak var addArtistToTracker: UIButton!
     
-    var artistUrl: String?
-    var artistId: Int?
     var searchResult: SearchResult?
-    var inWatchlist = false
     
     weak var delegate: SearchResultCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -47,7 +45,7 @@ class SearchResultCell: UITableViewCell {
     
     @IBAction func openArtistUrl(sender: UIButton) {
         
-        if let url = NSURL(string: artistUrl!) {
+        if let url = NSURL(string: searchResult!.artistLinkUrl) {
             guard UIApplication.sharedApplication().openURL(url) else {
                 delegate?.showUrlError("There was an error opening this Artist in iTunes.")
                 return
@@ -60,7 +58,7 @@ class SearchResultCell: UITableViewCell {
     
     @IBAction func addArtistToWatchlist(sender: UIButton) {
         
-        if inWatchlist {
+        if searchResult!.inWatchlist {
             delegate?.removeArtistFromWatchlist(searchResult!)
         } else {
             delegate?.addArtistToWatchlist(searchResult!)

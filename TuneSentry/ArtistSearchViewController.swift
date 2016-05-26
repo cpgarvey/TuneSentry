@@ -16,6 +16,8 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
+    var watchlist: [Artist]?
+    
     let search = AppleClient()
     
     lazy var sharedContext: NSManagedObjectContext = {
@@ -49,6 +51,10 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         
         // adjust the row height of the table to accomodate our custom nibs
         tableView.rowHeight = 80
+        
+        // set the artist watchlist
+        watchlist = fetchWatchlistArtists()
+        
     }
     
     
@@ -71,18 +77,64 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     func addArtistToWatchlist(searchResult: SearchResult) {
         
         /* create an Artist object and save it to Core Data */
-        let _ = Artist(searchResult: searchResult, context: sharedContext)
+        let _ = Artist(searchResult: searchResult, context: sharedContext) { success in
+            if success {
+                
+                performOnMain {
+                    /* Save the Core Data Context that includes the new Artist object */
+                    CoreDataStackManager.sharedInstance().saveContext()
+                
+                    /* show HUD indicating to user that Artist was saved */
+                    self.showHUD(HudView.WatchlistAction.Add)
+                
+                    /* update the watchlist */
+                    self.watchlist = self.fetchWatchlistArtists()
+                    print(self.watchlist)
+                    
+                    /* reload the table data */
+                    self.tableView.reloadData()
+                }
+            } else {
+                // print an error message
+            }
+            
+        }
         
-        /* show HUD indicating to user that Artist was saved */
-        showHUD(HudView.WatchlistAction.Add)
     }
     
     func removeArtistFromWatchlist(searchResult: SearchResult) {
-        // remove the artist from the watchlist
+        
+        /* delete the artist object from Core Data */
+        for artist in watchlist! where artist.artistId == searchResult.artistId {
+            sharedContext.deleteObject(artist)
+        }
+        
+        /* Save the context */
+        CoreDataStackManager.sharedInstance().saveContext()
+        
+        /* show the user a removal HUD */
+        showHUD(HudView.WatchlistAction.Remove)
+        
+        /* update the watchlist to reflect current artists after removal of this artist */
+        watchlist = fetchWatchlistArtists()
+        
+        /* reload the table data */
+        self.tableView.reloadData()
+        
     }
     
     
     // MARK: - Helper Methods
+    
+    func fetchWatchlistArtists() -> [Artist] {
+        let fetchRequest = NSFetchRequest(entityName: "Artist")
+        
+        do {
+            return try sharedContext.executeFetchRequest(fetchRequest) as! [Artist]
+        } catch _ {
+            return [Artist]()
+        }
+    }
     
     func performSearch(searchText: String) {
         
@@ -172,13 +224,25 @@ extension ArtistSearchViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
             let searchResult = list[indexPath.row]
             
-            cell.delegate = self
+            // set default inWatchlist to false to make sure a search result that was formerly in the watchlist but removed is now marked false
+            searchResult.inWatchlist = false
+            
+            // check to see if the search result artist is already in the watchlist
+            for artist in watchlist! where artist.artistId == searchResult.artistId {
+                searchResult.inWatchlist = true
+            }
+            
             cell.artistNameLabel.text = searchResult.artistName
             cell.genreLabel.text = searchResult.primaryGenreName
-            cell.artistUrl = searchResult.artistLinkUrl
-            cell.artistId = searchResult.artistId
+            
+            if searchResult.inWatchlist {
+                cell.addArtistToTracker.setTitle("Remove From Tracker", forState: .Normal)
+            } else {
+                cell.addArtistToTracker.setTitle("Add Artist To Tracker", forState: .Normal)
+            }
             cell.searchResult = searchResult
-            cell.inWatchlist = searchResult.inWatchlist
+            cell.delegate = self
+            
             return cell
 
         }

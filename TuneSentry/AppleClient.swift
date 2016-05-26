@@ -206,7 +206,7 @@ class AppleClient: NSObject {
 
         if let artistId = dictionary["artistId"] as? Int {
             searchResult.artistId = artistId
-            print("artistID Success!")
+            print("artistId Success!")
         }
         searchResult.artistName = dictionary["artistName"] as! String
         searchResult.artistLinkUrl = dictionary["artistLinkUrl"] as! String

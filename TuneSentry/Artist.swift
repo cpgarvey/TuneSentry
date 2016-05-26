@@ -11,7 +11,7 @@ import CoreData
 
 class Artist: NSManagedObject {
     
-    @NSManaged var artistID: Int
+    @NSManaged var artistId: Int
     @NSManaged var artistLinkUrl: String
     @NSManaged var artistName: String
     @NSManaged var primaryGenreName: String
@@ -23,28 +23,27 @@ class Artist: NSManagedObject {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
     }
     
-    init(searchResult: SearchResult, context: NSManagedObjectContext) {
+    init(searchResult: SearchResult, context: NSManagedObjectContext, completion: (success: Bool) -> Void) {
         let entity = NSEntityDescription.entityForName("Artist", inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
         // assign all the variables using the SearchResult that is passed in
-        self.artistID = searchResult.artistId
+        self.artistId = searchResult.artistId
         self.artistLinkUrl = searchResult.artistLinkUrl
         self.artistName = searchResult.artistName
         self.primaryGenreName = searchResult.primaryGenreName
         
-        // make a network call using lookup and the artistID to return the releaseCount that we will set to the self.variable
+        // make a network call using lookup and the artistId to return the releaseCount that we will set to the self.variable
         let search = AppleClient()
         
-        search.performLookupForArtistId(self.artistID, completion: { success, releaseCount, errorString in
+        search.performLookupForArtistId(self.artistId, completion: { success, releaseCount, errorString in
             
             if success {
                 self.releaseCount = releaseCount!
-                
-                /* Save the Core Data Context that includes the new Artist object */
-                CoreDataStackManager.sharedInstance().saveContext()
+                completion(success: true)
             } else {
                 print("Init failed")
+                completion(success: false)
             }
         })
        
