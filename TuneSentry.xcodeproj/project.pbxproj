@@ -25,6 +25,9 @@
 		F279E5D11CF5211A00BFCDF0 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = F279E5D01CF5211A00BFCDF0 /* Track.swift */; };
 		F27C4FA21CF422AA004BA0E4 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27C4FA11CF422AA004BA0E4 /* CoreDataStackManager.swift */; };
 		F27CA3761CEEB3B1006EC066 /* HudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27CA3751CEEB3B1006EC066 /* HudView.swift */; };
+		F2A172171CFA301300D816E4 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A172161CFA301300D816E4 /* HomeViewController.swift */; };
+		F2A172191CFA5FA600D816E4 /* NewReleaseCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2A172181CFA5FA600D816E4 /* NewReleaseCell.xib */; };
+		F2A1721C1CFA67B500D816E4 /* NoNewReleasesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2A1721B1CFA67B500D816E4 /* NoNewReleasesCell.xib */; };
 		F2E8CD831CEADE4300313C2B /* AppleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8CD821CEADE4300313C2B /* AppleClient.swift */; };
 		F2E8CD891CEAE19900313C2B /* AppleConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8CD881CEAE19900313C2B /* AppleConstants.swift */; };
 /* End PBXBuildFile section */
@@ -50,6 +53,9 @@
 		F279E5D01CF5211A00BFCDF0 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		F27C4FA11CF422AA004BA0E4 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
 		F27CA3751CEEB3B1006EC066 /* HudView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudView.swift; sourceTree = "<group>"; };
+		F2A172161CFA301300D816E4 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		F2A172181CFA5FA600D816E4 /* NewReleaseCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewReleaseCell.xib; sourceTree = "<group>"; };
+		F2A1721B1CFA67B500D816E4 /* NoNewReleasesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoNewReleasesCell.xib; sourceTree = "<group>"; };
 		F2E8CD821CEADE4300313C2B /* AppleClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleClient.swift; sourceTree = "<group>"; };
 		F2E8CD881CEAE19900313C2B /* AppleConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -109,6 +115,18 @@
 			name = "Data Objects";
 			sourceTree = "<group>";
 		};
+		F2A1721A1CFA66C300D816E4 /* Search-Related Nibs */ = {
+			isa = PBXGroup;
+			children = (
+				F23FD5D41CEC370900E1D5B8 /* SearchResultCell.xib */,
+				F23FD5D61CEC38DE00E1D5B8 /* SearchResultCell.swift */,
+				F21257A91CED5F5C00FD0200 /* ErrorCell.xib */,
+				F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */,
+				F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */,
+			);
+			name = "Search-Related Nibs";
+			sourceTree = "<group>";
+		};
 		F2E8CD841CEADE5300313C2B /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -121,13 +139,11 @@
 		F2E8CD851CEADE5B00313C2B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */,
-				F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */,
-				F21257A91CED5F5C00FD0200 /* ErrorCell.xib */,
-				F23FD5D41CEC370900E1D5B8 /* SearchResultCell.xib */,
-				F23FD5D61CEC38DE00E1D5B8 /* SearchResultCell.swift */,
+				F2A1721A1CFA66C300D816E4 /* Search-Related Nibs */,
 				F21257AB1CED8D1900FD0200 /* Functions.swift */,
 				F27CA3751CEEB3B1006EC066 /* HudView.swift */,
+				F2A172181CFA5FA600D816E4 /* NewReleaseCell.xib */,
+				F2A1721B1CFA67B500D816E4 /* NoNewReleasesCell.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -136,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				F22CFDF81CE9635B006CD3BC /* ArtistSearchViewController.swift */,
+				F2A172161CFA301300D816E4 /* HomeViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -212,8 +229,10 @@
 				F23FD5D31CEC360F00E1D5B8 /* NothingFoundCell.xib in Resources */,
 				F22CFDFE1CE9635B006CD3BC /* Assets.xcassets in Resources */,
 				F21257AA1CED5F5C00FD0200 /* ErrorCell.xib in Resources */,
+				F2A1721C1CFA67B500D816E4 /* NoNewReleasesCell.xib in Resources */,
 				F23FD5D11CEC2E3C00E1D5B8 /* SearchingCell.xib in Resources */,
 				F23FD5D51CEC370900E1D5B8 /* SearchResultCell.xib in Resources */,
+				F2A172191CFA5FA600D816E4 /* NewReleaseCell.xib in Resources */,
 				F22CFDFC1CE9635B006CD3BC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -230,6 +249,7 @@
 				F279E5CF1CF51F2900BFCDF0 /* NewRelease.swift in Sources */,
 				F22CFDF91CE9635B006CD3BC /* ArtistSearchViewController.swift in Sources */,
 				F27C4FA21CF422AA004BA0E4 /* CoreDataStackManager.swift in Sources */,
+				F2A172171CFA301300D816E4 /* HomeViewController.swift in Sources */,
 				F23FD5CE1CEB674A00E1D5B8 /* SearchResult.swift in Sources */,
 				F2E8CD891CEAE19900313C2B /* AppleConstants.swift in Sources */,
 				F27CA3761CEEB3B1006EC066 /* HudView.swift in Sources */,

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cdS-5v-8Ec">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="XUR-0x-TcW">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Artist Search-->
@@ -54,23 +55,128 @@
             </objects>
             <point key="canvasLocation" x="1117" y="429"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="5Af-xq-2JH">
+        <!--TuneSentry-->
+        <scene sceneID="kcg-Dh-9eP">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cdS-5v-8Ec" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" id="eRq-St-K4i" customClass="HomeViewController" customModule="TuneSentry" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="rCQ-or-kbc"/>
+                        <viewControllerLayoutGuide type="bottom" id="egU-ua-Iej"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="l76-PZ-ktu">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Releases For Your Watchlist Artists:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Ly-OA-3DO">
+                                <rect key="frame" x="20" y="72" width="281" height="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9BR-5j-ls7">
+                                <rect key="frame" x="20" y="97" width="580" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="90r-5g-QMW"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="5" id="sKP-Eg-mJ1">
+                                    <size key="itemSize" width="100" height="124"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="dataSource" destination="eRq-St-K4i" id="99X-Ds-hPn"/>
+                                    <outlet property="delegate" destination="eRq-St-K4i" id="hZA-KS-2GJ"/>
+                                </connections>
+                            </collectionView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watchlist Artists:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9za-28-RWY">
+                                <rect key="frame" x="20" y="255" width="120" height="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KPy-Y7-dXy">
+                                <rect key="frame" x="20" y="280" width="560" height="320"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="H2v-cg-ToL">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="wbX-P6-igQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="egU-ua-Iej" firstAttribute="top" secondItem="KPy-Y7-dXy" secondAttribute="bottom" id="0mU-y5-qOf"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="KPy-Y7-dXy" secondAttribute="leading" id="5Td-bW-QO0"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="2Ly-OA-3DO" secondAttribute="leading" id="61g-75-UoF"/>
+                            <constraint firstItem="2Ly-OA-3DO" firstAttribute="top" secondItem="rCQ-or-kbc" secondAttribute="bottom" constant="8" id="6ip-am-EDB"/>
+                            <constraint firstItem="9za-28-RWY" firstAttribute="top" secondItem="9BR-5j-ls7" secondAttribute="bottom" constant="30" id="J2p-a6-LRH"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="KPy-Y7-dXy" secondAttribute="leading" constant="10" id="LHf-us-ffq"/>
+                            <constraint firstItem="egU-ua-Iej" firstAttribute="top" secondItem="KPy-Y7-dXy" secondAttribute="bottom" id="ODP-pF-SvB"/>
+                            <constraint firstItem="KPy-Y7-dXy" firstAttribute="top" secondItem="9za-28-RWY" secondAttribute="bottom" constant="8" id="PEl-vs-FDo"/>
+                            <constraint firstItem="KPy-Y7-dXy" firstAttribute="top" secondItem="9za-28-RWY" secondAttribute="bottom" constant="8" id="YFH-37-4jO"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="9za-28-RWY" secondAttribute="leading" id="a1I-9O-oJY"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="9BR-5j-ls7" secondAttribute="leading" id="fQ6-ij-dHB"/>
+                            <constraint firstAttribute="trailing" secondItem="KPy-Y7-dXy" secondAttribute="trailing" constant="10" id="fUh-yZ-TAr"/>
+                            <constraint firstItem="9BR-5j-ls7" firstAttribute="top" secondItem="2Ly-OA-3DO" secondAttribute="bottom" constant="8" id="kNB-kh-7Mp"/>
+                            <constraint firstAttribute="trailing" secondItem="9BR-5j-ls7" secondAttribute="trailing" id="uFh-kb-U0A"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="KPy-Y7-dXy" secondAttribute="trailing" id="wM7-3k-w1j"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="LHf-us-ffq"/>
+                                <exclude reference="YFH-37-4jO"/>
+                                <exclude reference="fUh-yZ-TAr"/>
+                                <exclude reference="0mU-y5-qOf"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="TuneSentry" id="fbr-aC-o5W">
+                        <barButtonItem key="leftBarButtonItem" title="Menu" id="KyT-6Q-Vgj"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="Hr7-PO-Tm3">
+                            <connections>
+                                <segue destination="BYZ-38-t0r" kind="show" id="fZr-bP-U8d"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="newReleaseCollectionView" destination="9BR-5j-ls7" id="cZL-7g-m4T"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7O7-DS-4z5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="392" y="429"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="feg-Ot-GOo">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XUR-0x-TcW" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="9Xy-y9-OoH">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="7Cn-Wm-jr3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="lBE-Fn-yvO"/>
+                        <segue destination="eRq-St-K4i" kind="relationship" relationship="rootViewController" id="wil-tU-yzC"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zVG-7m-fNq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="59y-ye-bPH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="350" y="429"/>
+            <point key="canvasLocation" x="-317" y="429"/>
         </scene>
     </scenes>
 </document>

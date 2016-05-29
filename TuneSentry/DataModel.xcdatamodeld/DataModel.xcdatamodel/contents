@@ -6,7 +6,7 @@
         <attribute name="artistName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="primaryGenreName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="releaseCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <relationship name="newReleases" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NewRelease" inverseName="artist" inverseEntity="NewRelease" syncable="YES"/>
+        <relationship name="newReleases" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="NewRelease" inverseName="artist" inverseEntity="NewRelease" syncable="YES"/>
     </entity>
     <entity name="NewRelease" representedClassName=".NewRelease" syncable="YES">
         <attribute name="artworkUrl30" optional="YES" attributeType="String" syncable="YES"/>
@@ -20,7 +20,7 @@
         <attribute name="releaseDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trackCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Artist" inverseName="newReleases" inverseEntity="Artist" syncable="YES"/>
-        <relationship name="tracks" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Track" inverseName="newRelease" inverseEntity="Track" syncable="YES"/>
+        <relationship name="tracks" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Track" inverseName="newRelease" inverseEntity="Track" syncable="YES"/>
     </entity>
     <entity name="Track" representedClassName=".Track" syncable="YES">
         <attribute name="previewUrl" optional="YES" attributeType="String" syncable="YES"/>
