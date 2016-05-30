@@ -13,6 +13,7 @@ class HomeViewController: UIViewController {
     // MARK: - Properties
     
     @IBOutlet weak var newReleaseCollectionView: UICollectionView!
+    @IBOutlet weak var artistCollectionView: UICollectionView!
     
     var newReleases = true
 
@@ -20,6 +21,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
 
         newReleaseCollectionView.backgroundColor = UIColor.clearColor()
+        artistCollectionView.backgroundColor = UIColor.clearColor()
         
         // load the nibs for the new releases collection view
         var cellNib = UINib(nibName: CollectionViewCellIdentifiers.newReleaseCell, bundle: nil)
@@ -46,6 +48,7 @@ class HomeViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         let newReleaseLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        newReleaseLayout.sectionInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
         newReleaseLayout.minimumInteritemSpacing = 5
         newReleaseLayout.scrollDirection = .Horizontal
         
