@@ -25,6 +25,7 @@
 		F279E5D11CF5211A00BFCDF0 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = F279E5D01CF5211A00BFCDF0 /* Track.swift */; };
 		F27C4FA21CF422AA004BA0E4 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27C4FA11CF422AA004BA0E4 /* CoreDataStackManager.swift */; };
 		F27CA3761CEEB3B1006EC066 /* HudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27CA3751CEEB3B1006EC066 /* HudView.swift */; };
+		F284F6F31CFBCDE400D00F16 /* ArtistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F284F6F21CFBCDE400D00F16 /* ArtistCell.xib */; };
 		F2A172171CFA301300D816E4 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A172161CFA301300D816E4 /* HomeViewController.swift */; };
 		F2A172191CFA5FA600D816E4 /* NewReleaseCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2A172181CFA5FA600D816E4 /* NewReleaseCell.xib */; };
 		F2A1721C1CFA67B500D816E4 /* NoNewReleasesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2A1721B1CFA67B500D816E4 /* NoNewReleasesCell.xib */; };
@@ -53,6 +54,7 @@
 		F279E5D01CF5211A00BFCDF0 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		F27C4FA11CF422AA004BA0E4 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
 		F27CA3751CEEB3B1006EC066 /* HudView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudView.swift; sourceTree = "<group>"; };
+		F284F6F21CFBCDE400D00F16 /* ArtistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistCell.xib; sourceTree = "<group>"; };
 		F2A172161CFA301300D816E4 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		F2A172181CFA5FA600D816E4 /* NewReleaseCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewReleaseCell.xib; sourceTree = "<group>"; };
 		F2A1721B1CFA67B500D816E4 /* NoNewReleasesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoNewReleasesCell.xib; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				F27CA3751CEEB3B1006EC066 /* HudView.swift */,
 				F2A172181CFA5FA600D816E4 /* NewReleaseCell.xib */,
 				F2A1721B1CFA67B500D816E4 /* NoNewReleasesCell.xib */,
+				F284F6F21CFBCDE400D00F16 /* ArtistCell.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F284F6F31CFBCDE400D00F16 /* ArtistCell.xib in Resources */,
 				F22CFE011CE9635B006CD3BC /* LaunchScreen.storyboard in Resources */,
 				F23FD5D31CEC360F00E1D5B8 /* NothingFoundCell.xib in Resources */,
 				F22CFDFE1CE9635B006CD3BC /* Assets.xcassets in Resources */,
