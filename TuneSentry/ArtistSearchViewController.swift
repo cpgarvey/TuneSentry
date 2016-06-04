@@ -9,12 +9,12 @@
 import UIKit
 import CoreData
 
-class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
+class ArtistSearchViewController: UIViewController, ArtistSearchResultCellDelegate {
 
     // MARK: - Properties
     
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var collectionView: UICollectionView!
     
     var watchlist: [Artist]?
     
@@ -34,41 +34,54 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         searchBar.becomeFirstResponder()
     
         // set the contentInset so that the first rows of the table always fully appears: 44 pts (search bar) 
-        tableView.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
+        
+        // set the collectionView to have a clear background
         
         // load the nibs
-        var cellNib = UINib(nibName: TableViewCellIdentifiers.searchingCell, bundle: nil)
-        tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.searchingCell)
+        var cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchingCell, bundle: nil)
+        collectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchingCell)
         
-        cellNib = UINib(nibName: TableViewCellIdentifiers.nothingFoundCell, bundle: nil)
-        tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.nothingFoundCell)
+        cellNib = UINib(nibName: CollectionViewCellIdentifiers.nothingFoundCell, bundle: nil)
+        collectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.nothingFoundCell)
         
-        cellNib = UINib(nibName: TableViewCellIdentifiers.searchResultCell, bundle: nil)
-        tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.searchResultCell)
+        cellNib = UINib(nibName: CollectionViewCellIdentifiers.errorCell, bundle: nil)
+        collectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.errorCell)
         
-        cellNib = UINib(nibName: TableViewCellIdentifiers.errorCell, bundle: nil)
-        tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.errorCell)
-        
-        // adjust the row height of the table to accomodate our custom nibs
-        tableView.rowHeight = 80
+        cellNib = UINib(nibName: CollectionViewCellIdentifiers.artistSearchResultCell, bundle: nil)
+        collectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.artistSearchResultCell)
         
         // set the artist watchlist
         watchlist = fetchWatchlistArtists()
         
+        // set up the flow layout for the collection view cells
+        let artistSearchResultLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        artistSearchResultLayout.sectionInset = UIEdgeInsets(top: 6, left: 8, bottom: 0, right: 8)
+        artistSearchResultLayout.minimumLineSpacing = 6
+        artistSearchResultLayout.scrollDirection = .Vertical
+        
+        let height = 184
+        let width = Int(self.view.bounds.size.width - 16)
+        print(self.view.bounds.size.width)
+        
+        artistSearchResultLayout.itemSize = CGSize(width: width, height: height)
+        collectionView.collectionViewLayout = artistSearchResultLayout
+
     }
     
     
-    // MARK: - Struct for Cell Identifiers
+    // MARK: - Struct for Collection Cell Identifiers
     
-    struct TableViewCellIdentifiers {
+    struct CollectionViewCellIdentifiers {
         static let searchResultCell = "SearchResultCell"
         static let nothingFoundCell = "NothingFoundCell"
         static let searchingCell = "SearchingCell"
         static let errorCell = "ErrorCell"
+        static let artistSearchResultCell = "ArtistSearchResultCell"
     }
     
     
-    // MARK: - SearchResultCell Delegate Methods
+    // MARK: - artistSearchResultCell Delegate Methods
     
     func showUrlError(errorMessage: String) {
         presentViewController(alert(errorMessage), animated: true, completion: nil)
@@ -92,7 +105,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
                     print(self.watchlist)
                     
                     /* reload the table data */
-                    self.tableView.reloadData()
+                    self.collectionView.reloadData()
                 }
             } else {
                 // print an error message
@@ -119,7 +132,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         watchlist = fetchWatchlistArtists()
         
         /* reload the table data */
-        self.tableView.reloadData()
+        self.collectionView.reloadData()
         
     }
     
@@ -148,7 +161,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
             if !success {
                 // do anything with this?
             }
-            self.tableView.reloadData()
+            self.collectionView.reloadData()
         })
     }
     
@@ -184,10 +197,10 @@ extension ArtistSearchViewController: UISearchBarDelegate {
 }
 
 
-// MARK: - Table View Data Source Methods
+// MARK: - Collection View Data Source Methods
 
-extension ArtistSearchViewController: UITableViewDataSource {
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension ArtistSearchViewController: UICollectionViewDataSource {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch search.state {
         case .NotSearchedYet:
             return 0
@@ -199,7 +212,7 @@ extension ArtistSearchViewController: UITableViewDataSource {
         }
     }
     
-    func tableView(tableView:UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         switch search.state {
             
@@ -209,19 +222,19 @@ extension ArtistSearchViewController: UITableViewDataSource {
             
         case .Searching:
             print("reached")
-            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchingCell, forIndexPath: indexPath)
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.searchingCell, forIndexPath: indexPath)
             let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
             spinner.startAnimating()
             return cell
             
         case .Error:
-            return tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.errorCell, forIndexPath: indexPath)
+            return collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.errorCell, forIndexPath: indexPath)
         
         case .NoResults:
-            return tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.nothingFoundCell, forIndexPath: indexPath)
+            return collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.nothingFoundCell, forIndexPath: indexPath)
             
         case .Results(let list):
-            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.artistSearchResultCell, forIndexPath: indexPath) as! ArtistSearchResultCell
             let searchResult = list[indexPath.row]
             
             // set default inWatchlist to false to make sure a search result that was formerly in the watchlist but removed is now marked false
@@ -252,25 +265,14 @@ extension ArtistSearchViewController: UITableViewDataSource {
 }
 
 
-// MARK: - Table View Delegate Methods
+// MARK: - Collection View Delegate Methods
 
-extension ArtistSearchViewController: UITableViewDelegate {
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        searchBar.resignFirstResponder()
-        
-        // TO DO: add the artist in that row to the artist watch list
-        // TO DO: use HUD to indicate to user the artist was successfully added
-    }
+extension ArtistSearchViewController: UICollectionViewDelegate {
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         
-        switch search.state {
-        case .NotSearchedYet, .Error, .Searching, .NoResults:
-            return nil
-        case .Results: //you don't need to bind the array here because you're not using it for anything
-            return indexPath
-        }
+        searchBar.resignFirstResponder()
+        return nil
     }
     
     

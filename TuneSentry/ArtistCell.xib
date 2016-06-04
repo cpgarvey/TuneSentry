@@ -7,15 +7,49 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="598-FA-D2k">
-            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ArtistCell" id="598-FA-D2k" customClass="ArtistCell" customModule="TuneSentry" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="128" height="182"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                <rect key="frame" x="0.0" y="0.0" width="128" height="182"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ToS-3M-YCT">
+                        <rect key="frame" x="14" y="14" width="100" height="100"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="100" id="jyR-5t-I9O"/>
+                            <constraint firstAttribute="height" constant="100" id="pji-Qe-UhN"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oGQ-c7-G1d">
+                        <rect key="frame" x="8" y="128" width="112" height="17"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Genre" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nja-rk-4lX">
+                        <rect key="frame" x="8" y="149" width="112" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <point key="canvasLocation" x="736" y="223"/>
+            <constraints>
+                <constraint firstItem="Nja-rk-4lX" firstAttribute="leading" secondItem="598-FA-D2k" secondAttribute="leading" constant="8" id="1kU-vA-4SU"/>
+                <constraint firstItem="oGQ-c7-G1d" firstAttribute="leading" secondItem="598-FA-D2k" secondAttribute="leading" constant="8" id="7tc-1g-Q2M"/>
+                <constraint firstItem="ToS-3M-YCT" firstAttribute="top" secondItem="598-FA-D2k" secondAttribute="top" constant="14" id="HQV-RU-JdH"/>
+                <constraint firstItem="Nja-rk-4lX" firstAttribute="top" secondItem="oGQ-c7-G1d" secondAttribute="bottom" constant="4" id="Ju0-Z1-ONZ"/>
+                <constraint firstAttribute="trailing" secondItem="ToS-3M-YCT" secondAttribute="trailing" constant="14" id="PkY-0l-547"/>
+                <constraint firstAttribute="trailing" secondItem="Nja-rk-4lX" secondAttribute="trailing" constant="8" id="UVK-bT-gLd"/>
+                <constraint firstItem="ToS-3M-YCT" firstAttribute="leading" secondItem="598-FA-D2k" secondAttribute="leading" constant="14" id="W8N-8b-XHy"/>
+                <constraint firstAttribute="trailing" secondItem="oGQ-c7-G1d" secondAttribute="trailing" constant="8" id="dr7-Th-vpi"/>
+                <constraint firstItem="oGQ-c7-G1d" firstAttribute="top" secondItem="ToS-3M-YCT" secondAttribute="bottom" constant="14" id="mUj-uq-HDO"/>
+            </constraints>
+            <size key="customSize" width="152" height="77"/>
+            <point key="canvasLocation" x="526" y="261"/>
         </collectionViewCell>
     </objects>
 </document>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ArtistSearchResultCell" id="aKI-Gh-ASD" customClass="ArtistSearchResultCell" customModule="TuneSentry" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N9A-HR-uIc">
+                        <rect key="frame" x="0.0" y="134" width="320" height="50"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="abv-kO-791">
+                                <rect key="frame" x="8" y="3" width="146" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="146" id="yC1-pn-tyJ"/>
+                                </constraints>
+                                <state key="normal" title="View in iTunes"/>
+                                <connections>
+                                    <action selector="openArtistUrl:" destination="aKI-Gh-ASD" eventType="touchUpInside" id="LHe-ij-ofw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jnp-2D-xxX">
+                                <rect key="frame" x="162" y="3" width="150" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="r2l-vO-tga"/>
+                                </constraints>
+                                <state key="normal" title="Add to Watchlist"/>
+                                <connections>
+                                    <action selector="addArtistToWatchlist:" destination="aKI-Gh-ASD" eventType="touchUpInside" id="cEd-tm-LiB"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="50" id="5ge-cV-UpG"/>
+                            <constraint firstAttribute="trailing" secondItem="Jnp-2D-xxX" secondAttribute="trailing" constant="8" id="5vW-sX-aqP"/>
+                            <constraint firstAttribute="bottom" secondItem="abv-kO-791" secondAttribute="bottom" constant="3" id="CdO-86-sg0"/>
+                            <constraint firstItem="abv-kO-791" firstAttribute="leading" secondItem="N9A-HR-uIc" secondAttribute="leading" constant="8" id="WUX-T9-oXP"/>
+                            <constraint firstItem="abv-kO-791" firstAttribute="top" secondItem="N9A-HR-uIc" secondAttribute="top" constant="3" id="Zbt-fd-ppz"/>
+                            <constraint firstAttribute="bottom" secondItem="Jnp-2D-xxX" secondAttribute="bottom" constant="3" id="Zx8-7F-LJA"/>
+                            <constraint firstItem="Jnp-2D-xxX" firstAttribute="top" secondItem="N9A-HR-uIc" secondAttribute="top" constant="3" id="krQ-5n-dg2"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="pa6-OY-dti"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X5q-YT-GwB">
+                        <rect key="frame" x="8" y="26" width="196" height="37"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="196" id="9R9-64-KHU"/>
+                            <constraint firstAttribute="height" constant="37" id="y9E-GS-pX1"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Genre" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v2Q-3b-weB">
+                        <rect key="frame" x="8" y="60" width="196" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="OaJ-SI-rep"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Uiz-7q-fjJ">
+                        <rect key="frame" x="202" y="18" width="100" height="100"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="100" id="JSK-md-Fw0"/>
+                            <constraint firstAttribute="width" constant="100" id="c8S-Fi-TIn"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No. of Releases:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bgb-w3-OFC">
+                        <rect key="frame" x="8" y="81" width="196" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="xUs-IK-9cY"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <color key="backgroundColor" red="0.97280417172169031" green="0.88523719669909084" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="Bgb-w3-OFC" firstAttribute="leading" secondItem="aKI-Gh-ASD" secondAttribute="leading" constant="8" id="7ry-bb-BJ4"/>
+                <constraint firstItem="X5q-YT-GwB" firstAttribute="leading" secondItem="aKI-Gh-ASD" secondAttribute="leading" constant="8" id="8R9-P1-EBh"/>
+                <constraint firstAttribute="bottom" secondItem="N9A-HR-uIc" secondAttribute="bottom" id="Bfq-6D-iwm"/>
+                <constraint firstAttribute="trailing" secondItem="N9A-HR-uIc" secondAttribute="trailing" id="E6k-0S-bOI"/>
+                <constraint firstAttribute="trailing" secondItem="Uiz-7q-fjJ" secondAttribute="trailing" constant="18" id="L8o-Mg-oHQ"/>
+                <constraint firstItem="Uiz-7q-fjJ" firstAttribute="top" secondItem="aKI-Gh-ASD" secondAttribute="top" constant="18" id="P7N-A0-Zzg"/>
+                <constraint firstItem="X5q-YT-GwB" firstAttribute="top" secondItem="aKI-Gh-ASD" secondAttribute="top" constant="26" id="TLg-tK-Tcd"/>
+                <constraint firstItem="v2Q-3b-weB" firstAttribute="top" secondItem="X5q-YT-GwB" secondAttribute="bottom" constant="-3" id="d5D-nW-NIw"/>
+                <constraint firstItem="Bgb-w3-OFC" firstAttribute="top" secondItem="v2Q-3b-weB" secondAttribute="bottom" id="eyk-8t-dXA"/>
+                <constraint firstItem="Bgb-w3-OFC" firstAttribute="width" secondItem="X5q-YT-GwB" secondAttribute="width" id="gJ1-eB-WiD"/>
+                <constraint firstItem="v2Q-3b-weB" firstAttribute="leading" secondItem="aKI-Gh-ASD" secondAttribute="leading" constant="8" id="hbL-YR-lq3"/>
+                <constraint firstItem="N9A-HR-uIc" firstAttribute="leading" secondItem="aKI-Gh-ASD" secondAttribute="leading" id="kTD-S9-0bp"/>
+                <constraint firstItem="v2Q-3b-weB" firstAttribute="width" secondItem="X5q-YT-GwB" secondAttribute="width" id="mRf-6G-chW"/>
+            </constraints>
+            <size key="customSize" width="320" height="184"/>
+            <connections>
+                <outlet property="addArtistToTracker" destination="Jnp-2D-xxX" id="Z06-B4-ykB"/>
+                <outlet property="artistNameLabel" destination="X5q-YT-GwB" id="Jte-cw-wa4"/>
+                <outlet property="genreLabel" destination="v2Q-3b-weB" id="cJW-Y7-aPH"/>
+            </connections>
+            <point key="canvasLocation" x="385" y="419"/>
+        </collectionViewCell>
+    </objects>
+</document>

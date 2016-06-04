@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Artist Search-->
@@ -18,14 +17,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ABR-el-4Xv">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="1fM-bh-gvT">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="6" minimumInteritemSpacing="10" id="sjH-OX-wIv">
+                                    <size key="itemSize" width="414" height="184"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
                                 <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="wDM-tK-Nk7"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="KyU-Ds-cUw"/>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="04J-Lp-fwk"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="6e2-3e-SIR"/>
                                 </connections>
-                            </tableView>
+                            </collectionView>
                             <searchBar contentMode="redraw" placeholder="search artist name..." translatesAutoresizingMaskIntoConstraints="NO" id="ShQ-PU-D7n">
                                 <rect key="frame" x="0.0" y="64" width="600" height="44"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -37,18 +43,18 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ShQ-PU-D7n" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="2lq-zU-XaK"/>
-                            <constraint firstItem="ABR-el-4Xv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="8Pi-hh-fqv"/>
                             <constraint firstItem="ShQ-PU-D7n" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Auo-RY-ZWH"/>
-                            <constraint firstItem="ABR-el-4Xv" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="E54-zC-n1S"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="1fM-bh-gvT" secondAttribute="bottom" id="MNu-Ex-GeO"/>
                             <constraint firstAttribute="trailing" secondItem="ShQ-PU-D7n" secondAttribute="trailing" id="QD8-rh-Soh"/>
-                            <constraint firstAttribute="trailing" secondItem="ABR-el-4Xv" secondAttribute="trailing" id="gJi-vx-Gg8"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ABR-el-4Xv" secondAttribute="bottom" id="peh-VL-jGa"/>
+                            <constraint firstItem="1fM-bh-gvT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="RFC-4z-cGn"/>
+                            <constraint firstItem="1fM-bh-gvT" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="a9B-BI-Lxv"/>
+                            <constraint firstAttribute="trailing" secondItem="1fM-bh-gvT" secondAttribute="trailing" id="mEF-bb-i6U"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Artist Search" id="t1P-s5-JkN"/>
                     <connections>
+                        <outlet property="collectionView" destination="1fM-bh-gvT" id="GcA-nv-hF2"/>
                         <outlet property="searchBar" destination="ShQ-PU-D7n" id="bIi-jg-l6F"/>
-                        <outlet property="tableView" destination="ABR-el-4Xv" id="sXH-hc-oGF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -67,122 +73,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tia-GP-EFG">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="605"/>
-                            </scrollView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Releases For Your Watchlist Artists:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Ly-OA-3DO">
-                                <rect key="frame" x="20" y="72" width="281" height="17"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9BR-5j-ls7">
-                                <rect key="frame" x="0.0" y="97" width="600" height="128"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="02N-uZ-SwO"/>
-                                    <constraint firstAttribute="height" constant="128" id="90r-5g-QMW"/>
-                                </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="5" id="sKP-Eg-mJ1">
-                                    <size key="itemSize" width="100" height="124"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="90r-5g-QMW"/>
-                                    </mask>
-                                </variation>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="188" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jmD-Em-a5v">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="dataSource" destination="eRq-St-K4i" id="99X-Ds-hPn"/>
-                                    <outlet property="delegate" destination="eRq-St-K4i" id="hZA-KS-2GJ"/>
+                                    <outlet property="dataSource" destination="eRq-St-K4i" id="48s-XZ-Afc"/>
+                                    <outlet property="delegate" destination="eRq-St-K4i" id="d9r-JK-O5I"/>
                                 </connections>
-                            </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Watchlist Artists:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9za-28-RWY">
-                                <rect key="frame" x="20" y="255" width="120" height="17"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KPy-Y7-dXy">
-                                <rect key="frame" x="0.0" y="280" width="600" height="320"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="H2v-cg-ToL">
-                                    <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
-                                <connections>
-                                    <outlet property="dataSource" destination="eRq-St-K4i" id="A4x-X6-vjf"/>
-                                    <outlet property="delegate" destination="eRq-St-K4i" id="SRA-3Z-9JC"/>
-                                </connections>
-                            </collectionView>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="egU-ua-Iej" firstAttribute="top" secondItem="KPy-Y7-dXy" secondAttribute="bottom" id="0mU-y5-qOf"/>
-                            <constraint firstItem="egU-ua-Iej" firstAttribute="top" secondItem="KPy-Y7-dXy" secondAttribute="bottom" id="2Hy-Xf-Nad"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="KPy-Y7-dXy" secondAttribute="leading" id="5Td-bW-QO0"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="2Ly-OA-3DO" secondAttribute="leading" id="61g-75-UoF"/>
-                            <constraint firstItem="2Ly-OA-3DO" firstAttribute="top" secondItem="rCQ-or-kbc" secondAttribute="bottom" constant="8" id="6ip-am-EDB"/>
-                            <constraint firstAttribute="trailing" secondItem="KPy-Y7-dXy" secondAttribute="trailing" id="82H-dA-QBd"/>
-                            <constraint firstItem="KPy-Y7-dXy" firstAttribute="top" secondItem="9za-28-RWY" secondAttribute="bottom" constant="8" id="H9x-lM-QlZ"/>
-                            <constraint firstItem="9za-28-RWY" firstAttribute="top" secondItem="9BR-5j-ls7" secondAttribute="bottom" constant="30" id="J2p-a6-LRH"/>
-                            <constraint firstItem="9BR-5j-ls7" firstAttribute="top" secondItem="2Ly-OA-3DO" secondAttribute="bottom" constant="8" id="KVW-3q-hcJ"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="KPy-Y7-dXy" secondAttribute="leading" constant="10" id="LHf-us-ffq"/>
-                            <constraint firstItem="KPy-Y7-dXy" firstAttribute="leading" secondItem="l76-PZ-ktu" secondAttribute="leading" id="NXU-PO-IJv"/>
-                            <constraint firstItem="egU-ua-Iej" firstAttribute="top" secondItem="KPy-Y7-dXy" secondAttribute="bottom" id="ODP-pF-SvB"/>
-                            <constraint firstAttribute="trailing" secondItem="9BR-5j-ls7" secondAttribute="trailing" id="PDw-0p-kSI"/>
-                            <constraint firstItem="KPy-Y7-dXy" firstAttribute="top" secondItem="9za-28-RWY" secondAttribute="bottom" constant="8" id="PEl-vs-FDo"/>
-                            <constraint firstItem="KPy-Y7-dXy" firstAttribute="top" secondItem="9za-28-RWY" secondAttribute="bottom" constant="8" id="PR1-dG-qCd"/>
-                            <constraint firstItem="KPy-Y7-dXy" firstAttribute="leading" secondItem="l76-PZ-ktu" secondAttribute="leading" id="Rw7-z2-ypt"/>
-                            <constraint firstItem="KPy-Y7-dXy" firstAttribute="top" secondItem="9za-28-RWY" secondAttribute="bottom" constant="8" id="Uuy-bp-ebZ"/>
-                            <constraint firstItem="tia-GP-EFG" firstAttribute="leading" secondItem="l76-PZ-ktu" secondAttribute="leading" id="YF7-UJ-Q7x"/>
-                            <constraint firstItem="KPy-Y7-dXy" firstAttribute="top" secondItem="9za-28-RWY" secondAttribute="bottom" constant="8" id="YFH-37-4jO"/>
-                            <constraint firstItem="KPy-Y7-dXy" firstAttribute="leading" secondItem="l76-PZ-ktu" secondAttribute="leading" id="Ynr-Hk-RmM"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="9za-28-RWY" secondAttribute="leading" id="a1I-9O-oJY"/>
-                            <constraint firstAttribute="trailing" secondItem="tia-GP-EFG" secondAttribute="trailing" id="aKB-9h-ssh"/>
-                            <constraint firstItem="tia-GP-EFG" firstAttribute="top" secondItem="l76-PZ-ktu" secondAttribute="top" id="eoY-Pi-qGY"/>
-                            <constraint firstAttribute="trailing" secondItem="KPy-Y7-dXy" secondAttribute="trailing" constant="10" id="fUh-yZ-TAr"/>
-                            <constraint firstItem="KPy-Y7-dXy" firstAttribute="leading" secondItem="l76-PZ-ktu" secondAttribute="leading" id="j08-38-pPh"/>
-                            <constraint firstItem="9BR-5j-ls7" firstAttribute="top" secondItem="2Ly-OA-3DO" secondAttribute="bottom" constant="8" id="kNB-kh-7Mp"/>
-                            <constraint firstItem="9BR-5j-ls7" firstAttribute="leading" secondItem="l76-PZ-ktu" secondAttribute="leading" id="keL-eL-MVE"/>
-                            <constraint firstAttribute="bottom" secondItem="tia-GP-EFG" secondAttribute="bottom" id="lCX-tm-HIc"/>
-                            <constraint firstAttribute="trailing" secondItem="KPy-Y7-dXy" secondAttribute="trailing" id="lCz-uH-tnT"/>
-                            <constraint firstItem="tia-GP-EFG" firstAttribute="leading" secondItem="9za-28-RWY" secondAttribute="trailing" constant="-140" id="q5N-Mh-m3F"/>
-                            <constraint firstAttribute="trailing" secondItem="KPy-Y7-dXy" secondAttribute="trailing" id="rVK-yW-SQ2"/>
-                            <constraint firstAttribute="trailing" secondItem="KPy-Y7-dXy" secondAttribute="trailing" id="tPW-Zo-7Ri"/>
-                            <constraint firstAttribute="trailing" secondItem="9BR-5j-ls7" secondAttribute="trailing" id="uFh-kb-U0A"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="KPy-Y7-dXy" secondAttribute="trailing" id="wM7-3k-w1j"/>
-                            <constraint firstItem="egU-ua-Iej" firstAttribute="top" secondItem="KPy-Y7-dXy" secondAttribute="bottom" id="yeH-Pr-NVE"/>
-                            <constraint firstItem="9za-28-RWY" firstAttribute="top" secondItem="9BR-5j-ls7" secondAttribute="bottom" constant="30" id="zy8-is-JmJ"/>
+                            <constraint firstItem="jmD-Em-a5v" firstAttribute="top" secondItem="l76-PZ-ktu" secondAttribute="top" id="3aE-OA-hVt"/>
+                            <constraint firstItem="jmD-Em-a5v" firstAttribute="leading" secondItem="l76-PZ-ktu" secondAttribute="leading" id="5Xs-aF-Tu0"/>
+                            <constraint firstAttribute="trailing" secondItem="jmD-Em-a5v" secondAttribute="trailing" id="6Wu-9b-4h4"/>
+                            <constraint firstItem="egU-ua-Iej" firstAttribute="top" secondItem="jmD-Em-a5v" secondAttribute="bottom" id="ZA2-Ax-F8l"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="kNB-kh-7Mp"/>
-                                <exclude reference="uFh-kb-U0A"/>
-                                <exclude reference="J2p-a6-LRH"/>
-                                <exclude reference="5Td-bW-QO0"/>
-                                <exclude reference="82H-dA-QBd"/>
-                                <exclude reference="LHf-us-ffq"/>
-                                <exclude reference="PEl-vs-FDo"/>
-                                <exclude reference="PR1-dG-qCd"/>
-                                <exclude reference="Rw7-z2-ypt"/>
-                                <exclude reference="Uuy-bp-ebZ"/>
-                                <exclude reference="YFH-37-4jO"/>
-                                <exclude reference="Ynr-Hk-RmM"/>
-                                <exclude reference="fUh-yZ-TAr"/>
-                                <exclude reference="j08-38-pPh"/>
-                                <exclude reference="rVK-yW-SQ2"/>
-                                <exclude reference="tPW-Zo-7Ri"/>
-                                <exclude reference="wM7-3k-w1j"/>
-                                <exclude reference="0mU-y5-qOf"/>
-                                <exclude reference="2Hy-Xf-Nad"/>
-                                <exclude reference="ODP-pF-SvB"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="TuneSentry" id="fbr-aC-o5W">
                         <barButtonItem key="leftBarButtonItem" title="Menu" id="KyT-6Q-Vgj"/>
@@ -193,8 +99,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="artistCollectionView" destination="KPy-Y7-dXy" id="2fa-Kz-uqw"/>
-                        <outlet property="newReleaseCollectionView" destination="9BR-5j-ls7" id="cZL-7g-m4T"/>
+                        <outlet property="tableView" destination="jmD-Em-a5v" id="FGm-zd-YlC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7O7-DS-4z5" userLabel="First Responder" sceneMemberID="firstResponder"/>

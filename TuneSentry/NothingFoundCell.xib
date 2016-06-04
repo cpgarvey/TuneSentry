@@ -7,26 +7,28 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NothingFoundCell" id="fCq-ao-Kq4">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
-            <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fCq-ao-Kq4" id="5uJ-mt-lFs">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NothingFoundCell" id="jBO-25-Dsw">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nothing Found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9R7-qM-AZq">
-                        <rect key="frame" x="109" y="31" width="102" height="18"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nothing Found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="03k-Wu-wWc">
+                        <rect key="frame" x="109" y="83" width="102" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="9R7-qM-AZq" firstAttribute="centerX" secondItem="5uJ-mt-lFs" secondAttribute="centerX" id="dKQ-In-F6x"/>
-                    <constraint firstItem="9R7-qM-AZq" firstAttribute="centerY" secondItem="5uJ-mt-lFs" secondAttribute="centerY" id="ezb-Kf-gWy"/>
-                </constraints>
-            </tableViewCellContentView>
-            <point key="canvasLocation" x="536" y="363"/>
-        </tableViewCell>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstItem="03k-Wu-wWc" firstAttribute="centerY" secondItem="jBO-25-Dsw" secondAttribute="centerY" id="2AI-ep-Ug1"/>
+                <constraint firstItem="03k-Wu-wWc" firstAttribute="centerX" secondItem="jBO-25-Dsw" secondAttribute="centerX" id="r4a-On-5cA"/>
+            </constraints>
+            <size key="customSize" width="320" height="165"/>
+            <point key="canvasLocation" x="532" y="383"/>
+        </collectionViewCell>
     </objects>
 </document>
