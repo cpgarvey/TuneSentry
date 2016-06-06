@@ -1,5 +1,5 @@
 //
-//  NewReleaseTableCell.swift
+//  NewReleaseHoldingCollectionCell.swift
 //  TuneSentry
 //
 //  Created by Chris Garvey on 5/30/16.
@@ -9,29 +9,29 @@
 import Foundation
 import UIKit
 
-class NewReleaseTableCell: UITableViewCell {
+class NewReleaseHoldingCollectionCell: UICollectionViewCell {
     
 // citation: https://ashfurrow.com/blog/putting-a-uicollectionview-in-a-uitableviewcell-in-swift/
     
-    @IBOutlet private weak var collectionView: UICollectionView!
+    @IBOutlet private weak var holdingCollectionView: UICollectionView!
     
     func setCollectionViewDataSourceDelegate
         <D: protocol<UICollectionViewDataSource, UICollectionViewDelegate>>
         (dataSourceDelegate: D, forRow row: Int) {
         
-        collectionView.delegate = dataSourceDelegate
-        collectionView.dataSource = dataSourceDelegate
-        collectionView.tag = row
-        collectionView.reloadData()
+        holdingCollectionView.delegate = dataSourceDelegate
+        holdingCollectionView.dataSource = dataSourceDelegate
+        holdingCollectionView.tag = row
+        holdingCollectionView.reloadData()
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
      
-        collectionView.backgroundColor = UIColor.clearColor()
+        holdingCollectionView.backgroundColor = UIColor.clearColor()
         
         let cellNib = UINib(nibName: CollectionViewCellIdentifiers.newReleaseCollectionCell, bundle: nil)
-        collectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.newReleaseCollectionCell)
+        holdingCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.newReleaseCollectionCell)
         
     }
     
@@ -42,7 +42,7 @@ class NewReleaseTableCell: UITableViewCell {
     
 }
 
-extension NewReleaseTableCell: UICollectionViewDelegate {
+extension NewReleaseHoldingCollectionCell: UICollectionViewDelegate {
     
     func viewDidLayoutSubviews() {
         
@@ -55,7 +55,7 @@ extension NewReleaseTableCell: UICollectionViewDelegate {
         let newReleaseWidth = 128
         
         newReleaseLayout.itemSize = CGSize(width: newReleaseWidth, height: newReleaseHeight)
-        collectionView.collectionViewLayout = newReleaseLayout
+        holdingCollectionView.collectionViewLayout = newReleaseLayout
         
     }
 

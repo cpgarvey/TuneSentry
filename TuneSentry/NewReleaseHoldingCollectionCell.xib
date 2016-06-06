@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NewReleaseHoldingCollectionCell" id="fLm-zu-Aus" customClass="NewReleaseHoldingCollectionCell" customModule="TuneSentry" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="TG8-wD-k6X">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="5" id="0wb-u6-Zuy">
+                            <size key="itemSize" width="128" height="181"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                    </collectionView>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstItem="TG8-wD-k6X" firstAttribute="top" secondItem="fLm-zu-Aus" secondAttribute="top" id="4Uq-jj-nK0"/>
+                <constraint firstAttribute="trailing" secondItem="TG8-wD-k6X" secondAttribute="trailing" id="6rW-Ur-j9i"/>
+                <constraint firstAttribute="bottom" secondItem="TG8-wD-k6X" secondAttribute="bottom" id="I6R-N9-g0S"/>
+                <constraint firstItem="TG8-wD-k6X" firstAttribute="leading" secondItem="fLm-zu-Aus" secondAttribute="leading" id="hcd-uw-VLN"/>
+            </constraints>
+            <size key="customSize" width="320" height="184"/>
+            <connections>
+                <outlet property="holdingCollectionView" destination="TG8-wD-k6X" id="6H8-9F-WS4"/>
+            </connections>
+            <point key="canvasLocation" x="396" y="509"/>
+        </collectionViewCell>
+    </objects>
+</document>
