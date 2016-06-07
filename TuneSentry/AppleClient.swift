@@ -72,7 +72,7 @@ class AppleClient: NSObject {
                     where httpResponse.statusCode == 200,
                     let data = data, dictionary = self.parseJSON(data) {
                     
-                    var searchResults = self.parseDictionaryForSearch(dictionary)
+                    let searchResults = self.parseDictionaryForSearch(dictionary)
                     if searchResults.isEmpty {
                         self.state = .NoResults
                     } else {

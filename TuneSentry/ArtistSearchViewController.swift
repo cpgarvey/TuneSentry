@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ArtistSearchViewController: UIViewController, ArtistSearchResultCellDelegate {
+class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
 
     // MARK: - Properties
     
@@ -48,8 +48,8 @@ class ArtistSearchViewController: UIViewController, ArtistSearchResultCellDelega
         cellNib = UINib(nibName: CollectionViewCellIdentifiers.errorCell, bundle: nil)
         collectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.errorCell)
         
-        cellNib = UINib(nibName: CollectionViewCellIdentifiers.artistSearchResultCell, bundle: nil)
-        collectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.artistSearchResultCell)
+        cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchResultCell, bundle: nil)
+        collectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchResultCell)
         
         // set the artist watchlist
         watchlist = fetchWatchlistArtists()
@@ -60,7 +60,7 @@ class ArtistSearchViewController: UIViewController, ArtistSearchResultCellDelega
         artistSearchResultLayout.minimumLineSpacing = 6
         artistSearchResultLayout.scrollDirection = .Vertical
         
-        let height = 184
+        let height = 100
         let width = Int(self.view.bounds.size.width - 16)
         print(self.view.bounds.size.width)
         
@@ -77,11 +77,10 @@ class ArtistSearchViewController: UIViewController, ArtistSearchResultCellDelega
         static let nothingFoundCell = "NothingFoundCell"
         static let searchingCell = "SearchingCell"
         static let errorCell = "ErrorCell"
-        static let artistSearchResultCell = "ArtistSearchResultCell"
     }
     
     
-    // MARK: - artistSearchResultCell Delegate Methods
+    // MARK: - SearchResultCell Delegate Methods
     
     func showUrlError(errorMessage: String) {
         presentViewController(alert(errorMessage), animated: true, completion: nil)
@@ -234,7 +233,7 @@ extension ArtistSearchViewController: UICollectionViewDataSource {
             return collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.nothingFoundCell, forIndexPath: indexPath)
             
         case .Results(let list):
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.artistSearchResultCell, forIndexPath: indexPath) as! ArtistSearchResultCell
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
             let searchResult = list[indexPath.row]
             
             // set default inWatchlist to false to make sure a search result that was formerly in the watchlist but removed is now marked false
