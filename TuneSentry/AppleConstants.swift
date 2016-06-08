@@ -21,9 +21,8 @@ extension AppleClient {
         static let ApiPathLookup = "/lookup"
         
         /* Method Arguments */
-        static let LIMIT = "200"
+        static let LIMIT = "20"
         static let MEDIA = "music"
-        
     }
     
 }

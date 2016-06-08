@@ -15,7 +15,7 @@ class Artist: NSManagedObject {
     @NSManaged var artistLinkUrl: String
     @NSManaged var artistName: String
     @NSManaged var primaryGenreName: String
-    @NSManaged var releaseCount: Int
+    @NSManaged var mostRecentRelease: Int
     @NSManaged var newReleases: [NewRelease]
     
     
@@ -36,10 +36,11 @@ class Artist: NSManagedObject {
         // make a network call using lookup and the artistId to return the releaseCount that we will set to the self.variable
         let search = AppleClient()
         
-        search.performLookupForArtistId(self.artistId, completion: { success, releaseCount, errorString in
+        search.performLookupForArtistId(self.artistId, completion: { success, collectionId, errorString in
             
             if success {
-                self.releaseCount = releaseCount!
+                self.mostRecentRelease = collectionId!
+                print(self.mostRecentRelease)
                 completion(success: true)
             } else {
                 print("Init failed")

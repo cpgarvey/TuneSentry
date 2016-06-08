@@ -11,7 +11,7 @@ import UIKit
 
 
 typealias SearchComplete = (success: Bool, errorString: String?) -> Void
-typealias LookupComplete = (success: Bool, releaseCount: Int?, errorString: String?) -> Void
+typealias LookupComplete = (success: Bool, collectionId: Int?, errorString: String?) -> Void
 
 class AppleClient: NSObject {
     
@@ -102,7 +102,10 @@ class AppleClient: NSObject {
         
         /* Set the parameters of the search */
         let methodArguments = [
-            "id": String(artistId)
+            "id": String(artistId),
+            "entity": "album",
+            "sort": "recent",
+            "limit": "1"
         ]
         
         let url = constructSearchURL(methodArguments, search: false)
@@ -113,15 +116,22 @@ class AppleClient: NSObject {
                 where httpResponse.statusCode == 200,
                 let data = data, dictionary = self.parseJSON(data) {
                 
-                guard let releaseCount = dictionary["resultCount"] as? Int else {
-                    completion(success: false, releaseCount: nil, errorString: "resultCount failed")
+                //print(dictionary)
+                print("Made it here!!!")
+                guard let results = dictionary["results"] as? [[String:AnyObject]] else {
+                    completion(success: false, collectionId: nil, errorString: "results failed")
                     return
                 }
                 
-                completion(success: true, releaseCount: (releaseCount - 1), errorString: nil)
+                guard let collectionId = results[1]["collectionId"] as? Int else {
+                    completion(success: false, collectionId: nil, errorString: "determining collectionID failed")
+                    return
+                }
+                
+                completion(success: true, collectionId: collectionId, errorString: nil)
                 
             } else {
-                completion(success: false, releaseCount: nil, errorString: "Unable to lookup artist")
+                completion(success: false, collectionId: nil, errorString: "Unable to lookup artist")
             }
             
         })

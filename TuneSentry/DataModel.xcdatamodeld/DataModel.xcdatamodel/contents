@@ -4,8 +4,8 @@
         <attribute name="artistId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="artistLinkUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="artistName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mostRecentRelease" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="primaryGenreName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="releaseCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="newReleases" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="NewRelease" inverseName="artist" inverseEntity="NewRelease" syncable="YES"/>
     </entity>
     <entity name="NewRelease" representedClassName=".NewRelease" syncable="YES">
