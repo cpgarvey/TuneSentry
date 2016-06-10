@@ -11,7 +11,7 @@ import UIKit
 
 
 typealias SearchComplete = (success: Bool, errorString: String?) -> Void
-typealias LookupComplete = (success: Bool, collectionId: Int?, errorString: String?) -> Void
+typealias LookupComplete = (success: Bool, collectionId: Int?, artworkUrl: String?, errorString: String?) -> Void
 
 class AppleClient: NSObject {
     
@@ -117,21 +117,25 @@ class AppleClient: NSObject {
                 let data = data, dictionary = self.parseJSON(data) {
                 
                 //print(dictionary)
-                print("Made it here!!!")
                 guard let results = dictionary["results"] as? [[String:AnyObject]] else {
-                    completion(success: false, collectionId: nil, errorString: "results failed")
+                    completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "results failed")
                     return
                 }
                 
                 guard let collectionId = results[1]["collectionId"] as? Int else {
-                    completion(success: false, collectionId: nil, errorString: "determining collectionID failed")
+                    completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "determining collectionID failed")
                     return
                 }
                 
-                completion(success: true, collectionId: collectionId, errorString: nil)
+                guard let mostRecentArtworkUrl = results[1]["artworkUrl100"] as? String else {
+                    completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "determining artworkUrl failed")
+                    return
+                }
+                
+                completion(success: true, collectionId: collectionId, artworkUrl: mostRecentArtworkUrl, errorString: nil)
                 
             } else {
-                completion(success: false, collectionId: nil, errorString: "Unable to lookup artist")
+                completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "Unable to lookup artist")
             }
             
         })
@@ -140,6 +144,25 @@ class AppleClient: NSObject {
     
     }
 
+    func downloadPhoto(artworkUrl: String, completionHandler: (success: Bool, mostRecentArtwork: NSData?, errorString: String?) -> Void) {
+        
+        let session = NSURLSession.sharedSession()
+        let imageURL = NSURL(string: artworkUrl)
+        
+        let sessionTask = session.dataTaskWithURL(imageURL!) { data, response, error in
+            
+            /* GUARD: Was data returned? */
+            guard let data = data else {
+                completionHandler(success: false, mostRecentArtwork: nil, errorString: error?.localizedDescription)
+                return
+            }
+            
+            completionHandler(success: true, mostRecentArtwork: data, errorString: nil)
+            
+        }
+        
+        sessionTask.resume()
+    }
 
     // MARK: - Helper Functions
 

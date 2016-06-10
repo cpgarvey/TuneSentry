@@ -1,5 +1,5 @@
 //
-//  ArtistSearchResultCell.swift
+//  ArtistWatchlistCell.swift
 //  TuneSentry
 //
 //  Created by Chris Garvey on 5/31/16.
@@ -10,24 +10,26 @@ import Foundation
 import UIKit
 
 
-protocol ArtistSearchResultCellDelegate: class {
+protocol ArtistWatchlistCellDelegate: class {
     func showUrlError(errorMessage: String)
     func addArtistToWatchlist(searchResult: SearchResult)
     func removeArtistFromWatchlist(searchResult: SearchResult)
 }
 
 
-class ArtistSearchResultCell: UICollectionViewCell {
+class ArtistWatchlistCell: UICollectionViewCell {
     
     // MARK: - Properties
     
     @IBOutlet weak var artistNameLabel: UILabel!
     @IBOutlet weak var genreLabel: UILabel!
-    @IBOutlet weak var addArtistToTracker: UIButton!
-    
-    var searchResult: SearchResult?
+    @IBOutlet weak var mostRecentArtwork: UIImageView!
+    @IBOutlet weak var releaseCount: UILabel!
 
-    weak var delegate: ArtistSearchResultCellDelegate?
+    
+    var artist: Artist?
+
+    weak var delegate: ArtistWatchlistCellDelegate?
     
     
     // MARK: - Life Cycle
@@ -40,11 +42,13 @@ class ArtistSearchResultCell: UICollectionViewCell {
     
     }
     
+    
+    
     // MARK: - Actions
     
     @IBAction func openArtistUrl(sender: UIButton) {
         
-        if let url = NSURL(string: searchResult!.artistLinkUrl) {
+        if let url = NSURL(string: artist!.artistLinkUrl) {
             guard UIApplication.sharedApplication().openURL(url) else {
                 delegate?.showUrlError("There was an error opening this Artist in iTunes.")
                 return
@@ -54,15 +58,8 @@ class ArtistSearchResultCell: UICollectionViewCell {
         }
     }
     
-    
-    @IBAction func addArtistToWatchlist(sender: UIButton) {
-        
-        if searchResult!.inWatchlist {
-            delegate?.removeArtistFromWatchlist(searchResult!)
-        } else {
-            delegate?.addArtistToWatchlist(searchResult!)
-        }
-        
+
+    @IBAction func removeArtistFromWatchlist(sender: UIButton) {
     }
     
     

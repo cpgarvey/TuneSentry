@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class HomeViewController: UIViewController {
     
@@ -17,6 +18,11 @@ class HomeViewController: UIViewController {
     var newReleases = true
     var watchlistArtists = [Artist]()
 
+    
+    lazy var sharedContext: NSManagedObjectContext = {
+        return CoreDataStackManager.sharedInstance().managedObjectContext
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,8 +31,8 @@ class HomeViewController: UIViewController {
         var cellNib = UINib(nibName: CollectionViewCellIdentifiers.newReleaseHoldingCollectionCell, bundle: nil)
         mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.newReleaseHoldingCollectionCell)
         
-        cellNib = UINib(nibName: CollectionViewCellIdentifiers.artistSearchResultCell, bundle: nil)
-        mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.artistSearchResultCell)
+        cellNib = UINib(nibName: CollectionViewCellIdentifiers.artistWatchlistCell, bundle: nil)
+        mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.artistWatchlistCell)
         
         // set the contentInset so that the first rows of the table always fully appears: 44 pts (search bar)
         mainCollectionView.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
@@ -44,15 +50,28 @@ class HomeViewController: UIViewController {
         mainLayout.itemSize = CGSize(width: width, height: height)
         mainCollectionView.collectionViewLayout = mainLayout
         
-
+        watchlistArtists = fetchAllArtists()
+        
+        // TO DO: Add fetchResultsController for collection view
+    
     }
+    
 
     struct CollectionViewCellIdentifiers {
         static let newReleaseCollectionCell = "NewReleaseCollectionCell"
         static let noNewReleasesCell = "NoNewReleasesCell"
-        static let artistCell = "ArtistCell"
         static let newReleaseHoldingCollectionCell = "NewReleaseHoldingCollectionCell"
-        static let artistSearchResultCell = "ArtistSearchResultCell"
+        static let artistWatchlistCell = "ArtistWatchlistCell"
+    }
+    
+    func fetchAllArtists() -> [Artist] {
+        let fetchRequest = NSFetchRequest(entityName: "Artist")
+        
+        do {
+            return try sharedContext.executeFetchRequest(fetchRequest) as! [Artist]
+        } catch _ {
+            return [Artist]()
+        }
     }
     
 
@@ -77,8 +96,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             if section == 0 {
                 return 1
             } else {
-                // return watchlistArtists.count
-                return 5
+                return watchlistArtists.count
             }
         } else {
             return 10
@@ -96,10 +114,12 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                                                                                  forIndexPath: indexPath)
                 return cell
             } else {
-                let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.artistSearchResultCell, forIndexPath: indexPath)
-                
-                // configure the cell
-                
+                let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.artistWatchlistCell, forIndexPath: indexPath) as! ArtistWatchlistCell
+                let artist = watchlistArtists[indexPath.row]
+                cell.artist = artist
+                cell.artistNameLabel.text = artist.artistName
+                cell.genreLabel.text = artist.primaryGenreName
+                cell.mostRecentArtwork.image = UIImage(data: (artist.mostRecentArtwork))
                 return cell
             }
         } else {

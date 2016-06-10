@@ -16,6 +16,7 @@ class Artist: NSManagedObject {
     @NSManaged var artistName: String
     @NSManaged var primaryGenreName: String
     @NSManaged var mostRecentRelease: Int
+    @NSManaged var mostRecentArtwork: NSData
     @NSManaged var newReleases: [NewRelease]
     
     
@@ -33,14 +34,14 @@ class Artist: NSManagedObject {
         self.artistName = searchResult.artistName
         self.primaryGenreName = searchResult.primaryGenreName
         
-        // make a network call using lookup and the artistId to return the releaseCount that we will set to the self.variable
+        // make a network call using lookup and the artistId to return the most recent release that we will set to the self.variable
         let search = AppleClient()
         
-        search.performLookupForArtistId(self.artistId, completion: { success, collectionId, errorString in
+        search.downloadDataForArtist(self.artistId, completionHandler: { success, mostRecentRelease, mostRecentArtwork, errorString in
             
             if success {
-                self.mostRecentRelease = collectionId!
-                print(self.mostRecentRelease)
+                self.mostRecentRelease = mostRecentRelease!
+                self.mostRecentArtwork = mostRecentArtwork
                 completion(success: true)
             } else {
                 print("Init failed")

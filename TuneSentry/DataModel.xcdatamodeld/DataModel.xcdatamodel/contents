@@ -4,6 +4,7 @@
         <attribute name="artistId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="artistLinkUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="artistName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mostRecentArtwork" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="mostRecentRelease" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="primaryGenreName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="newReleases" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="NewRelease" inverseName="artist" inverseEntity="NewRelease" syncable="YES"/>
@@ -28,7 +29,7 @@
         <relationship name="newRelease" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NewRelease" inverseName="tracks" inverseEntity="NewRelease" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Artist" positionX="-63" positionY="-18" width="128" height="135"/>
+        <element name="Artist" positionX="-63" positionY="-18" width="128" height="150"/>
         <element name="NewRelease" positionX="-54" positionY="27" width="128" height="225"/>
         <element name="Track" positionX="-36" positionY="45" width="128" height="90"/>
     </elements>
