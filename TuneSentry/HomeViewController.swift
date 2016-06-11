@@ -120,6 +120,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 cell.artistNameLabel.text = artist.artistName
                 cell.genreLabel.text = artist.primaryGenreName
                 cell.mostRecentArtwork.image = UIImage(data: (artist.mostRecentArtwork))
+                cell.artistId.text = String(format: "Artist Id: %d", artist.artistId)
                 return cell
             }
         } else {

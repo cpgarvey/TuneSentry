@@ -246,6 +246,7 @@ extension ArtistSearchViewController: UICollectionViewDataSource {
             
             cell.artistNameLabel.text = searchResult.artistName
             cell.genreLabel.text = searchResult.primaryGenreName
+            cell.artistId.text = String(format: "Artist Id: %d", searchResult.artistId)
             
             if searchResult.inWatchlist {
                 cell.addArtistToTracker.setTitle("Remove From Tracker", forState: .Normal)

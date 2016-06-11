@@ -76,7 +76,6 @@ class AppleClient: NSObject {
                     if searchResults.isEmpty {
                         self.state = .NoResults
                     } else {
-                        //searchResults.sortInPlace(<)
                         self.state = .Results(searchResults)
                     }
                     

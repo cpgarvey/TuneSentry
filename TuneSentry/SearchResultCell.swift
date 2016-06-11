@@ -26,6 +26,7 @@ class SearchResultCell: UICollectionViewCell {
     @IBOutlet weak var artistNameLabel: UILabel!
     @IBOutlet weak var genreLabel: UILabel!
     @IBOutlet weak var addArtistToTracker: UIButton!
+    @IBOutlet weak var artistId: UILabel!
     
     var searchResult: SearchResult?
     

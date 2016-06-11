@@ -51,7 +51,7 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Genre" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8uo-vf-sDb">
-                        <rect key="frame" x="8" y="39" width="304" height="21"/>
+                        <rect key="frame" x="8" y="26" width="304" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="aNm-c9-Ca8"/>
                         </constraints>
@@ -60,13 +60,22 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="4WX-co-pbK">
-                        <rect key="frame" x="8" y="0.0" width="304" height="37"/>
+                        <rect key="frame" x="8" y="0.0" width="304" height="31"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="304" id="02h-13-pcs"/>
-                            <constraint firstAttribute="height" constant="37" id="8hb-My-YHc"/>
+                            <constraint firstAttribute="height" constant="31" id="8hb-My-YHc"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist Id" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NNH-84-8Pe" userLabel="Artist Id">
+                        <rect key="frame" x="8" y="45" width="304" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="1gi-vD-gS0"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -74,19 +83,23 @@
             </view>
             <color key="backgroundColor" red="0.9728041717" green="0.88523719670000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="NNH-84-8Pe" secondAttribute="trailing" constant="8" id="5Qa-eH-aYs"/>
                 <constraint firstItem="8uo-vf-sDb" firstAttribute="leading" secondItem="hiT-Wv-KxU" secondAttribute="leading" constant="8" id="AE2-KC-Iju"/>
                 <constraint firstAttribute="trailing" secondItem="4WX-co-pbK" secondAttribute="trailing" constant="8" id="Djm-pb-voI"/>
                 <constraint firstAttribute="trailing" secondItem="NvX-1z-WDi" secondAttribute="trailing" id="IDP-vM-h0s"/>
+                <constraint firstItem="NNH-84-8Pe" firstAttribute="top" secondItem="8uo-vf-sDb" secondAttribute="bottom" constant="-2" id="IjL-hY-SjZ"/>
+                <constraint firstItem="NNH-84-8Pe" firstAttribute="leading" secondItem="hiT-Wv-KxU" secondAttribute="leading" constant="8" id="KUW-R3-6Lu"/>
                 <constraint firstItem="NvX-1z-WDi" firstAttribute="leading" secondItem="hiT-Wv-KxU" secondAttribute="leading" id="OaN-1f-H05"/>
-                <constraint firstItem="NvX-1z-WDi" firstAttribute="top" secondItem="8uo-vf-sDb" secondAttribute="bottom" constant="8" symbolic="YES" id="eJp-Lt-J0j"/>
+                <constraint firstItem="NvX-1z-WDi" firstAttribute="top" secondItem="8uo-vf-sDb" secondAttribute="bottom" constant="21" id="eJp-Lt-J0j"/>
                 <constraint firstItem="8uo-vf-sDb" firstAttribute="width" secondItem="4WX-co-pbK" secondAttribute="width" id="hWU-u2-O6I"/>
-                <constraint firstItem="8uo-vf-sDb" firstAttribute="top" secondItem="4WX-co-pbK" secondAttribute="bottom" constant="2" id="ukR-Kx-Iez"/>
+                <constraint firstItem="8uo-vf-sDb" firstAttribute="top" secondItem="4WX-co-pbK" secondAttribute="bottom" constant="-5" id="ukR-Kx-Iez"/>
                 <constraint firstItem="4WX-co-pbK" firstAttribute="top" secondItem="hiT-Wv-KxU" secondAttribute="top" id="uyc-QG-lOA"/>
                 <constraint firstItem="4WX-co-pbK" firstAttribute="leading" secondItem="hiT-Wv-KxU" secondAttribute="leading" constant="8" id="vbM-2n-0i8"/>
             </constraints>
             <size key="customSize" width="320" height="184"/>
             <connections>
                 <outlet property="addArtistToTracker" destination="Zav-cT-sjy" id="sij-qP-3gG"/>
+                <outlet property="artistId" destination="NNH-84-8Pe" id="8BA-03-a28"/>
                 <outlet property="artistNameLabel" destination="4WX-co-pbK" id="89j-7p-AAd"/>
                 <outlet property="genreLabel" destination="8uo-vf-sDb" id="iH9-6a-JF2"/>
             </connections>

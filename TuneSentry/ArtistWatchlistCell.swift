@@ -24,8 +24,7 @@ class ArtistWatchlistCell: UICollectionViewCell {
     @IBOutlet weak var artistNameLabel: UILabel!
     @IBOutlet weak var genreLabel: UILabel!
     @IBOutlet weak var mostRecentArtwork: UIImageView!
-    @IBOutlet weak var releaseCount: UILabel!
-
+    @IBOutlet weak var artistId: UILabel!
     
     var artist: Artist?
 
