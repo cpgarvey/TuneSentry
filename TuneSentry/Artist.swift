@@ -52,5 +52,19 @@ class Artist: NSManagedObject {
        
     }
     
+    func checkForNewRelease(completion: (success: Bool, errorString: String?) -> Void) {
+        
+        let search = AppleClient()
+        
+        search.performCheckForNewReleasesFromArtist(self) { success, newReleases, errorString in
+            
+            if success {
+                completion(success: true, errorString: nil)
+                print("Success!")
+            }
+            
+        }
+    }
+    
     
 }

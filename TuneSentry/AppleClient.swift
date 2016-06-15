@@ -8,10 +8,12 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 
 typealias SearchComplete = (success: Bool, errorString: String?) -> Void
 typealias LookupComplete = (success: Bool, collectionId: Int?, artworkUrl: String?, errorString: String?) -> Void
+typealias CheckComplete = (success: Bool, newReleases: [NewRelease], errorString: String?) -> Void
 
 class AppleClient: NSObject {
     
@@ -29,6 +31,11 @@ class AppleClient: NSObject {
     
     private var dataTaskSearch: NSURLSessionDataTask? = nil
     private var dataTaskLookup: NSURLSessionDataTask? = nil
+    private var dataTaskNewRelease: NSURLSessionDataTask? = nil
+    
+    lazy var sharedContext: NSManagedObjectContext = {
+        return CoreDataStackManager.sharedInstance().managedObjectContext
+    }()
     
     
     // MARK: - API Functionality
@@ -143,6 +150,66 @@ class AppleClient: NSObject {
     
     }
 
+    func performCheckForNewReleasesFromArtist(artist: Artist, completion: CheckComplete) {
+        print("reached the check...")
+        var newReleases = [NewRelease]()
+        
+        /* Set the parameters of the search */
+        let methodArguments = [
+            "id": String(artist.artistId),
+            "entity": "album",
+            "sort": "recent",
+            "limit": "10"
+        ]
+        
+        let url = constructSearchURL(methodArguments, search: false)
+        let session = NSURLSession.sharedSession()
+        dataTaskNewRelease = session.dataTaskWithURL(url) { (data, response, error) in
+            
+            if let httpResponse = response as? NSHTTPURLResponse
+                where httpResponse.statusCode == 200,
+                let data = data, dictionary = self.parseJSON(data) {
+                
+                //print(dictionary)
+                guard let results = dictionary["results"] as? [[String:AnyObject]] else {
+                    completion(success: false, newReleases: newReleases, errorString: "results failed")
+                    return
+                }
+                
+                guard let firstCollectionId = results[1]["collectionId"] as? Int else {
+                    completion(success: false, newReleases: newReleases, errorString: "determining collectionID failed")
+                    return
+                }
+                
+                // maybe a recursive function here that will keep checking the id until it gets to the mostRecentRelease?
+//                if firstCollectionId == artist.mostRecentRelease {
+//                    completion(success: true, newReleases: newReleases, errorString: nil)
+//                    return
+//                }
+                
+                for result in results where result["wrapperType"] as? String == "collection" {
+//                    
+//                    if result["collectionId"] as? Int == artist.mostRecentRelease {
+//                        completion(success: true, newReleases: newReleases, errorString: nil)
+//                    } else {
+                        let newRelease = NewRelease(artist: artist, dictionary: result, context: self.sharedContext)
+                        newReleases.append(newRelease)
+//                    }
+                }
+                
+                // call the completion handler in the event that the loop goes through all of the results and doesn't hit the artist.mostRecentRelease
+                completion(success: true, newReleases: newReleases, errorString: nil)
+                
+            } else {
+                completion(success: false, newReleases: newReleases, errorString: "Unable to lookup artist")
+            }
+            
+        }
+        
+        dataTaskNewRelease?.resume()
+        
+    }
+    
     func downloadPhoto(artworkUrl: String, completionHandler: (success: Bool, mostRecentArtwork: NSData?, errorString: String?) -> Void) {
         
         let session = NSURLSession.sharedSession()

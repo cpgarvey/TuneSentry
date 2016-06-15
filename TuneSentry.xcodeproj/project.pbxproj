@@ -31,9 +31,10 @@
 		F27CA3761CEEB3B1006EC066 /* HudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27CA3751CEEB3B1006EC066 /* HudView.swift */; };
 		F284F6F31CFBCDE400D00F16 /* ArtistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F284F6F21CFBCDE400D00F16 /* ArtistCell.xib */; };
 		F284F6F51CFBD39800D00F16 /* ArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284F6F41CFBD39800D00F16 /* ArtistCell.swift */; };
+		F29B74BE1D0CD804004A9281 /* HomeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29B74BD1D0CD804004A9281 /* HomeHeaderView.swift */; };
+		F29B74C01D0CE105004A9281 /* NoNewReleasesCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F29B74BF1D0CE105004A9281 /* NoNewReleasesCollectionCell.xib */; };
 		F2A172171CFA301300D816E4 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A172161CFA301300D816E4 /* HomeViewController.swift */; };
 		F2A172191CFA5FA600D816E4 /* NewReleaseCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2A172181CFA5FA600D816E4 /* NewReleaseCollectionCell.xib */; };
-		F2A1721C1CFA67B500D816E4 /* NoNewReleasesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2A1721B1CFA67B500D816E4 /* NoNewReleasesCell.xib */; };
 		F2C45DD11D06979B00CDA206 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2C45DD01D06979B00CDA206 /* SearchResultCell.xib */; };
 		F2C45DD31D06995A00CDA206 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C45DD21D06995A00CDA206 /* SearchResultCell.swift */; };
 		F2E8CD831CEADE4300313C2B /* AppleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8CD821CEADE4300313C2B /* AppleClient.swift */; };
@@ -67,9 +68,10 @@
 		F27CA3751CEEB3B1006EC066 /* HudView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudView.swift; sourceTree = "<group>"; };
 		F284F6F21CFBCDE400D00F16 /* ArtistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistCell.xib; sourceTree = "<group>"; };
 		F284F6F41CFBD39800D00F16 /* ArtistCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistCell.swift; sourceTree = "<group>"; };
+		F29B74BD1D0CD804004A9281 /* HomeHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeHeaderView.swift; sourceTree = "<group>"; };
+		F29B74BF1D0CE105004A9281 /* NoNewReleasesCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoNewReleasesCollectionCell.xib; sourceTree = "<group>"; };
 		F2A172161CFA301300D816E4 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		F2A172181CFA5FA600D816E4 /* NewReleaseCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewReleaseCollectionCell.xib; sourceTree = "<group>"; };
-		F2A1721B1CFA67B500D816E4 /* NoNewReleasesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoNewReleasesCell.xib; sourceTree = "<group>"; };
 		F2C45DD01D06979B00CDA206 /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
 		F2C45DD21D06995A00CDA206 /* SearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		F2E8CD821CEADE4300313C2B /* AppleClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleClient.swift; sourceTree = "<group>"; };
@@ -90,11 +92,11 @@
 		F222D8311CFD175900E53E15 /* New Release Nibs */ = {
 			isa = PBXGroup;
 			children = (
-				F2A1721B1CFA67B500D816E4 /* NoNewReleasesCell.xib */,
 				F2A172181CFA5FA600D816E4 /* NewReleaseCollectionCell.xib */,
 				F222D8371CFD601800E53E15 /* NewReleaseCollectionCell.swift */,
 				F222D8331CFD17C100E53E15 /* NewReleaseHoldingCollectionCell.xib */,
 				F222D8351CFD187100E53E15 /* NewReleaseHoldingCollectionCell.swift */,
+				F29B74BF1D0CE105004A9281 /* NoNewReleasesCollectionCell.xib */,
 			);
 			name = "New Release Nibs";
 			sourceTree = "<group>";
@@ -183,6 +185,7 @@
 				F2A1721A1CFA66C300D816E4 /* Search Nibs */,
 				F21257AB1CED8D1900FD0200 /* Functions.swift */,
 				F27CA3751CEEB3B1006EC066 /* HudView.swift */,
+				F29B74BD1D0CD804004A9281 /* HomeHeaderView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -273,9 +276,9 @@
 				F21257AA1CED5F5C00FD0200 /* ErrorCell.xib in Resources */,
 				F2C45DD11D06979B00CDA206 /* SearchResultCell.xib in Resources */,
 				F222D8341CFD17C100E53E15 /* NewReleaseHoldingCollectionCell.xib in Resources */,
-				F2A1721C1CFA67B500D816E4 /* NoNewReleasesCell.xib in Resources */,
 				F23FD5D11CEC2E3C00E1D5B8 /* SearchingCell.xib in Resources */,
 				F2A172191CFA5FA600D816E4 /* NewReleaseCollectionCell.xib in Resources */,
+				F29B74C01D0CE105004A9281 /* NoNewReleasesCollectionCell.xib in Resources */,
 				F22CFDFC1CE9635B006CD3BC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,6 +306,7 @@
 				F22CFDF71CE9635B006CD3BC /* AppDelegate.swift in Sources */,
 				F26A7A7B1D0934980044BC33 /* AppleConvenience.swift in Sources */,
 				F279E5D11CF5211A00BFCDF0 /* Track.swift in Sources */,
+				F29B74BE1D0CD804004A9281 /* HomeHeaderView.swift in Sources */,
 				F21257AC1CED8D1900FD0200 /* Functions.swift in Sources */,
 				F2C45DD31D06995A00CDA206 /* SearchResultCell.swift in Sources */,
 				F279E5CD1CF51ED800BFCDF0 /* Artist.swift in Sources */,

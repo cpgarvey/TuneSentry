@@ -9,15 +9,20 @@
 import UIKit
 import CoreData
 
+func < (lhs: Artist, rhs: Artist) -> Bool {
+    return lhs.artistName.localizedStandardCompare(rhs.artistName) == .OrderedAscending
+}
+
+typealias NewReleaseCheckComplete = (success: Bool, errorString: String?) -> Void
+
 class HomeViewController: UIViewController {
     
     // MARK: - Properties
     
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
-    var newReleases = true
     var watchlistArtists = [Artist]()
-
+    var newReleases = [NewRelease]()
     
     lazy var sharedContext: NSManagedObjectContext = {
         return CoreDataStackManager.sharedInstance().managedObjectContext
@@ -34,14 +39,15 @@ class HomeViewController: UIViewController {
         cellNib = UINib(nibName: CollectionViewCellIdentifiers.artistWatchlistCell, bundle: nil)
         mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.artistWatchlistCell)
         
-        // set the contentInset so that the first rows of the table always fully appears: 44 pts (search bar)
-        mainCollectionView.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
+        cellNib = UINib(nibName: CollectionViewCellIdentifiers.noNewReleasesCollectionCell, bundle: nil)
+        mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.noNewReleasesCollectionCell)
         
         // set up the flow layout for the collection view cells
         let mainLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         mainLayout.sectionInset = UIEdgeInsets(top: 6, left: 8, bottom: 0, right: 8)
         mainLayout.minimumLineSpacing = 6
         mainLayout.scrollDirection = .Vertical
+        mainLayout.headerReferenceSize = CGSize(width: self.view.frame.size.width, height: 90)
         
         let height = 184
         let width = Int(self.view.bounds.size.width - 16)
@@ -54,12 +60,14 @@ class HomeViewController: UIViewController {
         
         // TO DO: Add fetchResultsController for collection view
     
+        fetchCurrentNewReleases()
+        checkForNewReleases()
     }
     
 
     struct CollectionViewCellIdentifiers {
         static let newReleaseCollectionCell = "NewReleaseCollectionCell"
-        static let noNewReleasesCell = "NoNewReleasesCell"
+        static let noNewReleasesCollectionCell = "NoNewReleasesCollectionCell"
         static let newReleaseHoldingCollectionCell = "NewReleaseHoldingCollectionCell"
         static let artistWatchlistCell = "ArtistWatchlistCell"
     }
@@ -68,14 +76,56 @@ class HomeViewController: UIViewController {
         let fetchRequest = NSFetchRequest(entityName: "Artist")
         
         do {
-            return try sharedContext.executeFetchRequest(fetchRequest) as! [Artist]
+            var artists = try sharedContext.executeFetchRequest(fetchRequest) as! [Artist]
+            artists.sortInPlace(<)
+            return artists
         } catch _ {
             return [Artist]()
         }
     }
     
-
     
+    func fetchCurrentNewReleases() {
+        
+        var newReleases = [NewRelease]()
+        
+        // first pull all new releases that are in Core Data
+        var newReleasesFromCoreData = [NewRelease]()
+        let fetchRequest = NSFetchRequest(entityName: "NewRelease")
+        
+        do {
+            newReleasesFromCoreData = try sharedContext.executeFetchRequest(fetchRequest) as! [NewRelease]
+        } catch _ {
+            // do nothing...
+        }
+        
+        
+        if !newReleasesFromCoreData.isEmpty {
+            for release in newReleasesFromCoreData {
+                newReleases.append(release)
+            }
+        }
+        
+        // sort in place the newReleases?
+        self.newReleases = newReleases
+    }
+    
+    func checkForNewReleases() {
+        
+        for artist in watchlistArtists {
+            
+            artist.checkForNewRelease() { success, errorString in
+                
+                if success {
+                    performOnMain {
+                        CoreDataStackManager.sharedInstance().saveContext()
+                    }
+                }
+            }
+        
+        }
+
+    }
 }
 
 
@@ -89,8 +139,35 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     }
     
-    func collectionView(collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+
+        if collectionView == mainCollectionView {
+            
+            switch kind {
+                
+            case UICollectionElementKindSectionHeader:
+                
+                let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "HomeHeaderView", forIndexPath: indexPath) as! HomeHeaderView
+                
+                if indexPath.section == 0 {
+                    headerView.header.text = "New Releases:"
+                } else {
+                    headerView.header.text = "Watchlist Artists:"
+                }
+                return headerView
+            default:
+                assert(false, "Unexpected element kind")
+            }
+            
+        } else {
+            let headerView = UICollectionReusableView()
+            return headerView
+        }
+        
+    }
+
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if collectionView == mainCollectionView {
             if section == 0 {
@@ -104,15 +181,24 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
     }
     
-    func collectionView(collectionView: UICollectionView,
-                        cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         if collectionView == mainCollectionView {
             
             if indexPath.section == 0 {
-                let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.newReleaseHoldingCollectionCell,
-                                                                                 forIndexPath: indexPath)
-                return cell
+                
+                if newReleases.isEmpty {
+                    
+                    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.noNewReleasesCollectionCell,
+                                                                                     forIndexPath: indexPath)
+                    return cell
+                } else {
+                    
+                    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.newReleaseHoldingCollectionCell,
+                                                                                     forIndexPath: indexPath)
+                    return cell
+                }
+                
             } else {
                 let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.artistWatchlistCell, forIndexPath: indexPath) as! ArtistWatchlistCell
                 let artist = watchlistArtists[indexPath.row]
@@ -125,7 +211,12 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             }
         } else {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.newReleaseCollectionCell,
-                                                                             forIndexPath: indexPath)
+                                                                             forIndexPath: indexPath) as! NewReleaseCollectionCell
+            
+            let newRelease = newReleases[indexPath.row]
+            cell.artistName.text = newRelease.artist.artistName
+            cell.newReleaseTitle.text = newRelease.collectionName
+            cell.newReleaseImage.image = UIImage(data: (newRelease.newReleaseArtwork))
             return cell
         }
         
