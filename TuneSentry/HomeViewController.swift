@@ -9,9 +9,11 @@
 import UIKit
 import CoreData
 
+
 func < (lhs: Artist, rhs: Artist) -> Bool {
     return lhs.artistName.localizedStandardCompare(rhs.artistName) == .OrderedAscending
 }
+
 
 typealias NewReleaseCheckComplete = (success: Bool, errorString: String?) -> Void
 
@@ -24,9 +26,31 @@ class HomeViewController: UIViewController {
     var watchlistArtists = [Artist]()
     var newReleases = [NewRelease]()
     
+    /* Variable properties to keep track of insertions, deletions, and updates */
+    var insertedIndexPaths: [NSIndexPath]!
+    var deletedIndexPaths: [NSIndexPath]!
+    var updatedIndexPaths: [NSIndexPath]!
+    
+    /* Core Data Convenience */
     lazy var sharedContext: NSManagedObjectContext = {
         return CoreDataStackManager.sharedInstance().managedObjectContext
     }()
+    
+    /* Fetched Results Controller */
+    lazy var fetchedResultsController: NSFetchedResultsController = {
+        
+        let fetchRequest = NSFetchRequest(entityName: "Artist")
+        let nameSort = NSSortDescriptor(key: "artistName", ascending: true)
+        fetchRequest.sortDescriptors = [nameSort]
+        
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
+        
+        return fetchedResultsController
+        
+    }()
+    
+    
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,16 +79,19 @@ class HomeViewController: UIViewController {
         
         mainLayout.itemSize = CGSize(width: width, height: height)
         mainCollectionView.collectionViewLayout = mainLayout
-        
+    
         watchlistArtists = fetchAllArtists()
         
-        // TO DO: Add fetchResultsController for collection view
-    
-        fetchCurrentNewReleases()
+        /* Perform the fetch */
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {}
+        
+        fetchedResultsController.delegate = self
+        
         checkForNewReleases()
     }
     
-
     struct CollectionViewCellIdentifiers {
         static let newReleaseCollectionCell = "NewReleaseCollectionCell"
         static let noNewReleasesCollectionCell = "NoNewReleasesCollectionCell"
@@ -83,7 +110,6 @@ class HomeViewController: UIViewController {
             return [Artist]()
         }
     }
-    
     
     func fetchCurrentNewReleases() {
         
@@ -129,7 +155,7 @@ class HomeViewController: UIViewController {
 }
 
 
-extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         if collectionView == mainCollectionView {
@@ -173,7 +199,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             if section == 0 {
                 return 1
             } else {
-                return watchlistArtists.count
+                return fetchedResultsController.sections![0].numberOfObjects
             }
         } else {
             return 10
@@ -201,12 +227,18 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 
             } else {
                 let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.artistWatchlistCell, forIndexPath: indexPath) as! ArtistWatchlistCell
-                let artist = watchlistArtists[indexPath.row]
+                
+                let indexNumber = indexPath.item
+                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
+                
+                let artist = fetchedResultsController.objectAtIndexPath(adjustedIndexPath) as! Artist
+                
                 cell.artist = artist
                 cell.artistNameLabel.text = artist.artistName
                 cell.genreLabel.text = artist.primaryGenreName
                 cell.mostRecentArtwork.image = UIImage(data: (artist.mostRecentArtwork))
                 cell.artistId.text = String(format: "Artist Id: %d", artist.artistId)
+                
                 return cell
             }
         } else {
@@ -221,6 +253,80 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
         
     }
+    
+    // MARK: - Fetched Results Controller Delegate
+    
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        
+        insertedIndexPaths = [NSIndexPath]()
+        deletedIndexPaths = [NSIndexPath]()
+        updatedIndexPaths = [NSIndexPath]()
+        
+        print("in controllerWillChangeContent")
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        
+        
+        switch type{
+            
+        case .Insert:
+            print("Insert an item")
+            let indexNumber = newIndexPath!.item
+            let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
+            insertedIndexPaths.append(adjustedIndexPath)
+            break
+        case .Delete:
+            print("Delete an item")
+            let indexNumber = indexPath!.item
+            let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
+            deletedIndexPaths.append(adjustedIndexPath)
+            break
+        case .Update:
+            print("Update an item.")
+            let indexNumber = indexPath!.item
+            let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
+            updatedIndexPaths.append(adjustedIndexPath)
+            break
+        case .Move:
+            print("Move an item. We don't expect to see this in this app.")
+            break
+        }
+    }
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        
+        print("in controllerDidChangeContent. changes.count: \(insertedIndexPaths.count + deletedIndexPaths.count)")
+        
+        mainCollectionView.performBatchUpdates({() -> Void in
+            
+            for indexPath in self.insertedIndexPaths {
+                
+                let indexNumber = indexPath.item
+                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
+                
+                self.mainCollectionView.insertItemsAtIndexPaths([adjustedIndexPath])
+            }
+            
+            for indexPath in self.deletedIndexPaths {
+                
+                let indexNumber = indexPath.item
+                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
+                
+                self.mainCollectionView.deleteItemsAtIndexPaths([adjustedIndexPath])
+            }
+            
+            for indexPath in self.updatedIndexPaths {
+                
+                let indexNumber = indexPath.item
+                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
+                
+                self.mainCollectionView.reloadItemsAtIndexPaths([adjustedIndexPath])
+            }
+            
+            }, completion: nil)
+    }
+
     
     func collectionView(collectionView: UICollectionView,
                         willDisplayCell cell: UICollectionViewCell,
