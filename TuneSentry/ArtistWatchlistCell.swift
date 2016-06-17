@@ -12,8 +12,7 @@ import UIKit
 
 protocol ArtistWatchlistCellDelegate: class {
     func showUrlError(errorMessage: String)
-    func addArtistToWatchlist(searchResult: SearchResult)
-    func removeArtistFromWatchlist(searchResult: SearchResult)
+    func removeArtistFromWatchlist(artist: Artist)
 }
 
 
@@ -59,6 +58,8 @@ class ArtistWatchlistCell: UICollectionViewCell {
     
 
     @IBAction func removeArtistFromWatchlist(sender: UIButton) {
+        print("Pressed the remove button!")
+        delegate?.removeArtistFromWatchlist(artist!)
     }
     
     

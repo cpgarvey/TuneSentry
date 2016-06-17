@@ -17,7 +17,7 @@ func < (lhs: Artist, rhs: Artist) -> Bool {
 
 typealias NewReleaseCheckComplete = (success: Bool, errorString: String?) -> Void
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController, ArtistWatchlistCellDelegate {
     
     // MARK: - Properties
     
@@ -152,6 +152,22 @@ class HomeViewController: UIViewController {
         }
 
     }
+    
+    func removeArtistFromWatchlist(artist: Artist) {
+        print("Reached the delegate!")
+        /* Delete the artist object */
+        sharedContext.deleteObject(artist)
+        
+        /* Save the context */
+        CoreDataStackManager.sharedInstance().saveContext()
+    }
+    
+    
+    func showUrlError(errorMessage: String) {
+        presentViewController(alert(errorMessage), animated: true, completion: nil)
+    }
+
+    
 }
 
 
@@ -238,7 +254,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 cell.genreLabel.text = artist.primaryGenreName
                 cell.mostRecentArtwork.image = UIImage(data: (artist.mostRecentArtwork))
                 cell.artistId.text = String(format: "Artist Id: %d", artist.artistId)
-                
+                cell.delegate = self
                 return cell
             }
         } else {
