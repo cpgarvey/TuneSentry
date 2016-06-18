@@ -37,7 +37,7 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate {
     }()
     
     /* Fetched Results Controller */
-    lazy var fetchedResultsController: NSFetchedResultsController = {
+    lazy var fetchedResultsControllerForTracker: NSFetchedResultsController = {
         
         let fetchRequest = NSFetchRequest(entityName: "Artist")
         let nameSort = NSSortDescriptor(key: "artistName", ascending: true)
@@ -84,10 +84,10 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate {
         
         /* Perform the fetch */
         do {
-            try fetchedResultsController.performFetch()
+            try fetchedResultsControllerForTracker.performFetch()
         } catch {}
         
-        fetchedResultsController.delegate = self
+        fetchedResultsControllerForTracker.delegate = self
         
         checkForNewReleases()
     }
@@ -215,7 +215,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             if section == 0 {
                 return 1
             } else {
-                return fetchedResultsController.sections![0].numberOfObjects
+                return fetchedResultsControllerForTracker.sections![0].numberOfObjects
             }
         } else {
             return 10
@@ -247,7 +247,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 let indexNumber = indexPath.item
                 let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
                 
-                let artist = fetchedResultsController.objectAtIndexPath(adjustedIndexPath) as! Artist
+                let artist = fetchedResultsControllerForTracker.objectAtIndexPath(adjustedIndexPath) as! Artist
                 
                 cell.artist = artist
                 cell.artistNameLabel.text = artist.artistName
@@ -283,64 +283,74 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         
-        
-        switch type{
+        if controller == fetchedResultsControllerForTracker {
             
-        case .Insert:
-            print("Insert an item")
-            let indexNumber = newIndexPath!.item
-            let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
-            insertedIndexPaths.append(adjustedIndexPath)
-            break
-        case .Delete:
-            print("Delete an item")
-            let indexNumber = indexPath!.item
-            let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
-            deletedIndexPaths.append(adjustedIndexPath)
-            break
-        case .Update:
-            print("Update an item.")
-            let indexNumber = indexPath!.item
-            let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
-            updatedIndexPaths.append(adjustedIndexPath)
-            break
-        case .Move:
-            print("Move an item. We don't expect to see this in this app.")
-            break
+            switch type{
+                
+            case .Insert:
+                print("Insert an item")
+                let indexNumber = newIndexPath!.item
+                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
+                insertedIndexPaths.append(adjustedIndexPath)
+                break
+            case .Delete:
+                print("Delete an item")
+                let indexNumber = indexPath!.item
+                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
+                deletedIndexPaths.append(adjustedIndexPath)
+                break
+            case .Update:
+                print("Update an item.")
+                let indexNumber = indexPath!.item
+                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
+                updatedIndexPaths.append(adjustedIndexPath)
+                break
+            case .Move:
+                print("Move an item. We don't expect to see this in this app.")
+                break
+            }
+
+            
         }
+        
     }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         
-        print("in controllerDidChangeContent. changes.count: \(insertedIndexPaths.count + deletedIndexPaths.count)")
+        if controller == fetchedResultsControllerForTracker {
+            
+            print("in controllerDidChangeContent. changes.count: \(insertedIndexPaths.count + deletedIndexPaths.count)")
+            
+            mainCollectionView.performBatchUpdates({() -> Void in
+                
+                for indexPath in self.insertedIndexPaths {
+                    
+                    let indexNumber = indexPath.item
+                    let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
+                    
+                    self.mainCollectionView.insertItemsAtIndexPaths([adjustedIndexPath])
+                }
+                
+                for indexPath in self.deletedIndexPaths {
+                    
+                    let indexNumber = indexPath.item
+                    let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
+                    
+                    self.mainCollectionView.deleteItemsAtIndexPaths([adjustedIndexPath])
+                }
+                
+                for indexPath in self.updatedIndexPaths {
+                    
+                    let indexNumber = indexPath.item
+                    let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
+                    
+                    self.mainCollectionView.reloadItemsAtIndexPaths([adjustedIndexPath])
+                }
+                
+                }, completion: nil)
+            
+        }
         
-        mainCollectionView.performBatchUpdates({() -> Void in
-            
-            for indexPath in self.insertedIndexPaths {
-                
-                let indexNumber = indexPath.item
-                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
-                
-                self.mainCollectionView.insertItemsAtIndexPaths([adjustedIndexPath])
-            }
-            
-            for indexPath in self.deletedIndexPaths {
-                
-                let indexNumber = indexPath.item
-                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
-                
-                self.mainCollectionView.deleteItemsAtIndexPaths([adjustedIndexPath])
-            }
-            
-            for indexPath in self.updatedIndexPaths {
-                
-                let indexNumber = indexPath.item
-                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
-                
-                self.mainCollectionView.reloadItemsAtIndexPaths([adjustedIndexPath])
-            }
-            
-            }, completion: nil)
     }
 
     
