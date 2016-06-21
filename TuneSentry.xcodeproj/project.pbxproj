@@ -26,13 +26,13 @@
 		F279E5CB1CF51C6400BFCDF0 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F279E5C91CF51C6400BFCDF0 /* DataModel.xcdatamodeld */; };
 		F279E5CD1CF51ED800BFCDF0 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = F279E5CC1CF51ED800BFCDF0 /* Artist.swift */; };
 		F279E5CF1CF51F2900BFCDF0 /* NewRelease.swift in Sources */ = {isa = PBXBuildFile; fileRef = F279E5CE1CF51F2900BFCDF0 /* NewRelease.swift */; };
-		F279E5D11CF5211A00BFCDF0 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = F279E5D01CF5211A00BFCDF0 /* Track.swift */; };
 		F27C4FA21CF422AA004BA0E4 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27C4FA11CF422AA004BA0E4 /* CoreDataStackManager.swift */; };
 		F27CA3761CEEB3B1006EC066 /* HudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27CA3751CEEB3B1006EC066 /* HudView.swift */; };
 		F284F6F31CFBCDE400D00F16 /* ArtistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F284F6F21CFBCDE400D00F16 /* ArtistCell.xib */; };
 		F284F6F51CFBD39800D00F16 /* ArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284F6F41CFBD39800D00F16 /* ArtistCell.swift */; };
 		F29B74BE1D0CD804004A9281 /* HomeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29B74BD1D0CD804004A9281 /* HomeHeaderView.swift */; };
 		F29B74C01D0CE105004A9281 /* NoNewReleasesCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F29B74BF1D0CE105004A9281 /* NoNewReleasesCollectionCell.xib */; };
+		F29F9A171D18DFCF00558820 /* SearchingForNewReleasesCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F29F9A161D18DFCF00558820 /* SearchingForNewReleasesCollectionCell.xib */; };
 		F2A172171CFA301300D816E4 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A172161CFA301300D816E4 /* HomeViewController.swift */; };
 		F2A172191CFA5FA600D816E4 /* NewReleaseCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2A172181CFA5FA600D816E4 /* NewReleaseCollectionCell.xib */; };
 		F2C45DD11D06979B00CDA206 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2C45DD01D06979B00CDA206 /* SearchResultCell.xib */; };
@@ -63,13 +63,13 @@
 		F279E5CA1CF51C6400BFCDF0 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		F279E5CC1CF51ED800BFCDF0 /* Artist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
 		F279E5CE1CF51F2900BFCDF0 /* NewRelease.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewRelease.swift; sourceTree = "<group>"; };
-		F279E5D01CF5211A00BFCDF0 /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		F27C4FA11CF422AA004BA0E4 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
 		F27CA3751CEEB3B1006EC066 /* HudView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudView.swift; sourceTree = "<group>"; };
 		F284F6F21CFBCDE400D00F16 /* ArtistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistCell.xib; sourceTree = "<group>"; };
 		F284F6F41CFBD39800D00F16 /* ArtistCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistCell.swift; sourceTree = "<group>"; };
 		F29B74BD1D0CD804004A9281 /* HomeHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeHeaderView.swift; sourceTree = "<group>"; };
 		F29B74BF1D0CE105004A9281 /* NoNewReleasesCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoNewReleasesCollectionCell.xib; sourceTree = "<group>"; };
+		F29F9A161D18DFCF00558820 /* SearchingForNewReleasesCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchingForNewReleasesCollectionCell.xib; sourceTree = "<group>"; };
 		F2A172161CFA301300D816E4 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		F2A172181CFA5FA600D816E4 /* NewReleaseCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewReleaseCollectionCell.xib; sourceTree = "<group>"; };
 		F2C45DD01D06979B00CDA206 /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
@@ -97,6 +97,7 @@
 				F222D8331CFD17C100E53E15 /* NewReleaseHoldingCollectionCell.xib */,
 				F222D8351CFD187100E53E15 /* NewReleaseHoldingCollectionCell.swift */,
 				F29B74BF1D0CE105004A9281 /* NoNewReleasesCollectionCell.xib */,
+				F29F9A161D18DFCF00558820 /* SearchingForNewReleasesCollectionCell.xib */,
 			);
 			name = "New Release Nibs";
 			sourceTree = "<group>";
@@ -149,7 +150,6 @@
 				F279E5C91CF51C6400BFCDF0 /* DataModel.xcdatamodeld */,
 				F279E5CC1CF51ED800BFCDF0 /* Artist.swift */,
 				F279E5CE1CF51F2900BFCDF0 /* NewRelease.swift */,
-				F279E5D01CF5211A00BFCDF0 /* Track.swift */,
 			);
 			name = "Data Objects";
 			sourceTree = "<group>";
@@ -269,6 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F284F6F31CFBCDE400D00F16 /* ArtistCell.xib in Resources */,
+				F29F9A171D18DFCF00558820 /* SearchingForNewReleasesCollectionCell.xib in Resources */,
 				F22CFE011CE9635B006CD3BC /* LaunchScreen.storyboard in Resources */,
 				F23FD5D31CEC360F00E1D5B8 /* NothingFoundCell.xib in Resources */,
 				F2672A541CFEAACA00D38C3E /* ArtistWatchlistCell.xib in Resources */,
@@ -305,7 +306,6 @@
 				F27CA3761CEEB3B1006EC066 /* HudView.swift in Sources */,
 				F22CFDF71CE9635B006CD3BC /* AppDelegate.swift in Sources */,
 				F26A7A7B1D0934980044BC33 /* AppleConvenience.swift in Sources */,
-				F279E5D11CF5211A00BFCDF0 /* Track.swift in Sources */,
 				F29B74BE1D0CD804004A9281 /* HomeHeaderView.swift in Sources */,
 				F21257AC1CED8D1900FD0200 /* Functions.swift in Sources */,
 				F2C45DD31D06995A00CDA206 /* SearchResultCell.swift in Sources */,

@@ -13,7 +13,7 @@ class NewReleaseHoldingCollectionCell: UICollectionViewCell {
     
 // citation: https://ashfurrow.com/blog/putting-a-uicollectionview-in-a-uitableviewcell-in-swift/
     
-    @IBOutlet private weak var holdingCollectionView: UICollectionView!
+    @IBOutlet weak var holdingCollectionView: UICollectionView!
     
     func setCollectionViewDataSourceDelegate
         <D: protocol<UICollectionViewDataSource, UICollectionViewDelegate>>

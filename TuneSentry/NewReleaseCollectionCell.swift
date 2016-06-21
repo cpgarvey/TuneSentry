@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+protocol NewReleaseCollectionCellDelegate: class {
+    func showUrlError(errorMessage: String)
+}
+
 class NewReleaseCollectionCell: UICollectionViewCell {
     
     // MARK - Properties
@@ -19,6 +23,7 @@ class NewReleaseCollectionCell: UICollectionViewCell {
     
     var newRelease: NewRelease?
     
+    var delegate: NewReleaseCollectionCellDelegate?
     
     // MARK: - Life Cycle
     
@@ -31,12 +36,5 @@ class NewReleaseCollectionCell: UICollectionViewCell {
         layer.cornerRadius = 2
         
     }
-    
-    // MARK: - Action
-    
-    @IBAction func removeFromNewReleases(sender: UIButton) {
-    }
-    
-    
     
 }

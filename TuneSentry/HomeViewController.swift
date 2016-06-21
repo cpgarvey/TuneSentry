@@ -15,28 +15,25 @@ func < (lhs: Artist, rhs: Artist) -> Bool {
 }
 
 
-typealias NewReleaseCheckComplete = (success: Bool, errorString: String?) -> Void
-
-class HomeViewController: UIViewController, ArtistWatchlistCellDelegate {
+class HomeViewController: UIViewController, ArtistWatchlistCellDelegate, NewReleaseCollectionCellDelegate, ArtistDelegate {
     
     // MARK: - Properties
     
     @IBOutlet weak var mainCollectionView: UICollectionView!
     
-    var watchlistArtists = [Artist]()
-    var newReleases = [NewRelease]()
+    let search = AppleClient()
     
     /* Variable properties to keep track of insertions, deletions, and updates */
-    var insertedIndexPaths: [NSIndexPath]!
-    var deletedIndexPaths: [NSIndexPath]!
-    var updatedIndexPaths: [NSIndexPath]!
+    var insertedIndexPathsForTracker: [NSIndexPath]!
+    var deletedIndexPathsForTracker: [NSIndexPath]!
+    var updatedIndexPathsForTracker: [NSIndexPath]!
     
     /* Core Data Convenience */
     lazy var sharedContext: NSManagedObjectContext = {
         return CoreDataStackManager.sharedInstance().managedObjectContext
     }()
     
-    /* Fetched Results Controller */
+    /* Fetched Results Controller for the Tracker */
     lazy var fetchedResultsControllerForTracker: NSFetchedResultsController = {
         
         let fetchRequest = NSFetchRequest(entityName: "Artist")
@@ -66,6 +63,9 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate {
         cellNib = UINib(nibName: CollectionViewCellIdentifiers.noNewReleasesCollectionCell, bundle: nil)
         mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.noNewReleasesCollectionCell)
         
+        cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchingForNewReleasesCollectionCell, bundle: nil)
+        mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchingForNewReleasesCollectionCell)
+        
         // set up the flow layout for the collection view cells
         let mainLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         mainLayout.sectionInset = UIEdgeInsets(top: 6, left: 8, bottom: 0, right: 8)
@@ -79,10 +79,8 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate {
         
         mainLayout.itemSize = CGSize(width: width, height: height)
         mainCollectionView.collectionViewLayout = mainLayout
-    
-        watchlistArtists = fetchAllArtists()
         
-        /* Perform the fetch */
+        /* Perform the fetch for the tracker */
         do {
             try fetchedResultsControllerForTracker.performFetch()
         } catch {}
@@ -97,64 +95,26 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate {
         static let noNewReleasesCollectionCell = "NoNewReleasesCollectionCell"
         static let newReleaseHoldingCollectionCell = "NewReleaseHoldingCollectionCell"
         static let artistWatchlistCell = "ArtistWatchlistCell"
-    }
-    
-    func fetchAllArtists() -> [Artist] {
-        let fetchRequest = NSFetchRequest(entityName: "Artist")
-        
-        do {
-            var artists = try sharedContext.executeFetchRequest(fetchRequest) as! [Artist]
-            artists.sortInPlace(<)
-            return artists
-        } catch _ {
-            return [Artist]()
-        }
-    }
-    
-    func fetchCurrentNewReleases() {
-        
-        var newReleases = [NewRelease]()
-        
-        // first pull all new releases that are in Core Data
-        var newReleasesFromCoreData = [NewRelease]()
-        let fetchRequest = NSFetchRequest(entityName: "NewRelease")
-        
-        do {
-            newReleasesFromCoreData = try sharedContext.executeFetchRequest(fetchRequest) as! [NewRelease]
-        } catch _ {
-            // do nothing...
-        }
-        
-        
-        if !newReleasesFromCoreData.isEmpty {
-            for release in newReleasesFromCoreData {
-                newReleases.append(release)
-            }
-        }
-        
-        // sort in place the newReleases?
-        self.newReleases = newReleases
+        static let searchingForNewReleasesCollectionCell = "SearchingForNewReleasesCollectionCell"
     }
     
     func checkForNewReleases() {
+        print("Reached checkForNewReleases()")
+        
+        // perform on main: change the cell to show it is searching...
+        
+        guard let watchlistArtists = fetchedResultsControllerForTracker.fetchedObjects as? [Artist] else { return }
         
         for artist in watchlistArtists {
+            artist.delegate = self
+            artist.checkForNewRelease()
             
-            artist.checkForNewRelease() { success, errorString in
-                
-                if success {
-                    performOnMain {
-                        CoreDataStackManager.sharedInstance().saveContext()
-                    }
-                }
-            }
-        
         }
-
+    
     }
     
     func removeArtistFromWatchlist(artist: Artist) {
-        print("Reached the delegate!")
+        
         /* Delete the artist object */
         sharedContext.deleteObject(artist)
         
@@ -162,12 +122,18 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate {
         CoreDataStackManager.sharedInstance().saveContext()
     }
     
-    
     func showUrlError(errorMessage: String) {
         presentViewController(alert(errorMessage), animated: true, completion: nil)
     }
-
     
+    func updateNewReleasesCollectionView() {
+        
+        performOnMain {
+            let indexPath = NSIndexPath(forItem: 0, inSection: 0)
+            self.mainCollectionView.reloadItemsAtIndexPaths([indexPath])
+        }
+    }
+
 }
 
 
@@ -212,13 +178,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if collectionView == mainCollectionView {
+            print(collectionView)
             if section == 0 {
                 return 1
             } else {
                 return fetchedResultsControllerForTracker.sections![0].numberOfObjects
             }
         } else {
-            return 10
+            return NewRelease.newReleases.count
         }
         
     }
@@ -229,7 +196,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             
             if indexPath.section == 0 {
                 
-                if newReleases.isEmpty {
+                if NewRelease.newReleases.isEmpty {
                     
                     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.noNewReleasesCollectionCell,
                                                                                      forIndexPath: indexPath)
@@ -261,10 +228,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.newReleaseCollectionCell,
                                                                              forIndexPath: indexPath) as! NewReleaseCollectionCell
             
-            let newRelease = newReleases[indexPath.row]
-            cell.artistName.text = newRelease.artist.artistName
+            let newRelease = NewRelease.newReleases[indexPath.row]
+            cell.artistName.text = newRelease.artistName
             cell.newReleaseTitle.text = newRelease.collectionName
-            cell.newReleaseImage.image = UIImage(data: (newRelease.newReleaseArtwork))
+            // this line is causing EXC_BAD_ACCESS crashes... 
+//            cell.newReleaseImage.image = UIImage(data: (newRelease.newReleaseArtwork))
+            cell.newRelease = newRelease
+            cell.delegate = self
             return cell
         }
         
@@ -274,83 +244,74 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
         
-        insertedIndexPaths = [NSIndexPath]()
-        deletedIndexPaths = [NSIndexPath]()
-        updatedIndexPaths = [NSIndexPath]()
+        insertedIndexPathsForTracker = [NSIndexPath]()
+        deletedIndexPathsForTracker = [NSIndexPath]()
+        updatedIndexPathsForTracker = [NSIndexPath]()
         
-        print("in controllerWillChangeContent")
     }
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         
-        if controller == fetchedResultsControllerForTracker {
-            
-            switch type{
+        switch type{
                 
-            case .Insert:
-                print("Insert an item")
-                let indexNumber = newIndexPath!.item
-                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
-                insertedIndexPaths.append(adjustedIndexPath)
-                break
-            case .Delete:
-                print("Delete an item")
-                let indexNumber = indexPath!.item
-                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
-                deletedIndexPaths.append(adjustedIndexPath)
-                break
-            case .Update:
-                print("Update an item.")
-                let indexNumber = indexPath!.item
-                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
-                updatedIndexPaths.append(adjustedIndexPath)
-                break
-            case .Move:
-                print("Move an item. We don't expect to see this in this app.")
-                break
-            }
-
-            
+        case .Insert:
+            print("Insert an item")
+            let indexNumber = newIndexPath!.item
+            let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
+            insertedIndexPathsForTracker.append(adjustedIndexPath)
+            break
+        case .Delete:
+            print("Delete an item")
+            let indexNumber = indexPath!.item
+            let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
+            deletedIndexPathsForTracker.append(adjustedIndexPath)
+            break
+        case .Update:
+            print("Update an item.")
+            let indexNumber = indexPath!.item
+            let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
+            updatedIndexPathsForTracker.append(adjustedIndexPath)
+            break
+        case .Move:
+            print("Move an item. We don't expect to see this in this app.")
+            break
         }
+            
         
     }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         
-        if controller == fetchedResultsControllerForTracker {
-            
-            print("in controllerDidChangeContent. changes.count: \(insertedIndexPaths.count + deletedIndexPaths.count)")
-            
-            mainCollectionView.performBatchUpdates({() -> Void in
-                
-                for indexPath in self.insertedIndexPaths {
-                    
-                    let indexNumber = indexPath.item
-                    let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
-                    
-                    self.mainCollectionView.insertItemsAtIndexPaths([adjustedIndexPath])
-                }
-                
-                for indexPath in self.deletedIndexPaths {
-                    
-                    let indexNumber = indexPath.item
-                    let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
-                    
-                    self.mainCollectionView.deleteItemsAtIndexPaths([adjustedIndexPath])
-                }
-                
-                for indexPath in self.updatedIndexPaths {
-                    
-                    let indexNumber = indexPath.item
-                    let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
-                    
-                    self.mainCollectionView.reloadItemsAtIndexPaths([adjustedIndexPath])
-                }
-                
-                }, completion: nil)
-            
-        }
         
+        print("in controllerDidChangeContent. changes.count: \(insertedIndexPathsForTracker.count + deletedIndexPathsForTracker.count)")
+        
+        mainCollectionView.performBatchUpdates({() -> Void in
+            
+            for indexPath in self.insertedIndexPathsForTracker {
+                
+                let indexNumber = indexPath.item
+                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
+                    
+                self.mainCollectionView.insertItemsAtIndexPaths([adjustedIndexPath])
+            }
+                
+            for indexPath in self.deletedIndexPathsForTracker {
+                    
+                let indexNumber = indexPath.item
+                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
+                
+                self.mainCollectionView.deleteItemsAtIndexPaths([adjustedIndexPath])
+            }
+                
+            for indexPath in self.updatedIndexPathsForTracker {
+                    
+                let indexNumber = indexPath.item
+                let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 1)
+                    
+                self.mainCollectionView.reloadItemsAtIndexPaths([adjustedIndexPath])
+            }
+                
+            }, completion: nil)
     }
 
     

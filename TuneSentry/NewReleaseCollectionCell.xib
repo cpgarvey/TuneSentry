@@ -39,7 +39,7 @@
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <state key="normal" title="Remove From List"/>
                         <connections>
-                            <action selector="removeFromNewReleases:" destination="xD9-03-z8j" eventType="touchUpInside" id="tyM-Bx-zDR"/>
+                            <action selector="removeFromNewReleases:" destination="xD9-03-z8j" eventType="touchUpInside" id="18E-ht-bRD"/>
                         </connections>
                     </button>
                 </subviews>

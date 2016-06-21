@@ -208,6 +208,8 @@ extension ArtistSearchViewController: UICollectionViewDataSource {
         case .Results(let list):
             // bind the search result array associated with .Results to a temp variable so that you can read how many items are in that associated value
             return list.count
+        default:
+            fatalError("Should never get here")
         }
     }
     
@@ -258,6 +260,8 @@ extension ArtistSearchViewController: UICollectionViewDataSource {
             
             return cell
 
+        default:
+            fatalError("Should never get here")
         }
         
     }

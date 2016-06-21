@@ -13,7 +13,7 @@ import CoreData
 
 typealias SearchComplete = (success: Bool, errorString: String?) -> Void
 typealias LookupComplete = (success: Bool, collectionId: Int?, artworkUrl: String?, errorString: String?) -> Void
-typealias CheckComplete = (success: Bool, newReleases: [NewRelease], errorString: String?) -> Void
+typealias NewReleaseCheckComplete = (success: Bool, newReleases: [NewRelease]?, errorString: String?) -> Void
 
 class AppleClient: NSObject {
     
@@ -24,6 +24,7 @@ class AppleClient: NSObject {
         case Error
         case NoResults
         case Results([SearchResult]) // the .Results case has an "associated value" of an array of Artists
+        case NewReleases([NewRelease]) // the .NewReleases case has an associated value of an array of new releases
     }
     
     /* Use set parameter on private variable to indicate that other objects can read the variable but cannot assign new values to it */
@@ -150,9 +151,7 @@ class AppleClient: NSObject {
     
     }
 
-    func performCheckForNewReleasesFromArtist(artist: Artist, completion: CheckComplete) {
-        print("reached the check...")
-        var newReleases = [NewRelease]()
+    func checkNewRelease(artist: Artist, completion: NewReleaseCheckComplete) {
         
         /* Set the parameters of the search */
         let methodArguments = [
@@ -161,6 +160,8 @@ class AppleClient: NSObject {
             "sort": "recent",
             "limit": "10"
         ]
+        
+        var newReleases = [NewRelease]()
         
         let url = constructSearchURL(methodArguments, search: false)
         let session = NSURLSession.sharedSession()
@@ -172,12 +173,12 @@ class AppleClient: NSObject {
                 
                 //print(dictionary)
                 guard let results = dictionary["results"] as? [[String:AnyObject]] else {
-                    completion(success: false, newReleases: newReleases, errorString: "results failed")
+                    completion(success: false, newReleases: nil, errorString: "results failed")
                     return
                 }
                 
                 guard let firstCollectionId = results[1]["collectionId"] as? Int else {
-                    completion(success: false, newReleases: newReleases, errorString: "determining collectionID failed")
+                    completion(success: false, newReleases: nil, errorString: "results failed")
                     return
                 }
                 
@@ -192,16 +193,15 @@ class AppleClient: NSObject {
 //                    if result["collectionId"] as? Int == artist.mostRecentRelease {
 //                        completion(success: true, newReleases: newReleases, errorString: nil)
 //                    } else {
-                        let newRelease = NewRelease(artist: artist, dictionary: result, context: self.sharedContext)
-                        newReleases.append(newRelease)
-//                    }
+                    let newRelease = NewRelease(artist: artist, dictionary: result)
+                    newReleases.append(newRelease)
                 }
-                
-                // call the completion handler in the event that the loop goes through all of the results and doesn't hit the artist.mostRecentRelease
+                        
+                                // call the completion handler in the event that the loop goes through all of the results and doesn't hit the artist.mostRecentRelease
                 completion(success: true, newReleases: newReleases, errorString: nil)
                 
             } else {
-                completion(success: false, newReleases: newReleases, errorString: "Unable to lookup artist")
+                completion(success: false, newReleases: nil, errorString: "results failed")
             }
             
         }

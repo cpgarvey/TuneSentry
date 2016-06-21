@@ -9,6 +9,11 @@
 import Foundation
 import CoreData
 
+protocol ArtistDelegate: class {
+    func updateNewReleasesCollectionView()
+}
+
+
 class Artist: NSManagedObject {
     
     @NSManaged var artistId: Int
@@ -17,8 +22,8 @@ class Artist: NSManagedObject {
     @NSManaged var primaryGenreName: String
     @NSManaged var mostRecentRelease: Int
     @NSManaged var mostRecentArtwork: NSData
-    @NSManaged var newReleases: [NewRelease]
     
+    var delegate: ArtistDelegate?
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
@@ -52,19 +57,22 @@ class Artist: NSManagedObject {
        
     }
     
-    func checkForNewRelease(completion: (success: Bool, errorString: String?) -> Void) {
+    func checkForNewRelease() {
         
         let search = AppleClient()
         
-        search.performCheckForNewReleasesFromArtist(self) { success, newReleases, errorString in
+        search.checkNewRelease(self) { success, newReleases, errorString in
             
-            if success {
-                completion(success: true, errorString: nil)
-                print("Success!")
+            if success && newReleases != nil {
+                
+                for newRelease in newReleases! {
+                    NewRelease.newReleases.append(newRelease)
+                }
+                
+                self.delegate?.updateNewReleasesCollectionView()
+                
             }
-            
         }
     }
-    
     
 }
