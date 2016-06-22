@@ -15,7 +15,7 @@ func < (lhs: Artist, rhs: Artist) -> Bool {
 }
 
 
-class HomeViewController: UIViewController, ArtistWatchlistCellDelegate, NewReleaseCollectionCellDelegate, ArtistDelegate {
+class HomeViewController: UIViewController, ArtistWatchlistCellDelegate, ArtistDelegate {
     
     // MARK: - Properties
     
@@ -231,10 +231,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let newRelease = NewRelease.newReleases[indexPath.row]
             cell.artistName.text = newRelease.artistName
             cell.newReleaseTitle.text = newRelease.collectionName
-            // this line is causing EXC_BAD_ACCESS crashes... 
-//            cell.newReleaseImage.image = UIImage(data: (newRelease.newReleaseArtwork))
+            cell.artworkUrl100 = newRelease.artworkUrl100
             cell.newRelease = newRelease
-            cell.delegate = self
             return cell
         }
         

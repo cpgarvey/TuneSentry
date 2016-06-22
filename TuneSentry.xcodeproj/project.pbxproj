@@ -20,6 +20,7 @@
 		F23FD5CE1CEB674A00E1D5B8 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23FD5CD1CEB674A00E1D5B8 /* SearchResult.swift */; };
 		F23FD5D11CEC2E3C00E1D5B8 /* SearchingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */; };
 		F23FD5D31CEC360F00E1D5B8 /* NothingFoundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */; };
+		F248DC191D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F248DC181D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift */; };
 		F2672A541CFEAACA00D38C3E /* ArtistWatchlistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2672A531CFEAACA00D38C3E /* ArtistWatchlistCell.xib */; };
 		F2672A561CFEB02700D38C3E /* ArtistWatchlistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2672A551CFEB02700D38C3E /* ArtistWatchlistCell.swift */; };
 		F26A7A7B1D0934980044BC33 /* AppleConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26A7A7A1D0934980044BC33 /* AppleConvenience.swift */; };
@@ -57,6 +58,7 @@
 		F23FD5CD1CEB674A00E1D5B8 /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchingCell.xib; sourceTree = "<group>"; };
 		F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NothingFoundCell.xib; sourceTree = "<group>"; };
+		F248DC181D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
 		F2672A531CFEAACA00D38C3E /* ArtistWatchlistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistWatchlistCell.xib; sourceTree = "<group>"; };
 		F2672A551CFEB02700D38C3E /* ArtistWatchlistCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistWatchlistCell.swift; sourceTree = "<group>"; };
 		F26A7A7A1D0934980044BC33 /* AppleConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleConvenience.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				F222D8321CFD177B00E53E15 /* Artist Watchlist Nibs */,
 				F2A1721A1CFA66C300D816E4 /* Search Nibs */,
 				F21257AB1CED8D1900FD0200 /* Functions.swift */,
+				F248DC181D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift */,
 				F27CA3751CEEB3B1006EC066 /* HudView.swift */,
 				F29B74BD1D0CD804004A9281 /* HomeHeaderView.swift */,
 			);
@@ -295,6 +298,7 @@
 				F279E5CB1CF51C6400BFCDF0 /* DataModel.xcdatamodeld in Sources */,
 				F279E5CF1CF51F2900BFCDF0 /* NewRelease.swift in Sources */,
 				F222D8381CFD601800E53E15 /* NewReleaseCollectionCell.swift in Sources */,
+				F248DC191D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift in Sources */,
 				F22CFDF91CE9635B006CD3BC /* ArtistSearchViewController.swift in Sources */,
 				F27C4FA21CF422AA004BA0E4 /* CoreDataStackManager.swift in Sources */,
 				F2A172171CFA301300D816E4 /* HomeViewController.swift in Sources */,

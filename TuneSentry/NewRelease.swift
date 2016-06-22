@@ -14,7 +14,7 @@ class NewRelease {
     var collectionID: Int
     var collectionName: String
     var collectionViewUrl: String
-//    var artworkUrl100: String
+    var artworkUrl100: String
 //    var newReleaseArtwork: NSData
     var artistId: Int
     var artistName: String
@@ -26,11 +26,9 @@ class NewRelease {
         self.collectionID = dictionary["collectionId"] as! Int
         self.collectionName = dictionary["collectionName"] as! String
         self.collectionViewUrl = dictionary["collectionViewUrl"] as! String
-//        self.artworkUrl100 = dictionary["artworkUrl100"] as! String
+        self.artworkUrl100 = dictionary["artworkUrl100"] as! String
         self.artistId = artist.artistId
         self.artistName = artist.artistName
-        
-        let search = AppleClient()
         
 //        search.downloadPhoto(self.artworkUrl100) { success, newReleaseArtwork, errorString in
 //            

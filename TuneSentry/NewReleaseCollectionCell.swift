@@ -9,9 +9,6 @@
 import Foundation
 import UIKit
 
-protocol NewReleaseCollectionCellDelegate: class {
-    func showUrlError(errorMessage: String)
-}
 
 class NewReleaseCollectionCell: UICollectionViewCell {
     
@@ -21,19 +18,36 @@ class NewReleaseCollectionCell: UICollectionViewCell {
     @IBOutlet weak var artistName: UILabel!
     @IBOutlet weak var newReleaseTitle: UILabel!
     
-    var newRelease: NewRelease?
+    var artworkUrl100: String?
     
-    var delegate: NewReleaseCollectionCellDelegate?
+    var newRelease: NewRelease! {
+        didSet {
+            downloadAlbumCover()
+        }
+    }
+    
+    var downloadTask: NSURLSessionDownloadTask?
+    
     
     // MARK: - Life Cycle
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         layer.borderWidth = 1
         layer.borderColor = UIColor.darkGrayColor().CGColor
-        layer.cornerRadius = 2
+        layer.cornerRadius = 5
+        
+    }
+    
+    
+    // MARK: - Helper Function
+    
+    func downloadAlbumCover() {
+        
+        if let url = NSURL(string: artworkUrl100!) {
+            downloadTask = newReleaseImage.loadImageWithUrl(url)
+        }
         
     }
     

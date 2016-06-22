@@ -12,5 +12,4 @@ class HomeHeaderView: UICollectionReusableView {
     
     @IBOutlet weak var header: UILabel!
     
-        
 }
