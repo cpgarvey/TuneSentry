@@ -325,4 +325,24 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             newReleaseHoldingCollectionCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.row)
         }
     }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        if collectionView != mainCollectionView {
+            
+            let cell = collectionView.cellForItemAtIndexPath(indexPath) as! NewReleaseCollectionCell
+            
+            if let url = NSURL(string: cell.newRelease!.collectionViewUrl) {
+                guard UIApplication.sharedApplication().openURL(url) else {
+                    showUrlError("There was an error opening this Artist in iTunes.")
+                    return
+                }
+            } else {
+                showUrlError("There was an error opening this Artist in iTunes.")
+            }
+
+        }
+        
+    }
+
 }

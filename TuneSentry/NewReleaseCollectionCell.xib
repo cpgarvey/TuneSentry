@@ -23,33 +23,23 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLr-a0-oRJ">
-                        <rect key="frame" x="8" y="124" width="112" height="17"/>
-                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                        <rect key="frame" x="8" y="124" width="112" height="20"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Release Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5V8-fr-AKx">
-                        <rect key="frame" x="8" y="142" width="112" height="15"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <rect key="frame" x="8" y="149" width="112" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XRT-wO-5Va">
-                        <rect key="frame" x="8" y="152" width="112" height="27"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <state key="normal" title="Remove From List"/>
-                        <connections>
-                            <action selector="removeFromNewReleases:" destination="xD9-03-z8j" eventType="touchUpInside" id="18E-ht-bRD"/>
-                        </connections>
-                    </button>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstItem="5V8-fr-AKx" firstAttribute="top" secondItem="HLr-a0-oRJ" secondAttribute="bottom" constant="1" id="0d6-pO-hkY"/>
-                <constraint firstAttribute="trailing" secondItem="XRT-wO-5Va" secondAttribute="trailing" constant="8" id="324-39-FC1"/>
+                <constraint firstItem="5V8-fr-AKx" firstAttribute="top" secondItem="HLr-a0-oRJ" secondAttribute="bottom" constant="5" id="0d6-pO-hkY"/>
                 <constraint firstItem="5V8-fr-AKx" firstAttribute="leading" secondItem="xD9-03-z8j" secondAttribute="leading" constant="8" id="B1Z-5G-fep"/>
-                <constraint firstItem="XRT-wO-5Va" firstAttribute="leading" secondItem="xD9-03-z8j" secondAttribute="leading" constant="8" id="EZb-Cr-9Lh"/>
                 <constraint firstAttribute="trailing" secondItem="5V8-fr-AKx" secondAttribute="trailing" constant="8" id="FBW-lV-zYo"/>
                 <constraint firstItem="TIz-of-DTm" firstAttribute="leading" secondItem="xD9-03-z8j" secondAttribute="leading" constant="14" id="KGk-ld-jWm"/>
                 <constraint firstItem="TIz-of-DTm" firstAttribute="top" secondItem="xD9-03-z8j" secondAttribute="top" constant="14" id="VFw-Bg-lCi"/>
@@ -57,7 +47,6 @@
                 <constraint firstItem="HLr-a0-oRJ" firstAttribute="leading" secondItem="xD9-03-z8j" secondAttribute="leading" constant="8" id="ZGK-Uy-M8N"/>
                 <constraint firstItem="HLr-a0-oRJ" firstAttribute="top" secondItem="TIz-of-DTm" secondAttribute="bottom" constant="10" id="anq-ih-woE"/>
                 <constraint firstAttribute="trailing" secondItem="HLr-a0-oRJ" secondAttribute="trailing" constant="8" id="psQ-Z1-inR"/>
-                <constraint firstItem="XRT-wO-5Va" firstAttribute="top" secondItem="5V8-fr-AKx" secondAttribute="bottom" constant="-5" id="zNu-fA-H2C"/>
             </constraints>
             <size key="customSize" width="152" height="77"/>
             <connections>
