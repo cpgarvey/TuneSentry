@@ -67,6 +67,9 @@ class Artist: NSManagedObject {
                 
                 for newRelease in newReleases! {
                     NewRelease.newReleases.append(newRelease)
+                    NewRelease.newReleases.sortInPlace {
+                        $0.artistName.localizedCaseInsensitiveCompare($1.artistName) == NSComparisonResult.OrderedAscending
+                    }
                 }
                 
                 self.delegate?.updateNewReleasesCollectionView()

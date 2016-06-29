@@ -15,7 +15,6 @@ class NewRelease {
     var collectionName: String
     var collectionViewUrl: String
     var artworkUrl100: String
-//    var newReleaseArtwork: NSData
     var artistId: Int
     var artistName: String
     
@@ -29,15 +28,6 @@ class NewRelease {
         self.artworkUrl100 = dictionary["artworkUrl100"] as! String
         self.artistId = artist.artistId
         self.artistName = artist.artistName
-        
-//        search.downloadPhoto(self.artworkUrl100) { success, newReleaseArtwork, errorString in
-//            
-//            if success {
-//                
-//                self.newReleaseArtwork = newReleaseArtwork!
-//                completion(success: true)
-//            }
-//        }
-        
+                
     }
 }

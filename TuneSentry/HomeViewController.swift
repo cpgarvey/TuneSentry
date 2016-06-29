@@ -10,11 +10,6 @@ import UIKit
 import CoreData
 
 
-func < (lhs: Artist, rhs: Artist) -> Bool {
-    return lhs.artistName.localizedStandardCompare(rhs.artistName) == .OrderedAscending
-}
-
-
 class HomeViewController: UIViewController, ArtistWatchlistCellDelegate, ArtistDelegate {
     
     // MARK: - Properties
