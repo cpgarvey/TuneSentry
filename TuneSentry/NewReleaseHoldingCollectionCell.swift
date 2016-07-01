@@ -51,10 +51,10 @@ extension NewReleaseHoldingCollectionCell: UICollectionViewDelegate {
         newReleaseLayout.minimumInteritemSpacing = 5
         newReleaseLayout.scrollDirection = .Horizontal
         
-        let newReleaseHeight = 182
-        let newReleaseWidth = 128
-        
-        newReleaseLayout.itemSize = CGSize(width: newReleaseWidth, height: newReleaseHeight)
+//        let newReleaseHeight = 182
+//        let newReleaseWidth = 128
+//        
+//        newReleaseLayout.itemSize = CGSize(width: newReleaseWidth, height: newReleaseHeight)
         holdingCollectionView.collectionViewLayout = newReleaseLayout
         
     }

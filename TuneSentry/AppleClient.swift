@@ -182,18 +182,18 @@ class AppleClient: NSObject {
                     return
                 }
 
-                if firstCollectionId == artist.mostRecentRelease {
-                    completion(success: true, newReleases: newReleases, errorString: nil)
-                }
+//                if firstCollectionId == artist.mostRecentRelease {
+//                    completion(success: true, newReleases: newReleases, errorString: nil)
+//                }
                 
                 for result in results where result["wrapperType"] as? String == "collection" {
                     
-                    if result["collectionId"] as? Int == artist.mostRecentRelease {
-                        completion(success: true, newReleases: newReleases, errorString: nil)
-                    } else {
+//                    if result["collectionId"] as? Int == artist.mostRecentRelease {
+//                        completion(success: true, newReleases: newReleases, errorString: nil)
+//                    } else {
                         let newRelease = NewRelease(artist: artist, dictionary: result)
                         newReleases.append(newRelease)
-                    }
+//                    }
                 }
                         
                 // call the completion handler in the event that the loop goes through all of the results and doesn't hit the artist.mostRecentRelease

@@ -37,6 +37,8 @@ class ArtistWatchlistCell: UICollectionViewCell {
         
         layer.borderWidth = 1
         layer.borderColor = UIColor.lightGrayColor().CGColor
+        layer.cornerRadius = 5
+
     
     }
     

@@ -63,16 +63,16 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate, ArtistD
         
         // set up the flow layout for the collection view cells
         let mainLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        mainLayout.sectionInset = UIEdgeInsets(top: 6, left: 8, bottom: 0, right: 8)
-        mainLayout.minimumLineSpacing = 6
+        mainLayout.sectionInset = UIEdgeInsets(top: 6, left: 0, bottom: 0, right: 0)
+        mainLayout.minimumLineSpacing = 8
         mainLayout.scrollDirection = .Vertical
         mainLayout.headerReferenceSize = CGSize(width: self.view.frame.size.width, height: 90)
         
-        let height = 184
-        let width = Int(self.view.bounds.size.width - 16)
-        print(self.view.bounds.size.width)
-        
-        mainLayout.itemSize = CGSize(width: width, height: height)
+//        let height = 184
+//        let width = Int(self.view.bounds.size.width - 16) // -16
+//        print(self.view.bounds.size.width)
+//        
+//        mainLayout.itemSize = CGSize(width: width, height: height)
         mainCollectionView.collectionViewLayout = mainLayout
         
         /* Perform the fetch for the tracker */
@@ -139,6 +139,27 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             return 2
         } else {
             return 1
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView,
+                          layout collectionViewLayout: UICollectionViewLayout,
+                                 sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        if collectionView == mainCollectionView {
+            if indexPath.section == 0 {
+                let height = 184
+                let width = Int(self.view.bounds.size.width)
+                return CGSize(width: width, height: height)
+            } else {
+                let height = 184
+                let width = Int(self.view.bounds.size.width - 16)
+                return CGSize(width: width, height: height)
+            }
+        } else {
+            let height = 182
+            let width = 128
+            return CGSize(width: width, height: height)
         }
     }
     
