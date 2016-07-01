@@ -63,9 +63,9 @@ class Artist: NSManagedObject {
         
         search.checkNewRelease(self) { success, newReleases, errorString in
             
-            if success && newReleases != nil {
+            if success && !newReleases.isEmpty {
                 
-                for newRelease in newReleases! {
+                for newRelease in newReleases {
                     NewRelease.newReleases.append(newRelease)
                     NewRelease.newReleases.sortInPlace {
                         $0.artistName.localizedCaseInsensitiveCompare($1.artistName) == NSComparisonResult.OrderedAscending

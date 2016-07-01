@@ -99,7 +99,7 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate, ArtistD
         // perform on main: change the cell to show it is searching...
         
         guard let watchlistArtists = fetchedResultsControllerForTracker.fetchedObjects as? [Artist] else { return }
-        
+        print("These are the new releases at launch: \(NewRelease.newReleases)")
         for artist in watchlistArtists {
             artist.delegate = self
             artist.checkForNewRelease()

@@ -62,7 +62,6 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         
         let height = 100
         let width = Int(self.view.bounds.size.width - 16)
-        print(self.view.bounds.size.width)
         
         artistSearchResultLayout.itemSize = CGSize(width: width, height: height)
         collectionView.collectionViewLayout = artistSearchResultLayout
@@ -101,7 +100,6 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
                 
                     /* update the watchlist */
                     self.watchlist = self.fetchWatchlistArtists()
-                    print(self.watchlist)
                     
                     /* reload the table data */
                     self.collectionView.reloadData()
@@ -149,8 +147,6 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     }
     
     func performSearch(searchText: String) {
-        
-        print(searchText)
         
         // iTunes API: https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/#searching
         
@@ -222,7 +218,6 @@ extension ArtistSearchViewController: UICollectionViewDataSource {
             fatalError("Should never get here")
             
         case .Searching:
-            print("reached")
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.searchingCell, forIndexPath: indexPath)
             let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
             spinner.startAnimating()

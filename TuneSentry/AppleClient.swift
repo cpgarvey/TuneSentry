@@ -13,7 +13,7 @@ import CoreData
 
 typealias SearchComplete = (success: Bool, errorString: String?) -> Void
 typealias LookupComplete = (success: Bool, collectionId: Int?, artworkUrl: String?, errorString: String?) -> Void
-typealias NewReleaseCheckComplete = (success: Bool, newReleases: [NewRelease]?, errorString: String?) -> Void
+typealias NewReleaseCheckComplete = (success: Bool, newReleases: [NewRelease], errorString: String?) -> Void
 
 class AppleClient: NSObject {
     
@@ -88,7 +88,6 @@ class AppleClient: NSObject {
                     }
                     
                     success = true
-                    print(dictionary)
                     
                 } else {
                     self.state = .Error
@@ -123,7 +122,6 @@ class AppleClient: NSObject {
                 where httpResponse.statusCode == 200,
                 let data = data, dictionary = self.parseJSON(data) {
                 
-                //print(dictionary)
                 guard let results = dictionary["results"] as? [[String:AnyObject]] else {
                     completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "results failed")
                     return
@@ -173,34 +171,50 @@ class AppleClient: NSObject {
                 
                 //print(dictionary)
                 guard let results = dictionary["results"] as? [[String:AnyObject]] else {
-                    completion(success: false, newReleases: nil, errorString: "results failed")
+                    completion(success: false, newReleases: newReleases, errorString: "results failed")
                     return
                 }
                 
                 guard let firstCollectionId = results[1]["collectionId"] as? Int else {
-                    completion(success: false, newReleases: nil, errorString: "results failed")
+                    completion(success: false, newReleases: newReleases, errorString: "results failed")
                     return
                 }
 
-//                if firstCollectionId == artist.mostRecentRelease {
-//                    completion(success: true, newReleases: newReleases, errorString: nil)
-//                }
+                if firstCollectionId == artist.mostRecentRelease {
+                    completion(success: true, newReleases: newReleases, errorString: nil)
+                    return
+                }
                 
                 for result in results where result["wrapperType"] as? String == "collection" {
                     
-//                    if result["collectionId"] as? Int == artist.mostRecentRelease {
-//                        completion(success: true, newReleases: newReleases, errorString: nil)
-//                    } else {
+                    if result["collectionId"] as? Int == artist.mostRecentRelease {
+                        completion(success: true, newReleases: newReleases, errorString: nil)
+                        return
+                    } else {
                         let newRelease = NewRelease(artist: artist, dictionary: result)
                         newReleases.append(newRelease)
-//                    }
+                    }
                 }
-                        
+                
+                
+                /* For testing purposes: Replace lines 178 - 197 with lines 202 - 207 */
+                
+//                for result in results where result["wrapperType"] as? String == "collection" {
+//                    
+//                    let newRelease = NewRelease(artist: artist, dictionary: result)
+//                    newReleases.append(newRelease)
+//            
+//                }
+                
+                
+                
                 // call the completion handler in the event that the loop goes through all of the results and doesn't hit the artist.mostRecentRelease
                 completion(success: true, newReleases: newReleases, errorString: nil)
+                return
                 
             } else {
-                completion(success: false, newReleases: nil, errorString: "results failed")
+                completion(success: false, newReleases: newReleases, errorString: "results failed")
+                return
             }
         }
         
@@ -303,7 +317,6 @@ class AppleClient: NSObject {
 
         if let artistId = dictionary["artistId"] as? Int {
             searchResult.artistId = artistId
-            print("artistId Success!")
         }
         searchResult.artistName = dictionary["artistName"] as! String
         searchResult.artistLinkUrl = dictionary["artistLinkUrl"] as! String
