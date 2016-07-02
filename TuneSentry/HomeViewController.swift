@@ -58,21 +58,12 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate, ArtistD
         cellNib = UINib(nibName: CollectionViewCellIdentifiers.noNewReleasesCollectionCell, bundle: nil)
         mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.noNewReleasesCollectionCell)
         
-        cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchingForNewReleasesCollectionCell, bundle: nil)
-        mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchingForNewReleasesCollectionCell)
-        
         // set up the flow layout for the collection view cells
         let mainLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         mainLayout.sectionInset = UIEdgeInsets(top: 6, left: 0, bottom: 0, right: 0)
         mainLayout.minimumLineSpacing = 8
         mainLayout.scrollDirection = .Vertical
         mainLayout.headerReferenceSize = CGSize(width: self.view.frame.size.width, height: 90)
-        
-//        let height = 184
-//        let width = Int(self.view.bounds.size.width - 16) // -16
-//        print(self.view.bounds.size.width)
-//        
-//        mainLayout.itemSize = CGSize(width: width, height: height)
         mainCollectionView.collectionViewLayout = mainLayout
         
         /* Perform the fetch for the tracker */
@@ -85,21 +76,23 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate, ArtistD
         checkForNewReleases()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        mainCollectionView.reloadData()
+    }
+    
     struct CollectionViewCellIdentifiers {
         static let newReleaseCollectionCell = "NewReleaseCollectionCell"
         static let noNewReleasesCollectionCell = "NoNewReleasesCollectionCell"
         static let newReleaseHoldingCollectionCell = "NewReleaseHoldingCollectionCell"
         static let artistWatchlistCell = "ArtistWatchlistCell"
-        static let searchingForNewReleasesCollectionCell = "SearchingForNewReleasesCollectionCell"
     }
     
     func checkForNewReleases() {
-        print("Reached checkForNewReleases()")
-        
-        // perform on main: change the cell to show it is searching...
         
         guard let watchlistArtists = fetchedResultsControllerForTracker.fetchedObjects as? [Artist] else { return }
-        print("These are the new releases at launch: \(NewRelease.newReleases)")
+        
         for artist in watchlistArtists {
             artist.delegate = self
             artist.checkForNewRelease()
@@ -124,8 +117,7 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate, ArtistD
     func updateNewReleasesCollectionView() {
         
         performOnMain {
-            let indexPath = NSIndexPath(forItem: 0, inSection: 0)
-            self.mainCollectionView.reloadItemsAtIndexPaths([indexPath])
+            self.mainCollectionView.reloadData()
         }
     }
 
@@ -142,9 +134,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     }
     
-    func collectionView(collectionView: UICollectionView,
-                          layout collectionViewLayout: UICollectionViewLayout,
-                                 sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
         if collectionView == mainCollectionView {
             if indexPath.section == 0 {
@@ -174,9 +164,18 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "HomeHeaderView", forIndexPath: indexPath) as! HomeHeaderView
                 
                 if indexPath.section == 0 {
-                    headerView.header.text = "New Releases:"
+                    if NewRelease.newReleases.isEmpty {
+                        headerView.header.text = "No New Releases"
+                    } else {
+                        headerView.header.text = "New Releases:"
+                    }
                 } else {
-                    headerView.header.text = "Watchlist Artists:"
+                    let numberOfArtists = fetchedResultsControllerForTracker.sections![0].numberOfObjects
+                    if numberOfArtists == 0 {
+                        headerView.header.text = "No Tracked Artists"
+                    } else {
+                        headerView.header.text = "Artist Tracker:"
+                    }
                 }
                 return headerView
             default:
@@ -194,7 +193,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if collectionView == mainCollectionView {
-            print(collectionView)
             if section == 0 {
                 return 1
             } else {
@@ -216,6 +214,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                     
                     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.noNewReleasesCollectionCell,
                                                                                      forIndexPath: indexPath)
+                    
                     return cell
                 } else {
                     

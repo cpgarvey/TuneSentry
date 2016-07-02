@@ -13,20 +13,8 @@
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
                 <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No New Releases At This Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NsN-HI-kB1">
-                        <rect key="frame" x="23" y="80" width="274" height="24"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <constraints>
-                <constraint firstItem="NsN-HI-kB1" firstAttribute="centerX" secondItem="1Os-GX-xte" secondAttribute="centerX" id="8Dw-LH-Q6Y"/>
-                <constraint firstItem="NsN-HI-kB1" firstAttribute="centerY" secondItem="1Os-GX-xte" secondAttribute="centerY" id="xUP-It-qxm"/>
-            </constraints>
             <point key="canvasLocation" x="358" y="323"/>
         </collectionViewCell>
     </objects>

@@ -24,6 +24,7 @@ class ArtistWatchlistCell: UICollectionViewCell {
     @IBOutlet weak var genreLabel: UILabel!
     @IBOutlet weak var mostRecentArtwork: UIImageView!
     @IBOutlet weak var artistId: UILabel!
+    @IBOutlet weak var bottomView: UIView!
     
     var artist: Artist?
 
@@ -38,8 +39,7 @@ class ArtistWatchlistCell: UICollectionViewCell {
         layer.borderWidth = 1
         layer.borderColor = UIColor.lightGrayColor().CGColor
         layer.cornerRadius = 5
-
-    
+        
     }
     
     

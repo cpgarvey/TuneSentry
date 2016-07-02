@@ -125,6 +125,7 @@
             <connections>
                 <outlet property="artistId" destination="eXh-Gr-5pt" id="YLV-ct-J7d"/>
                 <outlet property="artistNameLabel" destination="X5q-YT-GwB" id="Jte-cw-wa4"/>
+                <outlet property="bottomView" destination="N9A-HR-uIc" id="yTC-xR-nYp"/>
                 <outlet property="genreLabel" destination="v2Q-3b-weB" id="cJW-Y7-aPH"/>
                 <outlet property="mostRecentArtwork" destination="Uiz-7q-fjJ" id="gSu-kC-nE1"/>
             </connections>
