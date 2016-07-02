@@ -175,36 +175,37 @@ class AppleClient: NSObject {
                     return
                 }
                 
-//                guard let firstCollectionId = results[1]["collectionId"] as? Int else {
-//                    completion(success: false, newReleases: newReleases, errorString: "results failed")
-//                    return
-//                }
-//
-//                if firstCollectionId == artist.mostRecentRelease {
-//                    completion(success: true, newReleases: newReleases, errorString: nil)
-//                    return
-//                }
-//                
-//                for result in results where result["wrapperType"] as? String == "collection" {
-//                    
-//                    if result["collectionId"] as? Int == artist.mostRecentRelease {
-//                        completion(success: true, newReleases: newReleases, errorString: nil)
-//                        return
-//                    } else {
-//                        let newRelease = NewRelease(artist: artist, dictionary: result)
-//                        newReleases.append(newRelease)
-//                    }
-//                }
+                guard let firstCollectionId = results[1]["collectionId"] as? Int else {
+                    completion(success: false, newReleases: newReleases, errorString: "results failed")
+                    return
+                }
+
+                if firstCollectionId == artist.mostRecentRelease {
+                    completion(success: true, newReleases: newReleases, errorString: nil)
+                    return
+                }
+                
+                for result in results where result["wrapperType"] as? String == "collection" {
+                    
+                    if result["collectionId"] as? Int == artist.mostRecentRelease {
+                        artist.mostRecentRelease = firstCollectionId
+                        completion(success: true, newReleases: newReleases, errorString: nil)
+                        return
+                    } else {
+                        let newRelease = NewRelease(artist: artist, dictionary: result)
+                        newReleases.append(newRelease)
+                    }
+                }
                 
                 
                 /* For testing purposes: Replace lines 178 - 197 with lines 202 - 207 */
                 
-                for result in results where result["wrapperType"] as? String == "collection" {
-                    
-                    let newRelease = NewRelease(artist: artist, dictionary: result)
-                    newReleases.append(newRelease)
-            
-                }
+//                for result in results where result["wrapperType"] as? String == "collection" {
+//                    
+//                    let newRelease = NewRelease(artist: artist, dictionary: result)
+//                    newReleases.append(newRelease)
+//            
+//                }
                 
                 
                 
