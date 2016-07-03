@@ -50,7 +50,6 @@ class Artist: NSManagedObject {
                 completion(success: true)
             } else {
                 print("Init failed")
-                // remove the Artist that has been created?
                 completion(success: false)
             }
         })

@@ -62,6 +62,39 @@
             </objects>
             <point key="canvasLocation" x="1117" y="429"/>
         </scene>
+        <!--About-->
+        <scene sceneID="bBW-fz-hMs">
+            <objects>
+                <viewController title="About" id="rWb-MM-6o6" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PUH-er-iTX"/>
+                        <viewControllerLayoutGuide type="bottom" id="oQp-HH-Vu4"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9rf-y7-KZM">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="20" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dxl-53-jFx">
+                                <rect key="frame" x="20" y="72" width="560" height="508"/>
+                                <string key="text">TuneSentry allows you to search for new releases on the iTunes store using a list of chosen music artists. Using the search icon, you can add artists from the iTunes store to your tracker list. After each app launch, the app will check for new releases from those artists and display them at the top of the screen. Click the new release to be taken directly to the iTunes page for that new release.  </string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="dxl-53-jFx" secondAttribute="trailing" constant="20" id="93g-zW-58T"/>
+                            <constraint firstItem="oQp-HH-Vu4" firstAttribute="top" secondItem="dxl-53-jFx" secondAttribute="bottom" constant="20" id="Qfn-eW-iqz"/>
+                            <constraint firstItem="dxl-53-jFx" firstAttribute="leading" secondItem="9rf-y7-KZM" secondAttribute="leading" constant="20" id="Zzp-OS-Bsb"/>
+                            <constraint firstItem="dxl-53-jFx" firstAttribute="top" secondItem="PUH-er-iTX" secondAttribute="bottom" constant="8" id="ui4-Ur-YAc"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mkC-Cv-KCc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="392" y="1149"/>
+        </scene>
         <!--TuneSentry-->
         <scene sceneID="kcg-Dh-9eP">
             <objects>
@@ -118,7 +151,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="TuneSentry" id="fbr-aC-o5W">
-                        <barButtonItem key="leftBarButtonItem" title="Menu" id="KyT-6Q-Vgj"/>
+                        <barButtonItem key="leftBarButtonItem" title="About" id="KyT-6Q-Vgj">
+                            <connections>
+                                <segue destination="rWb-MM-6o6" kind="show" id="emS-Ic-g7Z"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="Hr7-PO-Tm3">
                             <connections>
                                 <segue destination="BYZ-38-t0r" kind="show" id="fZr-bP-U8d"/>

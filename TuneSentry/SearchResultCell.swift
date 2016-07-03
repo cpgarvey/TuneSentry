@@ -44,6 +44,7 @@ class SearchResultCell: UICollectionViewCell {
         
     }
     
+    
     // MARK: - Actions
     
     @IBAction func openArtistUrl(sender: UIButton) {

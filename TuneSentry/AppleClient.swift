@@ -198,7 +198,7 @@ class AppleClient: NSObject {
                 }
                 
                 
-                /* For testing purposes: Replace lines 178 - 197 with lines 202 - 207 */
+                /* For testing purposes: Comment out lines 178 - 197 and uncomment lines 202 - 207 */
                 
 //                for result in results where result["wrapperType"] as? String == "collection" {
 //                    
@@ -243,6 +243,7 @@ class AppleClient: NSObject {
         sessionTask.resume()
     }
 
+    
     // MARK: - Helper Functions
 
     /* Construct a iTunes Search URL from parameters */

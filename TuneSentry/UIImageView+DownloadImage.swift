@@ -1,10 +1,12 @@
 //
 //  UIImageView+DownloadImage.swift
-//  StoreSearch
+//  TuneSentry
 //
 //  Created by Chris Garvey on 4/30/16.
 //  Copyright © 2016 Chris Garvey. All rights reserved.
 //
+
+// citation: iOS Apprentice, 4th Edition, p. 679
 
 import UIKit
 
