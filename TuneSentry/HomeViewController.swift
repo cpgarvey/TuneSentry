@@ -41,6 +41,12 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate, ArtistD
         
     }()
     
+    struct CollectionViewCellIdentifiers {
+        static let newReleaseCollectionCell = "NewReleaseCollectionCell"
+        static let noNewReleasesCollectionCell = "NoNewReleasesCollectionCell"
+        static let newReleaseHoldingCollectionCell = "NewReleaseHoldingCollectionCell"
+        static let artistTrackerCell = "ArtistTrackerCell"
+    }
     
     // MARK: - Life Cycle
     
@@ -52,8 +58,8 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate, ArtistD
         var cellNib = UINib(nibName: CollectionViewCellIdentifiers.newReleaseHoldingCollectionCell, bundle: nil)
         mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.newReleaseHoldingCollectionCell)
         
-        cellNib = UINib(nibName: CollectionViewCellIdentifiers.artistWatchlistCell, bundle: nil)
-        mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.artistWatchlistCell)
+        cellNib = UINib(nibName: CollectionViewCellIdentifiers.artistTrackerCell, bundle: nil)
+        mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.artistTrackerCell)
         
         cellNib = UINib(nibName: CollectionViewCellIdentifiers.noNewReleasesCollectionCell, bundle: nil)
         mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.noNewReleasesCollectionCell)
@@ -73,21 +79,18 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate, ArtistD
         
         fetchedResultsControllerForTracker.delegate = self
         
+        /* Check for new releases from the artists currently in the tracker */
         checkForNewReleases()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+        // reload the main collection view so that new artists can be displayed after being added from the search
         mainCollectionView.reloadData()
     }
     
-    struct CollectionViewCellIdentifiers {
-        static let newReleaseCollectionCell = "NewReleaseCollectionCell"
-        static let noNewReleasesCollectionCell = "NoNewReleasesCollectionCell"
-        static let newReleaseHoldingCollectionCell = "NewReleaseHoldingCollectionCell"
-        static let artistWatchlistCell = "ArtistWatchlistCell"
-    }
+    
+    // MARK: - Helper Functions
     
     func checkForNewReleases() {
         
@@ -130,6 +133,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         if collectionView == mainCollectionView {
             return 2
         } else {
+            // if the collection view is in the NewReleasesHoldingCollectionCell, we just want one section
             return 1
         }
     }
@@ -138,15 +142,18 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         if collectionView == mainCollectionView {
             if indexPath.section == 0 {
+                // if it is section 0 of the main collection view, then the collection cell should stretch from edge to edge with no margins
                 let height = 184
                 let width = Int(self.view.bounds.size.width)
                 return CGSize(width: width, height: height)
             } else {
+                // if it is section 1 of the main collection view, then the collection cells need appropriate right and left margins
                 let height = 184
                 let width = Int(self.view.bounds.size.width - 16)
                 return CGSize(width: width, height: height)
             }
         } else {
+            // if the collection view is in the NewReleasesHoldingCollectionCell, then we set the layout for the new releases
             let height = 182
             let width = 128
             return CGSize(width: width, height: height)
@@ -194,11 +201,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         if collectionView == mainCollectionView {
             if section == 0 {
+                // the first section of the main collection view will always be just one item
                 return 1
             } else {
+                // the second section of main collection view will display artists
                 return fetchedResultsControllerForTracker.sections![0].numberOfObjects
             }
         } else {
+            // the collection view in the NewReleasesHoldingCollectionCell will display the new releases (if any)
             return NewRelease.newReleases.count
         }
         
@@ -212,19 +222,22 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 
                 if NewRelease.newReleases.isEmpty {
                     
+                    // if there are no new releases, just display a blank spacer cell
                     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.noNewReleasesCollectionCell,
                                                                                      forIndexPath: indexPath)
                     
                     return cell
                 } else {
                     
+                    // if there are new releases, then display the holding cell that contains a collection view to display the new releases
                     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.newReleaseHoldingCollectionCell,
                                                                                      forIndexPath: indexPath)
                     return cell
                 }
                 
             } else {
-                let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.artistWatchlistCell, forIndexPath: indexPath) as! ArtistWatchlistCell
+                // in the section section of the main collection view, return the artist cells  
+                let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.artistTrackerCell, forIndexPath: indexPath) as! ArtistTrackerCell
                 
                 let indexNumber = indexPath.item
                 let adjustedIndexPath = NSIndexPath(forItem: indexNumber, inSection: 0)
@@ -240,6 +253,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 return cell
             }
         } else {
+            // if the collection view is the one in the NewReleaseHoldingCollectionCell, then return the new release cells
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.newReleaseCollectionCell,
                                                                              forIndexPath: indexPath) as! NewReleaseCollectionCell
             
@@ -252,6 +266,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
         
     }
+    
     
     // MARK: - Fetched Results Controller Delegate
     
@@ -266,7 +281,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         
         switch type{
-                
+        
+            // we need to adjust the index paths to match the core data section paths, which are "0" -- in the collection view the paths are in section "1"
         case .Insert:
             print("Insert an item")
             let indexNumber = newIndexPath!.item
@@ -299,6 +315,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         print("in controllerDidChangeContent. changes.count: \(insertedIndexPathsForTracker.count + deletedIndexPathsForTracker.count)")
         
         mainCollectionView.performBatchUpdates({() -> Void in
+            
+            // as above, need to adjust the index path sections to put them into the correct section in the collection view
             
             for indexPath in self.insertedIndexPathsForTracker {
                 
@@ -334,7 +352,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         if collectionView == mainCollectionView {
             
             guard let newReleaseHoldingCollectionCell = cell as? NewReleaseHoldingCollectionCell else { return }
-            
+            // set the data source delegate of the collection view in the NewReleaseHoldingCollectionCell to this file
             newReleaseHoldingCollectionCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.row)
         }
     }
@@ -342,7 +360,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         if collectionView != mainCollectionView {
-            
+            // if the collection view is in the NewReleaseHoldingCollectionCell, then selecting a cell should take you to the new release in iTunes
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! NewReleaseCollectionCell
             
             if let url = NSURL(string: cell.newRelease!.collectionViewUrl) {
@@ -355,7 +373,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             }
 
         }
-        
     }
 
 }

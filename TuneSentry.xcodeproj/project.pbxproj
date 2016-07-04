@@ -21,8 +21,8 @@
 		F23FD5D11CEC2E3C00E1D5B8 /* SearchingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */; };
 		F23FD5D31CEC360F00E1D5B8 /* NothingFoundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */; };
 		F248DC191D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F248DC181D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift */; };
-		F2672A541CFEAACA00D38C3E /* ArtistWatchlistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2672A531CFEAACA00D38C3E /* ArtistWatchlistCell.xib */; };
-		F2672A561CFEB02700D38C3E /* ArtistWatchlistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2672A551CFEB02700D38C3E /* ArtistWatchlistCell.swift */; };
+		F2672A541CFEAACA00D38C3E /* ArtistTrackerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2672A531CFEAACA00D38C3E /* ArtistTrackerCell.xib */; };
+		F2672A561CFEB02700D38C3E /* ArtistTrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2672A551CFEB02700D38C3E /* ArtistTrackerCell.swift */; };
 		F26A7A7B1D0934980044BC33 /* AppleConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26A7A7A1D0934980044BC33 /* AppleConvenience.swift */; };
 		F279E5CB1CF51C6400BFCDF0 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F279E5C91CF51C6400BFCDF0 /* DataModel.xcdatamodeld */; };
 		F279E5CD1CF51ED800BFCDF0 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = F279E5CC1CF51ED800BFCDF0 /* Artist.swift */; };
@@ -56,8 +56,8 @@
 		F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchingCell.xib; sourceTree = "<group>"; };
 		F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NothingFoundCell.xib; sourceTree = "<group>"; };
 		F248DC181D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
-		F2672A531CFEAACA00D38C3E /* ArtistWatchlistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistWatchlistCell.xib; sourceTree = "<group>"; };
-		F2672A551CFEB02700D38C3E /* ArtistWatchlistCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistWatchlistCell.swift; sourceTree = "<group>"; };
+		F2672A531CFEAACA00D38C3E /* ArtistTrackerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistTrackerCell.xib; sourceTree = "<group>"; };
+		F2672A551CFEB02700D38C3E /* ArtistTrackerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistTrackerCell.swift; sourceTree = "<group>"; };
 		F26A7A7A1D0934980044BC33 /* AppleConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleConvenience.swift; sourceTree = "<group>"; };
 		F279E5CA1CF51C6400BFCDF0 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		F279E5CC1CF51ED800BFCDF0 /* Artist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
@@ -100,8 +100,8 @@
 		F222D8321CFD177B00E53E15 /* Artist Tracker Nibs */ = {
 			isa = PBXGroup;
 			children = (
-				F2672A531CFEAACA00D38C3E /* ArtistWatchlistCell.xib */,
-				F2672A551CFEB02700D38C3E /* ArtistWatchlistCell.swift */,
+				F2672A531CFEAACA00D38C3E /* ArtistTrackerCell.xib */,
+				F2672A551CFEB02700D38C3E /* ArtistTrackerCell.swift */,
 			);
 			name = "Artist Tracker Nibs";
 			sourceTree = "<group>";
@@ -264,7 +264,7 @@
 			files = (
 				F22CFE011CE9635B006CD3BC /* LaunchScreen.storyboard in Resources */,
 				F23FD5D31CEC360F00E1D5B8 /* NothingFoundCell.xib in Resources */,
-				F2672A541CFEAACA00D38C3E /* ArtistWatchlistCell.xib in Resources */,
+				F2672A541CFEAACA00D38C3E /* ArtistTrackerCell.xib in Resources */,
 				F22CFDFE1CE9635B006CD3BC /* Assets.xcassets in Resources */,
 				F21257AA1CED5F5C00FD0200 /* ErrorCell.xib in Resources */,
 				F2C45DD11D06979B00CDA206 /* SearchResultCell.xib in Resources */,
@@ -293,7 +293,7 @@
 				F2A172171CFA301300D816E4 /* HomeViewController.swift in Sources */,
 				F23FD5CE1CEB674A00E1D5B8 /* SearchResult.swift in Sources */,
 				F222D8361CFD187100E53E15 /* NewReleaseHoldingCollectionCell.swift in Sources */,
-				F2672A561CFEB02700D38C3E /* ArtistWatchlistCell.swift in Sources */,
+				F2672A561CFEB02700D38C3E /* ArtistTrackerCell.swift in Sources */,
 				F2E8CD891CEAE19900313C2B /* AppleConstants.swift in Sources */,
 				F27CA3761CEEB3B1006EC066 /* HudView.swift in Sources */,
 				F22CFDF71CE9635B006CD3BC /* AppDelegate.swift in Sources */,

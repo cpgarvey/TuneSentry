@@ -62,7 +62,7 @@ class SearchResultCell: UICollectionViewCell {
     
     @IBAction func addArtistToWatchlist(sender: UIButton) {
         
-        if searchResult!.inWatchlist {
+        if searchResult!.inTracker {
             delegate?.removeArtistFromWatchlist(searchResult!)
         } else {
             delegate?.addArtistToWatchlist(searchResult!)

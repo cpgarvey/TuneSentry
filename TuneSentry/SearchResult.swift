@@ -15,6 +15,6 @@ class SearchResult {
     var primaryGenreName = ""
     var artistLinkUrl = ""
     
-    var inWatchlist = false
+    var inTracker = false
     
 }

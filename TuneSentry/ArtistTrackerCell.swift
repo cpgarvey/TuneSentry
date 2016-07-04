@@ -16,7 +16,7 @@ protocol ArtistWatchlistCellDelegate: class {
 }
 
 
-class ArtistWatchlistCell: UICollectionViewCell {
+class ArtistTrackerCell: UICollectionViewCell {
     
     // MARK: - Properties
     

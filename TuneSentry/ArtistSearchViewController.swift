@@ -16,10 +16,11 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var watchlist: [Artist]?
+    var trackerList: [Artist]?
     
     let search = AppleClient()
     
+    /* Core Data Convenience */
     lazy var sharedContext: NSManagedObjectContext = {
         return CoreDataStackManager.sharedInstance().managedObjectContext
     }()
@@ -36,8 +37,6 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         // set the contentInset so that the first rows of the table always fully appears: 44 pts (search bar) 
         collectionView.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
         
-        // set the collectionView to have a clear background
-        
         // load the nibs
         var cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchingCell, bundle: nil)
         collectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchingCell)
@@ -51,8 +50,8 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchResultCell, bundle: nil)
         collectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchResultCell)
         
-        // set the artist watchlist
-        watchlist = fetchWatchlistArtists()
+        // set the artists in the tracker
+        trackerList = fetchTrackedArtists()
         
         // set up the flow layout for the collection view cells
         let artistSearchResultLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -79,7 +78,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     }
     
     
-    // MARK: - SearchResultCell Delegate Methods
+    // MARK: - SearchResultCellDelegate Methods
     
     func showUrlError(errorMessage: String) {
         presentViewController(alert(errorMessage), animated: true, completion: nil)
@@ -99,23 +98,22 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
                     self.showHUD(HudView.WatchlistAction.Add)
                 
                     /* update the watchlist */
-                    self.watchlist = self.fetchWatchlistArtists()
+                    self.trackerList = self.fetchTrackedArtists()
                     
                     /* reload the table data */
                     self.collectionView.reloadData()
                 }
             } else {
-                // print an error message
+                let message = "Unable to save artist to tracker"
+                self.presentViewController(alert(message), animated: true, completion: nil)
             }
-            
         }
-        
     }
     
     func removeArtistFromWatchlist(searchResult: SearchResult) {
         
         /* delete the artist object from Core Data */
-        for artist in watchlist! where artist.artistId == searchResult.artistId {
+        for artist in trackerList! where artist.artistId == searchResult.artistId {
             sharedContext.deleteObject(artist)
         }
         
@@ -126,7 +124,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         showHUD(HudView.WatchlistAction.Remove)
         
         /* update the watchlist to reflect current artists after removal of this artist */
-        watchlist = fetchWatchlistArtists()
+        trackerList = fetchTrackedArtists()
         
         /* reload the table data */
         self.collectionView.reloadData()
@@ -136,7 +134,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     
     // MARK: - Helper Methods
     
-    func fetchWatchlistArtists() -> [Artist] {
+    func fetchTrackedArtists() -> [Artist] {
         let fetchRequest = NSFetchRequest(entityName: "Artist")
         
         do {
@@ -154,7 +152,8 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
             success, error in
             
             if !success {
-                // do anything with this?
+                let message = "Unable to search at this time"
+                self.presentViewController(alert(message), animated: true, completion: nil)
             }
             self.collectionView.reloadData()
         })
@@ -171,7 +170,6 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         }
         hudView.userInteractionEnabled = true
     }
-
 }
 
 
@@ -182,13 +180,15 @@ extension ArtistSearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         performSearch(searchBar.text!)
+        // reload the collection view so that the searching cell can be displayed
+        collectionView.reloadData()
     }
-    
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         performSearch(searchBar.text!)
+        // reload the collection view so that the searching cell can be displayed
+        collectionView.reloadData()
     }
-
 }
 
 
@@ -233,19 +233,19 @@ extension ArtistSearchViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
             let searchResult = list[indexPath.row]
             
-            // set default inWatchlist to false to make sure a search result that was formerly in the watchlist but removed is now marked false
-            searchResult.inWatchlist = false
+            // set default inTracker to false to make sure a search result that was formerly in the tracker but removed is now marked false
+            searchResult.inTracker = false
             
-            // check to see if the search result artist is already in the watchlist
-            for artist in watchlist! where artist.artistId == searchResult.artistId {
-                searchResult.inWatchlist = true
+            // check to see if the search result artist is already in the tracker
+            for artist in trackerList! where artist.artistId == searchResult.artistId {
+                searchResult.inTracker = true
             }
             
             cell.artistNameLabel.text = searchResult.artistName
             cell.genreLabel.text = searchResult.primaryGenreName
             cell.artistId.text = String(format: "Artist Id: %d", searchResult.artistId)
             
-            if searchResult.inWatchlist {
+            if searchResult.inTracker {
                 cell.addArtistToTracker.setTitle("Remove From Tracker", forState: .Normal)
             } else {
                 cell.addArtistToTracker.setTitle("Add Artist To Tracker", forState: .Normal)
@@ -264,7 +264,7 @@ extension ArtistSearchViewController: UICollectionViewDataSource {
 }
 
 
-// MARK: - Collection View Delegate Methods
+// MARK: - Collection View Delegate Method
 
 extension ArtistSearchViewController: UICollectionViewDelegate {
     
@@ -273,8 +273,6 @@ extension ArtistSearchViewController: UICollectionViewDelegate {
         searchBar.resignFirstResponder()
         return nil
     }
-    
-    
 }
 
 
