@@ -79,6 +79,7 @@ class Artist: NSManagedObject {
                     }
                 }
                 
+                // notify the delegate there are new releases so update the collection view 
                 self.delegate?.updateNewReleasesCollectionView()
                 
             }

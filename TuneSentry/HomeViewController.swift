@@ -9,8 +9,7 @@
 import UIKit
 import CoreData
 
-
-class HomeViewController: UIViewController, ArtistWatchlistCellDelegate, ArtistDelegate {
+class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDelegate {
     
     // MARK: - Properties
     
@@ -104,7 +103,7 @@ class HomeViewController: UIViewController, ArtistWatchlistCellDelegate, ArtistD
     
     }
     
-    func removeArtistFromWatchlist(artist: Artist) {
+    func removeArtistFromTracker(artist: Artist) {
         
         /* Delete the artist object */
         sharedContext.deleteObject(artist)

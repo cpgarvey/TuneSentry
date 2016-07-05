@@ -203,7 +203,7 @@ class AppleClient: NSObject {
                 }
                 
                 
-                /* For testing purposes to see new releases: Comment out lines 178 - 197 and uncomment lines 202 - 207 */
+                /* For testing purposes to see example of new releases: Comment out lines 185 - 203 and uncomment lines 208 - 213 and restart app with artists already saved */
                 
 //                for result in results where result["wrapperType"] as? String == "collection" {
 //                    
@@ -211,8 +211,6 @@ class AppleClient: NSObject {
 //                    newReleases.append(newRelease)
 //            
 //                }
-                
-                
                 
                 // call the completion handler in the event that the loop goes through all of the results and doesn't hit the artist.mostRecentRelease
                 artist.mostRecentRelease = firstCollectionId

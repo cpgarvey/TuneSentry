@@ -22,6 +22,7 @@ class NewReleaseCollectionCell: UICollectionViewCell {
     
     var newRelease: NewRelease! {
         didSet {
+            // if the newRelease variable is set, then it's safe to download the artwork
             downloadAlbumCover()
         }
     }

@@ -10,6 +10,7 @@ import UIKit
 
 class HomeHeaderView: UICollectionReusableView {
     
+    // create a label for the headers in the collection view
     @IBOutlet weak var header: UILabel!
     
 }

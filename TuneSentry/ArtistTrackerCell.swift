@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 
 
-protocol ArtistWatchlistCellDelegate: class {
+protocol ArtistTrackerCellDelegate: class {
     func showUrlError(errorMessage: String)
-    func removeArtistFromWatchlist(artist: Artist)
+    func removeArtistFromTracker(artist: Artist)
 }
 
 
@@ -28,7 +28,7 @@ class ArtistTrackerCell: UICollectionViewCell {
     
     var artist: Artist?
 
-    weak var delegate: ArtistWatchlistCellDelegate?
+    weak var delegate: ArtistTrackerCellDelegate?
     
     
     // MARK: - Life Cycle
@@ -41,7 +41,6 @@ class ArtistTrackerCell: UICollectionViewCell {
         layer.cornerRadius = 5
         
     }
-    
     
     
     // MARK: - Actions
@@ -60,8 +59,8 @@ class ArtistTrackerCell: UICollectionViewCell {
     
 
     @IBAction func removeArtistFromWatchlist(sender: UIButton) {
-        print("Pressed the remove button!")
-        delegate?.removeArtistFromWatchlist(artist!)
+        // send a message back to the controller that the artist should be removed from the tracker
+        delegate?.removeArtistFromTracker(artist!)
     }
     
     

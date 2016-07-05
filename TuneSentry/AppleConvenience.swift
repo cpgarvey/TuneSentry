@@ -23,10 +23,10 @@ extension AppleClient {
                     
                     if success {
                     
-                        completionHandler(success: true, mostRecentRelease: collectionId, mostRecentArtwork: mostRecentArtwork!, errorString: nil)
+                        completionHandler(success: true, mostRecentRelease: collectionId, mostRecentArtwork: nil, errorString: nil)
                         
                     } else {
-                        // unable to download artwork
+                        // unable to download artwork but the most recent release is OK
                         completionHandler(success: true, mostRecentRelease: collectionId, mostRecentArtwork: nil, errorString: "Unable to download artwork")
                     }
                 

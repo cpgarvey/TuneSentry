@@ -9,13 +9,15 @@
 import Foundation
 import UIKit
 
+// citation: iOS Apprentice, 4th Edition, p. 445
+
 class HudView: UIView {
     var symbol = ""
     var text = ""
     
-    static var actionType: WatchlistAction?
+    static var actionType: TrackerAction?
     
-    enum WatchlistAction {
+    enum TrackerAction {
         case Add
         case Remove
     }
@@ -55,7 +57,7 @@ class HudView: UIView {
             text = "Removed!"
         }
         
-        // set the text (either "Added!" or "Removed!"
+        // set the text (either "Added!" or "Removed!")
         let textAttribs = [ NSFontAttributeName: UIFont.systemFontOfSize(16),
                         NSForegroundColorAttributeName: UIColor.whiteColor() ]
         

@@ -18,6 +18,7 @@ class NewRelease {
     var artistId: Int
     var artistName: String
     
+    // use a static variable to keep an array of all new releases that can be accessed by other objects
     static var newReleases = [NewRelease]()
     
     init(artist: Artist, dictionary: [String:AnyObject]) {

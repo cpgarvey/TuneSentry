@@ -84,7 +84,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         presentViewController(alert(errorMessage), animated: true, completion: nil)
     }
     
-    func addArtistToWatchlist(searchResult: SearchResult) {
+    func addArtistToTracker(searchResult: SearchResult) {
         
         /* create an Artist object and save it to Core Data */
         let _ = Artist(searchResult: searchResult, context: sharedContext) { success in
@@ -95,7 +95,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
                     CoreDataStackManager.sharedInstance().saveContext()
                 
                     /* show HUD indicating to user that Artist was saved */
-                    self.showHUD(HudView.WatchlistAction.Add)
+                    self.showHUD(HudView.TrackerAction.Add)
                 
                     /* update the watchlist */
                     self.trackerList = self.fetchTrackedArtists()
@@ -110,7 +110,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         }
     }
     
-    func removeArtistFromWatchlist(searchResult: SearchResult) {
+    func removeArtistFromTracker(searchResult: SearchResult) {
         
         /* delete the artist object from Core Data */
         for artist in trackerList! where artist.artistId == searchResult.artistId {
@@ -121,7 +121,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         CoreDataStackManager.sharedInstance().saveContext()
         
         /* show the user a removal HUD */
-        showHUD(HudView.WatchlistAction.Remove)
+        showHUD(HudView.TrackerAction.Remove)
         
         /* update the watchlist to reflect current artists after removal of this artist */
         trackerList = fetchTrackedArtists()
@@ -159,7 +159,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         })
     }
     
-    func showHUD(action: HudView.WatchlistAction) {
+    func showHUD(action: HudView.TrackerAction) {
         
         HudView.actionType = action
         

@@ -7,15 +7,12 @@
 //
 
 import Foundation
-
-import Foundation
 import UIKit
-
 
 protocol SearchResultCellDelegate: class {
     func showUrlError(errorMessage: String)
-    func addArtistToWatchlist(searchResult: SearchResult)
-    func removeArtistFromWatchlist(searchResult: SearchResult)
+    func addArtistToTracker(searchResult: SearchResult)
+    func removeArtistFromTracker(searchResult: SearchResult)
 }
 
 
@@ -63,12 +60,13 @@ class SearchResultCell: UICollectionViewCell {
     @IBAction func addArtistToWatchlist(sender: UIButton) {
         
         if searchResult!.inTracker {
-            delegate?.removeArtistFromWatchlist(searchResult!)
+            // if the artist is already being tracked, then send a message to the delegate removing the artist
+            delegate?.removeArtistFromTracker(searchResult!)
         } else {
-            delegate?.addArtistToWatchlist(searchResult!)
+            // otherwise tell the delegat to add the artist to the tracker
+            delegate?.addArtistToTracker(searchResult!)
         }
         
     }
-    
     
 }
