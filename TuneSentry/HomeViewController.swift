@@ -247,9 +247,18 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 cell.artist = artist
                 cell.artistNameLabel.text = artist.artistName
                 cell.genreLabel.text = artist.primaryGenreName
-                cell.mostRecentArtwork.image = UIImage(data: (artist.mostRecentArtwork))
                 cell.artistId.text = String(format: "Artist Id: %d", artist.artistId)
                 cell.delegate = self
+                
+                if artist.mostRecentArtwork != nil {
+                    cell.mostRecentArtwork.image = UIImage(data: (artist.mostRecentArtwork!))
+                } else {
+                    /* Citation for placeholder image */
+                    // license link: https://creativecommons.org/licenses/by/3.0/
+                    // attribution: https://www.iconfinder.com/icons/1105258/brand_circle_music_note_shape_icon#size=128
+                    cell.mostRecentArtwork.image = UIImage(named: "placeholder")
+                }
+                
                 return cell
             }
         } else {

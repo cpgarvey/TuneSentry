@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-
+// define completion handlers for convenience
 typealias SearchComplete = (success: Bool, errorString: String?) -> Void
 typealias LookupComplete = (success: Bool, collectionId: Int?, artworkUrl: String?, errorString: String?) -> Void
 typealias NewReleaseCheckComplete = (success: Bool, newReleases: [NewRelease], errorString: String?) -> Void
@@ -34,6 +34,7 @@ class AppleClient: NSObject {
     private var dataTaskLookup: NSURLSessionDataTask? = nil
     private var dataTaskNewRelease: NSURLSessionDataTask? = nil
     
+    /* Core Data Convenience */
     lazy var sharedContext: NSManagedObjectContext = {
         return CoreDataStackManager.sharedInstance().managedObjectContext
     }()
@@ -57,11 +58,10 @@ class AppleClient: NSObject {
             var withTermDictionary = methodArguments
             withTermDictionary["term"] = text
             
-            
-            // if there is an active data task, then cancel it
+            // if there is an active data task, then cancel it so we can begin a new one
             dataTaskSearch?.cancel()
             
-            // activate the network activity indicator
+            // activate the network activity indicator to show search is occurring 
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
             
             // set the state of the search
@@ -93,10 +93,11 @@ class AppleClient: NSObject {
                     self.state = .Error
                 }
                 
-                dispatch_async(dispatch_get_main_queue()) {
+                performOnMain {
                     UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                     completion(success: success, errorString: nil)
                 }
+                
             })
             
             dataTaskSearch?.resume()
@@ -127,11 +128,13 @@ class AppleClient: NSObject {
                     return
                 }
                 
+                // find the most recent collection id that will be used to check for new releases in the future
                 guard let collectionId = results[1]["collectionId"] as? Int else {
                     completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "determining collectionID failed")
                     return
                 }
                 
+                // obtain the most recent artwork so that it can be displayed with the artist cell
                 guard let mostRecentArtworkUrl = results[1]["artworkUrl100"] as? String else {
                     completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "determining artworkUrl failed")
                     return
@@ -156,7 +159,7 @@ class AppleClient: NSObject {
             "id": String(artist.artistId),
             "entity": "album",
             "sort": "recent",
-            "limit": "10"
+            "limit": "10" // we're going to limit our search to the 10 most recent releases
         ]
         
         var newReleases = [NewRelease]()
@@ -169,7 +172,6 @@ class AppleClient: NSObject {
                 where httpResponse.statusCode == 200,
                 let data = data, dictionary = self.parseJSON(data) {
                 
-                //print(dictionary)
                 guard let results = dictionary["results"] as? [[String:AnyObject]] else {
                     completion(success: false, newReleases: newReleases, errorString: "results failed")
                     return
@@ -180,14 +182,17 @@ class AppleClient: NSObject {
                     return
                 }
 
+                // check to see if the first id in the results matches the most recent release for the artist... if so, no new releases
                 if firstCollectionId == artist.mostRecentRelease {
                     completion(success: true, newReleases: newReleases, errorString: nil)
                     return
                 }
                 
+                // if the function makes it this far, there are new releases to return
                 for result in results where result["wrapperType"] as? String == "collection" {
                     
                     if result["collectionId"] as? Int == artist.mostRecentRelease {
+                        // if the loop has reached the artist's most recent release, then update the most recent release to the first id
                         artist.mostRecentRelease = firstCollectionId
                         completion(success: true, newReleases: newReleases, errorString: nil)
                         return
@@ -198,7 +203,7 @@ class AppleClient: NSObject {
                 }
                 
                 
-                /* For testing purposes: Comment out lines 178 - 197 and uncomment lines 202 - 207 */
+                /* For testing purposes to see new releases: Comment out lines 178 - 197 and uncomment lines 202 - 207 */
                 
 //                for result in results where result["wrapperType"] as? String == "collection" {
 //                    
@@ -210,6 +215,7 @@ class AppleClient: NSObject {
                 
                 
                 // call the completion handler in the event that the loop goes through all of the results and doesn't hit the artist.mostRecentRelease
+                artist.mostRecentRelease = firstCollectionId
                 completion(success: true, newReleases: newReleases, errorString: nil)
                 return
                 
@@ -272,7 +278,7 @@ class AppleClient: NSObject {
         return components.URL!
     }
     
-    /* Parse JSON */
+    /* Parse JSON into swift readable dictionary */
     private func parseJSON(data: NSData) -> [String: AnyObject]? {
         
         do {
@@ -284,7 +290,7 @@ class AppleClient: NSObject {
         
     }
     
-    /* Parse the JSON */
+    /* Parse the dictionary to return an array of search results */
     private func parseDictionaryForSearch(dictionary: [String: AnyObject]) -> [SearchResult] {
         
         guard let array = dictionary["results"] as? [AnyObject] else {
@@ -329,7 +335,6 @@ class AppleClient: NSObject {
         
         return searchResult
     }
-    
-    
+
 }
 

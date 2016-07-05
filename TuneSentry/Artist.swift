@@ -21,7 +21,7 @@ class Artist: NSManagedObject {
     @NSManaged var artistName: String
     @NSManaged var primaryGenreName: String
     @NSManaged var mostRecentRelease: Int
-    @NSManaged var mostRecentArtwork: NSData
+    @NSManaged var mostRecentArtwork: NSData?
     
     var delegate: ArtistDelegate?
     
@@ -45,9 +45,17 @@ class Artist: NSManagedObject {
         search.downloadDataForArtist(self.artistId, completionHandler: { success, mostRecentRelease, mostRecentArtwork, errorString in
             
             if success {
-                self.mostRecentRelease = mostRecentRelease!
-                self.mostRecentArtwork = mostRecentArtwork
-                completion(success: true)
+                
+                if mostRecentArtwork != nil {
+                    self.mostRecentRelease = mostRecentRelease!
+                    self.mostRecentArtwork = mostRecentArtwork!
+                    completion(success: true)
+                } else {
+                    self.mostRecentRelease = mostRecentRelease!
+                    self.mostRecentArtwork = nil
+                    completion(success: true)
+                }
+                
             } else {
                 print("Init failed")
                 completion(success: false)
