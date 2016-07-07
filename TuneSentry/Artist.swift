@@ -29,7 +29,7 @@ class Artist: NSManagedObject {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
     }
     
-    init(searchResult: SearchResult, context: NSManagedObjectContext, completion: (success: Bool) -> Void) {
+    init(searchResult: SearchResult, context: NSManagedObjectContext, completion: (success: Bool, errorString: String?) -> Void) {
         let entity = NSEntityDescription.entityForName("Artist", inManagedObjectContext: context)!
         super.init(entity: entity, insertIntoManagedObjectContext: context)
         
@@ -49,16 +49,16 @@ class Artist: NSManagedObject {
                 if mostRecentArtwork != nil {
                     self.mostRecentRelease = mostRecentRelease!
                     self.mostRecentArtwork = mostRecentArtwork!
-                    completion(success: true)
+                    completion(success: true, errorString: nil)
                 } else {
                     self.mostRecentRelease = mostRecentRelease!
                     self.mostRecentArtwork = nil
-                    completion(success: true)
+                    completion(success: true, errorString: nil)
                 }
                 
             } else {
                 print("Init failed")
-                completion(success: false)
+                completion(success: false, errorString: errorString)
             }
         })
        

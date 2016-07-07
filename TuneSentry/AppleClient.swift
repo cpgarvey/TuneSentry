@@ -96,6 +96,7 @@ class AppleClient: NSObject {
                 performOnMain {
                     UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                     completion(success: success, errorString: nil)
+                    return
                 }
                 
             })
@@ -128,22 +129,31 @@ class AppleClient: NSObject {
                     return
                 }
                 
-                // find the most recent collection id that will be used to check for new releases in the future
-                guard let collectionId = results[1]["collectionId"] as? Int else {
-                    completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "determining collectionID failed")
+                if results.count > 1 {
+                    
+                    // find the most recent collection id that will be used to check for new releases in the future
+                    guard let collectionId = results[1]["collectionId"] as? Int else {
+                        completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "Determining most recent release failed: cannot add to tracker")
+                        return
+                    }
+                    
+                    // obtain the most recent artwork so that it can be displayed with the artist cell
+                    guard let mostRecentArtworkUrl = results[1]["artworkUrl100"] as? String else {
+                        completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "Determining artwork failed: cannot add to tracker")
+                        return
+                    }
+                    
+                    completion(success: true, collectionId: collectionId, artworkUrl: mostRecentArtworkUrl, errorString: nil)
+                    
+                } else {
+                    completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "No releases for artist: cannot add to tracker")
                     return
+
                 }
-                
-                // obtain the most recent artwork so that it can be displayed with the artist cell
-                guard let mostRecentArtworkUrl = results[1]["artworkUrl100"] as? String else {
-                    completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "determining artworkUrl failed")
-                    return
-                }
-                
-                completion(success: true, collectionId: collectionId, artworkUrl: mostRecentArtworkUrl, errorString: nil)
                 
             } else {
-                completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "Unable to lookup artist")
+                completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "Unable to lookup artist: cannot add to tracker")
+                return
             }
             
         })
@@ -177,49 +187,56 @@ class AppleClient: NSObject {
                     return
                 }
                 
-                guard let firstCollectionId = results[1]["collectionId"] as? Int else {
-                    completion(success: false, newReleases: newReleases, errorString: "results failed")
-                    return
-                }
-
-                // check to see if the first id in the results matches the most recent release for the artist... if so, no new releases
-                if firstCollectionId == artist.mostRecentRelease {
-                    completion(success: true, newReleases: newReleases, errorString: nil)
-                    return
-                }
-                
-                // if the function makes it this far, there are new releases to return
-                for result in results where result["wrapperType"] as? String == "collection" {
+                if results.count > 1 {
                     
-                    if result["collectionId"] as? Int == artist.mostRecentRelease {
-                        // if the loop has reached the artist's most recent release, then update the most recent release to the first id
-                        artist.mostRecentRelease = firstCollectionId
+                    guard let firstCollectionId = results[1]["collectionId"] as? Int else {
+                        completion(success: false, newReleases: newReleases, errorString: "results failed")
+                        return
+                    }
+                    
+                    // check to see if the first id in the results matches the most recent release for the artist... if so, no new releases
+                    if firstCollectionId == artist.mostRecentRelease {
                         completion(success: true, newReleases: newReleases, errorString: nil)
                         return
-                    } else {
-                        let newRelease = NewRelease(artist: artist, dictionary: result)
-                        newReleases.append(newRelease)
                     }
+                    
+                    // if the function makes it this far, there are new releases to return
+                    for result in results where result["wrapperType"] as? String == "collection" {
+                        
+                        if result["collectionId"] as? Int == artist.mostRecentRelease {
+                            // if the loop has reached the artist's most recent release, then update the most recent release to the first id
+                            artist.mostRecentRelease = firstCollectionId
+                            completion(success: true, newReleases: newReleases, errorString: nil)
+                            return
+                        } else {
+                            let newRelease = NewRelease(artist: artist, dictionary: result)
+                            newReleases.append(newRelease)
+                        }
+                    }
+                    
+                    
+                    /* For testing purposes to see example of new releases: Comment out lines 185 - 203 and uncomment lines 208 - 213 and restart app with artists already saved */
+                    
+                    //                for result in results where result["wrapperType"] as? String == "collection" {
+                    //
+                    //                    let newRelease = NewRelease(artist: artist, dictionary: result)
+                    //                    newReleases.append(newRelease)
+                    //
+                    //                }
+                    
+                    // call the completion handler in the event that the loop goes through all of the results and doesn't hit the artist.mostRecentRelease
+                    artist.mostRecentRelease = firstCollectionId
+                    completion(success: true, newReleases: newReleases, errorString: nil)
+                    return
+                    
+                } else {
+                    completion(success: false, newReleases: newReleases, errorString: "No releases available to check")
+                    return
                 }
                 
-                
-                /* For testing purposes to see example of new releases: Comment out lines 185 - 203 and uncomment lines 208 - 213 and restart app with artists already saved */
-                
-//                for result in results where result["wrapperType"] as? String == "collection" {
-//                    
-//                    let newRelease = NewRelease(artist: artist, dictionary: result)
-//                    newReleases.append(newRelease)
-//            
-//                }
-                
-                // call the completion handler in the event that the loop goes through all of the results and doesn't hit the artist.mostRecentRelease
-                artist.mostRecentRelease = firstCollectionId
-                completion(success: true, newReleases: newReleases, errorString: nil)
-                return
                 
             } else {
                 completion(success: false, newReleases: newReleases, errorString: "results failed")
-                return
             }
         }
         

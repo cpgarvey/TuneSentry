@@ -64,6 +64,10 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         
         artistSearchResultLayout.itemSize = CGSize(width: width, height: height)
         collectionView.collectionViewLayout = artistSearchResultLayout
+        
+        // close keyboard if touching anywhere on the screen
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
 
     }
     
@@ -87,7 +91,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     func addArtistToTracker(searchResult: SearchResult) {
         
         /* create an Artist object and save it to Core Data */
-        let _ = Artist(searchResult: searchResult, context: sharedContext) { success in
+        let _ = Artist(searchResult: searchResult, context: sharedContext) { success, errorString in
             if success {
                 
                 performOnMain {
@@ -104,8 +108,9 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
                     self.collectionView.reloadData()
                 }
             } else {
-                let message = "Unable to save artist to tracker"
-                self.presentViewController(alert(message), animated: true, completion: nil)
+                performOnMain {
+                    self.presentViewController(alert(errorString!), animated: true, completion: nil)
+                }
             }
         }
     }
@@ -133,6 +138,10 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     
     
     // MARK: - Helper Methods
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
     
     func fetchTrackedArtists() -> [Artist] {
         let fetchRequest = NSFetchRequest(entityName: "Artist")

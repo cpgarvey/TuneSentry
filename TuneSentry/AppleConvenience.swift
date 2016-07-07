@@ -23,7 +23,7 @@ extension AppleClient {
                     
                     if success {
                     
-                        completionHandler(success: true, mostRecentRelease: collectionId, mostRecentArtwork: nil, errorString: nil)
+                        completionHandler(success: true, mostRecentRelease: collectionId, mostRecentArtwork: mostRecentArtwork!, errorString: nil)
                         
                     } else {
                         // unable to download artwork but the most recent release is OK
@@ -34,7 +34,7 @@ extension AppleClient {
         
             } else {
                 // unable to lookup artist
-                completionHandler(success: false, mostRecentRelease: nil, mostRecentArtwork: nil, errorString: "Unable to lookup artist")
+                completionHandler(success: false, mostRecentRelease: nil, mostRecentArtwork: nil, errorString: errorString)
             }
     
         })

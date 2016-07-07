@@ -13,6 +13,7 @@ protocol SearchResultCellDelegate: class {
     func showUrlError(errorMessage: String)
     func addArtistToTracker(searchResult: SearchResult)
     func removeArtistFromTracker(searchResult: SearchResult)
+    func dismissKeyboard()
 }
 
 
@@ -45,7 +46,7 @@ class SearchResultCell: UICollectionViewCell {
     // MARK: - Actions
     
     @IBAction func openArtistUrl(sender: UIButton) {
-        
+        delegate?.dismissKeyboard()
         if let url = NSURL(string: searchResult!.artistLinkUrl) {
             guard UIApplication.sharedApplication().openURL(url) else {
                 delegate?.showUrlError("There was an error opening this Artist in iTunes.")
@@ -58,7 +59,7 @@ class SearchResultCell: UICollectionViewCell {
     
     
     @IBAction func addArtistToWatchlist(sender: UIButton) {
-        
+        delegate?.dismissKeyboard()
         if searchResult!.inTracker {
             // if the artist is already being tracked, then send a message to the delegate removing the artist
             delegate?.removeArtistFromTracker(searchResult!)
