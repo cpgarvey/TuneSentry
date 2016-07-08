@@ -47,13 +47,17 @@ class Artist: NSManagedObject {
             if success {
                 
                 if mostRecentArtwork != nil {
-                    self.mostRecentRelease = mostRecentRelease!
-                    self.mostRecentArtwork = mostRecentArtwork!
-                    completion(success: true, errorString: nil)
+                    performOnMain {
+                        self.mostRecentRelease = mostRecentRelease!
+                        self.mostRecentArtwork = mostRecentArtwork!
+                        completion(success: true, errorString: nil)
+                    }
                 } else {
-                    self.mostRecentRelease = mostRecentRelease!
-                    self.mostRecentArtwork = nil
-                    completion(success: true, errorString: nil)
+                    performOnMain {
+                        self.mostRecentRelease = mostRecentRelease!
+                        self.mostRecentArtwork = nil
+                        completion(success: true, errorString: nil)
+                    }
                 }
                 
             } else {
@@ -68,7 +72,7 @@ class Artist: NSManagedObject {
         
         let search = AppleClient()
         
-        search.checkNewRelease(self) { success, newReleases, errorString in
+        search.checkNewRelease(self.artistId, mostRecentRelease: self.mostRecentRelease) { success, newReleases, updatedMostRecentRelease, errorString in
             
             if success && !newReleases.isEmpty {
                 
@@ -80,8 +84,13 @@ class Artist: NSManagedObject {
                 }
                 
                 // notify the delegate there are new releases so update the collection view 
-                self.delegate?.updateNewReleasesCollectionView()
+                performOnMain {
+                    self.mostRecentRelease = updatedMostRecentRelease!
+                    self.delegate?.updateNewReleasesCollectionView()
+                }
                 
+            } else {
+                print("No new releases")
             }
         }
     }

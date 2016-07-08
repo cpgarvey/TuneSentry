@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreData
+
 
 class NewRelease {
     
@@ -21,14 +21,12 @@ class NewRelease {
     // use a static variable to keep an array of all new releases that can be accessed by other objects
     static var newReleases = [NewRelease]()
     
-    init(artist: Artist, dictionary: [String:AnyObject]) {
-        
+    init(dictionary: [String:AnyObject]) {
         self.collectionID = dictionary["collectionId"] as! Int
         self.collectionName = dictionary["collectionName"] as! String
         self.collectionViewUrl = dictionary["collectionViewUrl"] as! String
         self.artworkUrl100 = dictionary["artworkUrl100"] as! String
-        self.artistId = artist.artistId
-        self.artistName = artist.artistName
-                
+        self.artistId = dictionary["artistId"] as! Int
+        self.artistName = dictionary["artistName"] as! String
     }
 }

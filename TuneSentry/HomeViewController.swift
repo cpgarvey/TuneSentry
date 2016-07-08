@@ -92,7 +92,6 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
     // MARK: - Helper Functions
     
     func checkForNewReleases() {
-        
         guard let watchlistArtists = fetchedResultsControllerForTracker.fetchedObjects as? [Artist] else { return }
         
         for artist in watchlistArtists {

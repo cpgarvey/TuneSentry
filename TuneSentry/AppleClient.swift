@@ -13,7 +13,7 @@ import CoreData
 // define completion handlers for convenience
 typealias SearchComplete = (success: Bool, errorString: String?) -> Void
 typealias LookupComplete = (success: Bool, collectionId: Int?, artworkUrl: String?, errorString: String?) -> Void
-typealias NewReleaseCheckComplete = (success: Bool, newReleases: [NewRelease], errorString: String?) -> Void
+typealias NewReleaseCheckComplete = (success: Bool, newReleases: [NewRelease], updatedMostRecentRelease: Int?,  errorString: String?) -> Void
 
 class AppleClient: NSObject {
     
@@ -162,11 +162,11 @@ class AppleClient: NSObject {
     
     }
 
-    func checkNewRelease(artist: Artist, completion: NewReleaseCheckComplete) {
+    func checkNewRelease(artistId: Int, mostRecentRelease: Int, completion: NewReleaseCheckComplete) {
         
         /* Set the parameters of the search */
         let methodArguments = [
-            "id": String(artist.artistId),
+            "id": String(artistId),
             "entity": "album",
             "sort": "recent",
             "limit": "10" // we're going to limit our search to the 10 most recent releases
@@ -183,60 +183,57 @@ class AppleClient: NSObject {
                 let data = data, dictionary = self.parseJSON(data) {
                 
                 guard let results = dictionary["results"] as? [[String:AnyObject]] else {
-                    completion(success: false, newReleases: newReleases, errorString: "results failed")
+                    completion(success: false, newReleases: newReleases, updatedMostRecentRelease: nil, errorString: "results failed")
                     return
                 }
                 
                 if results.count > 1 {
                     
                     guard let firstCollectionId = results[1]["collectionId"] as? Int else {
-                        completion(success: false, newReleases: newReleases, errorString: "results failed")
+                        completion(success: false, newReleases: newReleases, updatedMostRecentRelease: nil, errorString: "results failed")
                         return
                     }
-                    
+
                     // check to see if the first id in the results matches the most recent release for the artist... if so, no new releases
-                    if firstCollectionId == artist.mostRecentRelease {
-                        completion(success: true, newReleases: newReleases, errorString: nil)
+                    if firstCollectionId == mostRecentRelease {
+                        completion(success: true, newReleases: newReleases, updatedMostRecentRelease: nil, errorString: nil)
                         return
                     }
                     
                     // if the function makes it this far, there are new releases to return
                     for result in results where result["wrapperType"] as? String == "collection" {
                         
-                        if result["collectionId"] as? Int == artist.mostRecentRelease {
+                        if result["collectionId"] as? Int == mostRecentRelease {
                             // if the loop has reached the artist's most recent release, then update the most recent release to the first id
-                            artist.mostRecentRelease = firstCollectionId
-                            completion(success: true, newReleases: newReleases, errorString: nil)
+                            completion(success: true, newReleases: newReleases, updatedMostRecentRelease: firstCollectionId, errorString: nil)
                             return
                         } else {
-                            let newRelease = NewRelease(artist: artist, dictionary: result)
+                            let newRelease = NewRelease(dictionary: result)
                             newReleases.append(newRelease)
                         }
                     }
                     
                     
-                    /* For testing purposes to see example of new releases: Comment out lines 185 - 203 and uncomment lines 208 - 213 and restart app with artists already saved */
+                    /* For testing purposes to see example of new releases: Comment out lines 197 - 214, then uncomment lines 220 - 225 and restart app with artists already saved */
+                   
+//                                    for result in results where result["wrapperType"] as? String == "collection" {
+//                                        let newRelease = NewRelease(dictionary: result)
+//                                        newReleases.append(newRelease)
+//                                        
+//                                    }
                     
-                    //                for result in results where result["wrapperType"] as? String == "collection" {
-                    //
-                    //                    let newRelease = NewRelease(artist: artist, dictionary: result)
-                    //                    newReleases.append(newRelease)
-                    //
-                    //                }
-                    
-                    // call the completion handler in the event that the loop goes through all of the results and doesn't hit the artist.mostRecentRelease
-                    artist.mostRecentRelease = firstCollectionId
-                    completion(success: true, newReleases: newReleases, errorString: nil)
+                    // call the completion handler in the event that the loop goes through all of the results and doesn't hit the mostRecentRelease
+                    completion(success: true, newReleases: newReleases, updatedMostRecentRelease: firstCollectionId, errorString: nil)
                     return
                     
                 } else {
-                    completion(success: false, newReleases: newReleases, errorString: "No releases available to check")
+                    completion(success: false, newReleases: newReleases, updatedMostRecentRelease: nil, errorString: "No releases available to check")
                     return
                 }
                 
                 
             } else {
-                completion(success: false, newReleases: newReleases, errorString: "results failed")
+                completion(success: false, newReleases: newReleases, updatedMostRecentRelease: nil, errorString: "results failed")
             }
         }
         
