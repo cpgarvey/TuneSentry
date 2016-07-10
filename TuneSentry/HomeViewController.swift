@@ -45,6 +45,7 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
         static let noNewReleasesCollectionCell = "NoNewReleasesCollectionCell"
         static let newReleaseHoldingCollectionCell = "NewReleaseHoldingCollectionCell"
         static let artistTrackerCell = "ArtistTrackerCell"
+        static let searchingCell = "SearchingCell"
     }
     
     // MARK: - Life Cycle
@@ -62,6 +63,9 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
         
         cellNib = UINib(nibName: CollectionViewCellIdentifiers.noNewReleasesCollectionCell, bundle: nil)
         mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.noNewReleasesCollectionCell)
+        
+        cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchingCell, bundle: nil)
+        mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchingCell)
         
         // set up the flow layout for the collection view cells
         let mainLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -93,6 +97,9 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
     
     func checkForNewReleases() {
         guard let trackedArtists = fetchedResultsControllerForTracker.fetchedObjects as? [Artist] else { return }
+        
+        NewRelease.checkingForNewReleases = true
+        mainCollectionView.reloadSections(NSIndexSet(index: 0))
         NewRelease.artistsToCheck = trackedArtists.count
         print("Artists to check: \(NewRelease.artistsToCheck)")
         
@@ -222,7 +229,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             
             if indexPath.section == 0 {
                 
-                if NewRelease.newReleases.isEmpty {
+                if NewRelease.checkingForNewReleases {
+                    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.searchingCell,
+                                                                                     forIndexPath: indexPath)
+                    let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
+                    spinner.startAnimating()
+                    return cell
+                } else if NewRelease.newReleases.isEmpty {
                     
                     // if there are no new releases, just display a blank spacer cell
                     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.noNewReleasesCollectionCell,

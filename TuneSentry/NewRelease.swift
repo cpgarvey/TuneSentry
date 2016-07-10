@@ -22,6 +22,7 @@ class NewRelease {
     static var newReleases = [NewRelease]()
     static var artistsToCheck = 0
     static var artistsHaveBeenChecked = 0
+    static var checkingForNewReleases = false
     
     init(dictionary: [String:AnyObject]) {
         self.collectionID = dictionary["collectionId"] as! Int

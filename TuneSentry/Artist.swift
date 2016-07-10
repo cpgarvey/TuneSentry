@@ -100,6 +100,7 @@ class Artist: NSManagedObject {
                 print("No new releases")
                 NewRelease.artistsHaveBeenChecked += 1
                 if NewRelease.artistsToCheck == NewRelease.artistsHaveBeenChecked {
+                    NewRelease.checkingForNewReleases = false
                     self.delegate?.updateNewReleasesCollectionView()
                     print("Reload called from Artist")
                 }
