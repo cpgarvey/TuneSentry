@@ -76,6 +76,7 @@ class Artist: NSManagedObject {
             
             if success && !newReleases.isEmpty {
                 
+                
                 for newRelease in newReleases {
                     NewRelease.newReleases.append(newRelease)
                     NewRelease.newReleases.sortInPlace {
@@ -86,11 +87,22 @@ class Artist: NSManagedObject {
                 // notify the delegate there are new releases so update the collection view 
                 performOnMain {
                     self.mostRecentRelease = updatedMostRecentRelease!
-                    self.delegate?.updateNewReleasesCollectionView()
+                    NewRelease.artistsHaveBeenChecked += 1
+                    print("Artists checked: \(NewRelease.artistsHaveBeenChecked)")
+                    if NewRelease.artistsToCheck == NewRelease.artistsHaveBeenChecked {
+                        self.delegate?.updateNewReleasesCollectionView()
+                        print("Reload called from Artist")
+                    }
+                    
                 }
                 
             } else {
                 print("No new releases")
+                NewRelease.artistsHaveBeenChecked += 1
+                if NewRelease.artistsToCheck == NewRelease.artistsHaveBeenChecked {
+                    self.delegate?.updateNewReleasesCollectionView()
+                    print("Reload called from Artist")
+                }
             }
         }
     }

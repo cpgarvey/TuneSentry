@@ -92,9 +92,11 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
     // MARK: - Helper Functions
     
     func checkForNewReleases() {
-        guard let watchlistArtists = fetchedResultsControllerForTracker.fetchedObjects as? [Artist] else { return }
+        guard let trackedArtists = fetchedResultsControllerForTracker.fetchedObjects as? [Artist] else { return }
+        NewRelease.artistsToCheck = trackedArtists.count
+        print("Artists to check: \(NewRelease.artistsToCheck)")
         
-        for artist in watchlistArtists {
+        for artist in trackedArtists {
             artist.delegate = self
             artist.checkForNewRelease()
             
@@ -118,7 +120,9 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
     func updateNewReleasesCollectionView() {
         
         performOnMain {
+            print(NewRelease.newReleases)
             self.mainCollectionView.reloadData()
+            
         }
     }
 

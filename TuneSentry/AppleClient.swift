@@ -194,33 +194,33 @@ class AppleClient: NSObject {
                         return
                     }
 
-                    // check to see if the first id in the results matches the most recent release for the artist... if so, no new releases
-                    if firstCollectionId == mostRecentRelease {
-                        completion(success: true, newReleases: newReleases, updatedMostRecentRelease: nil, errorString: nil)
-                        return
-                    }
-                    
-                    // if the function makes it this far, there are new releases to return
-                    for result in results where result["wrapperType"] as? String == "collection" {
-                        
-                        if result["collectionId"] as? Int == mostRecentRelease {
-                            // if the loop has reached the artist's most recent release, then update the most recent release to the first id
-                            completion(success: true, newReleases: newReleases, updatedMostRecentRelease: firstCollectionId, errorString: nil)
-                            return
-                        } else {
-                            let newRelease = NewRelease(dictionary: result)
-                            newReleases.append(newRelease)
-                        }
-                    }
+//                    // check to see if the first id in the results matches the most recent release for the artist... if so, no new releases
+//                    if firstCollectionId == mostRecentRelease {
+//                        completion(success: true, newReleases: newReleases, updatedMostRecentRelease: nil, errorString: nil)
+//                        return
+//                    }
+//                    
+//                    // if the function makes it this far, there are new releases to return
+//                    for result in results where result["wrapperType"] as? String == "collection" {
+//                        
+//                        if result["collectionId"] as? Int == mostRecentRelease {
+//                            // if the loop has reached the artist's most recent release, then update the most recent release to the first id
+//                            completion(success: true, newReleases: newReleases, updatedMostRecentRelease: firstCollectionId, errorString: nil)
+//                            return
+//                        } else {
+//                            let newRelease = NewRelease(dictionary: result)
+//                            newReleases.append(newRelease)
+//                        }
+//                    }
                     
                     
                     /* For testing purposes to see example of new releases: Comment out lines 197 - 214, then uncomment lines 220 - 225 and restart app with artists already saved */
                    
-//                                    for result in results where result["wrapperType"] as? String == "collection" {
-//                                        let newRelease = NewRelease(dictionary: result)
-//                                        newReleases.append(newRelease)
-//                                        
-//                                    }
+                                    for result in results where result["wrapperType"] as? String == "collection" {
+                                        let newRelease = NewRelease(dictionary: result)
+                                        newReleases.append(newRelease)
+                                        
+                                    }
                     
                     // call the completion handler in the event that the loop goes through all of the results and doesn't hit the mostRecentRelease
                     completion(success: true, newReleases: newReleases, updatedMostRecentRelease: firstCollectionId, errorString: nil)
