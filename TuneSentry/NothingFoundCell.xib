@@ -28,7 +28,7 @@
                 <constraint firstItem="03k-Wu-wWc" firstAttribute="centerX" secondItem="jBO-25-Dsw" secondAttribute="centerX" id="r4a-On-5cA"/>
             </constraints>
             <size key="customSize" width="320" height="165"/>
-            <point key="canvasLocation" x="532" y="383"/>
+            <point key="canvasLocation" x="404" y="325"/>
         </collectionViewCell>
     </objects>
 </document>

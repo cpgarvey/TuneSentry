@@ -46,6 +46,7 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
         static let newReleaseHoldingCollectionCell = "NewReleaseHoldingCollectionCell"
         static let artistTrackerCell = "ArtistTrackerCell"
         static let searchingCell = "SearchingCell"
+        static let newReleasesCollectionSpacerCell = "NewReleasesCollectionSpacerCell"
     }
     
     // MARK: - Life Cycle
@@ -67,6 +68,9 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
         cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchingCell, bundle: nil)
         mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchingCell)
         
+        cellNib = UINib(nibName: CollectionViewCellIdentifiers.newReleasesCollectionSpacerCell, bundle: nil)
+        mainCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.newReleasesCollectionSpacerCell)
+        
         // set up the flow layout for the collection view cells
         let mainLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         mainLayout.sectionInset = UIEdgeInsets(top: 6, left: 0, bottom: 0, right: 0)
@@ -81,15 +85,18 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
         } catch {}
         
         fetchedResultsControllerForTracker.delegate = self
+        if !(fetchedResultsControllerForTracker.fetchedObjects?.isEmpty)! {
         
-        /* Check for new releases from the artists currently in the tracker */
-        checkForNewReleases()
+            /* Check for new releases from the artists currently in the tracker */
+            checkForNewReleases()
+        }
+        
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         // reload the main collection view so that new artists can be displayed after being added from the search
-        mainCollectionView.reloadData()
+        mainCollectionView.reloadSections(NSIndexSet(index: 1))
     }
     
     
@@ -118,6 +125,10 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
         
         /* Save the context */
         CoreDataStackManager.sharedInstance().saveContext()
+        
+        if fetchedResultsControllerForTracker.sections![0].numberOfObjects == 0 {
+            mainCollectionView.reloadSections(NSIndexSet(index: 0))
+        }
     }
     
     func showUrlError(errorMessage: String) {
@@ -127,9 +138,8 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
     func updateNewReleasesCollectionView() {
         
         performOnMain {
-            print(NewRelease.newReleases)
+            NewRelease.checkingForNewReleases = false
             self.mainCollectionView.reloadData()
-            
         }
     }
 
@@ -180,18 +190,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "HomeHeaderView", forIndexPath: indexPath) as! HomeHeaderView
                 
                 if indexPath.section == 0 {
-                    if NewRelease.newReleases.isEmpty {
-                        headerView.header.text = "No New Releases"
-                    } else {
-                        headerView.header.text = "New Releases:"
-                    }
+                    headerView.header.text = "New Releases:"
+                    
                 } else {
-                    let numberOfArtists = fetchedResultsControllerForTracker.sections![0].numberOfObjects
-                    if numberOfArtists == 0 {
-                        headerView.header.text = "No Tracked Artists"
-                    } else {
-                        headerView.header.text = "Artist Tracker:"
-                    }
+                    headerView.header.text = "Artist Tracker:"
                 }
                 return headerView
             default:
@@ -235,15 +237,20 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                     let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
                     spinner.startAnimating()
                     return cell
-                } else if NewRelease.newReleases.isEmpty {
+                } else if NewRelease.newReleases.isEmpty && fetchedResultsControllerForTracker.sections![0].numberOfObjects > 0 {
                     
                     // if there are no new releases, just display a blank spacer cell
                     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.noNewReleasesCollectionCell,
                                                                                      forIndexPath: indexPath)
                     
                     return cell
-                } else {
+                } else if fetchedResultsControllerForTracker.sections![0].numberOfObjects == 0 {
+                    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.newReleasesCollectionSpacerCell,
+                                                                                     forIndexPath: indexPath)
                     
+                    return cell
+                    
+                } else {
                     // if there are new releases, then display the holding cell that contains a collection view to display the new releases
                     let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.newReleaseHoldingCollectionCell,
                                                                                      forIndexPath: indexPath)
@@ -251,7 +258,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 }
                 
             } else {
-                // in the section section of the main collection view, return the artist cells  
+                
+                // in the section section of the main collection view, return the artist cells
                 let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.artistTrackerCell, forIndexPath: indexPath) as! ArtistTrackerCell
                 
                 let indexNumber = indexPath.item
@@ -275,6 +283,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 }
                 
                 return cell
+                
             }
         } else {
             // if the collection view is the one in the NewReleaseHoldingCollectionCell, then return the new release cells

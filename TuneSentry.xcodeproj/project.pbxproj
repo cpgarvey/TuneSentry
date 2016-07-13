@@ -21,6 +21,7 @@
 		F23FD5D11CEC2E3C00E1D5B8 /* SearchingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */; };
 		F23FD5D31CEC360F00E1D5B8 /* NothingFoundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */; };
 		F248DC191D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F248DC181D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift */; };
+		F24C49BE1D3607F100D029FF /* NewReleasesCollectionSpacerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F24C49BD1D3607F100D029FF /* NewReleasesCollectionSpacerCell.xib */; };
 		F2672A541CFEAACA00D38C3E /* ArtistTrackerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2672A531CFEAACA00D38C3E /* ArtistTrackerCell.xib */; };
 		F2672A561CFEB02700D38C3E /* ArtistTrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2672A551CFEB02700D38C3E /* ArtistTrackerCell.swift */; };
 		F26A7A7B1D0934980044BC33 /* AppleConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26A7A7A1D0934980044BC33 /* AppleConvenience.swift */; };
@@ -56,6 +57,7 @@
 		F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchingCell.xib; sourceTree = "<group>"; };
 		F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NothingFoundCell.xib; sourceTree = "<group>"; };
 		F248DC181D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
+		F24C49BD1D3607F100D029FF /* NewReleasesCollectionSpacerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewReleasesCollectionSpacerCell.xib; sourceTree = "<group>"; };
 		F2672A531CFEAACA00D38C3E /* ArtistTrackerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistTrackerCell.xib; sourceTree = "<group>"; };
 		F2672A551CFEB02700D38C3E /* ArtistTrackerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistTrackerCell.swift; sourceTree = "<group>"; };
 		F26A7A7A1D0934980044BC33 /* AppleConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleConvenience.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				F222D8331CFD17C100E53E15 /* NewReleaseHoldingCollectionCell.xib */,
 				F222D8351CFD187100E53E15 /* NewReleaseHoldingCollectionCell.swift */,
 				F29B74BF1D0CE105004A9281 /* NoNewReleasesCollectionCell.xib */,
+				F24C49BD1D3607F100D029FF /* NewReleasesCollectionSpacerCell.xib */,
 			);
 			name = "New Release Nibs";
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 				F2A172191CFA5FA600D816E4 /* NewReleaseCollectionCell.xib in Resources */,
 				F29B74C01D0CE105004A9281 /* NoNewReleasesCollectionCell.xib in Resources */,
 				F22CFDFC1CE9635B006CD3BC /* Main.storyboard in Resources */,
+				F24C49BE1D3607F100D029FF /* NewReleasesCollectionSpacerCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
