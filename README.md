@@ -9,6 +9,7 @@ TuneSentry allows you to search for new releases on the iTunes store using a lis
 
 In order to test how new releases display for artists, please comment and uncomment the following lines according to the instructions in the AppleClient.swift file:
 
+![alt text](Screenshots/TestingInstructions.png "TestingInstructions")
 
 
 
