@@ -235,7 +235,7 @@ extension ArtistSearchViewController: UICollectionViewDataSource {
             
         // switch is supposed to be exhaustive, so have .NotSearcedYet even though it should never be reached
         case .NotSearchedYet:
-            //fatalError("Should never get here")
+            
             return UICollectionViewCell()
         case .Searching:
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.searchingCell, forIndexPath: indexPath)
