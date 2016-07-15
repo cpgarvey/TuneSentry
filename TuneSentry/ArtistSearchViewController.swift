@@ -109,6 +109,17 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
                 }
             } else {
                 performOnMain {
+                    /* update the watchlist */
+                    self.trackerList = self.fetchTrackedArtists()
+
+                    /* delete the artist object from Core Data */
+                    for artist in self.trackerList! where artist.artistId == searchResult.artistId {
+                        self.sharedContext.deleteObject(artist)
+                    }
+                    /* Save the context */
+                    CoreDataStackManager.sharedInstance().saveContext()
+
+                    /* Display error message */
                     self.presentViewController(alert(errorString!), animated: true, completion: nil)
                 }
             }
@@ -224,8 +235,8 @@ extension ArtistSearchViewController: UICollectionViewDataSource {
             
         // switch is supposed to be exhaustive, so have .NotSearcedYet even though it should never be reached
         case .NotSearchedYet:
-            fatalError("Should never get here")
-            
+            //fatalError("Should never get here")
+            return UICollectionViewCell()
         case .Searching:
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewCellIdentifiers.searchingCell, forIndexPath: indexPath)
             let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
