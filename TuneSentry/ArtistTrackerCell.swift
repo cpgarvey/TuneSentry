@@ -11,8 +11,8 @@ import UIKit
 
 
 protocol ArtistTrackerCellDelegate: class {
-    func showUrlError(errorMessage: String)
-    func removeArtistFromTracker(artist: Artist)
+    func showUrlError(_ errorMessage: String)
+    func removeArtistFromTracker(_ artist: Artist)
 }
 
 
@@ -37,7 +37,7 @@ class ArtistTrackerCell: UICollectionViewCell {
         super.awakeFromNib()
         
         layer.borderWidth = 1
-        layer.borderColor = UIColor.lightGrayColor().CGColor
+        layer.borderColor = UIColor.lightGray.cgColor
         layer.cornerRadius = 5
         
     }
@@ -45,10 +45,10 @@ class ArtistTrackerCell: UICollectionViewCell {
     
     // MARK: - Actions
     
-    @IBAction func openArtistUrl(sender: UIButton) {
+    @IBAction func openArtistUrl(_ sender: UIButton) {
         
-        if let url = NSURL(string: artist!.artistLinkUrl) {
-            guard UIApplication.sharedApplication().openURL(url) else {
+        if let url = URL(string: artist!.artistLinkUrl) {
+            guard UIApplication.shared.openURL(url) else {
                 delegate?.showUrlError("There was an error opening this Artist in iTunes.")
                 return
             }
@@ -58,7 +58,7 @@ class ArtistTrackerCell: UICollectionViewCell {
     }
     
 
-    @IBAction func removeArtistFromWatchlist(sender: UIButton) {
+    @IBAction func removeArtistFromWatchlist(_ sender: UIButton) {
         // send a message back to the controller that the artist should be removed from the tracker
         delegate?.removeArtistFromTracker(artist!)
     }

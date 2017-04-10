@@ -14,22 +14,22 @@ import Dispatch
 /* Global functions */
 
 // alert that takes in a string and returns a UIAlertController */
-func alert(message: String) -> UIAlertController {
-    let alert = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
-    let action = UIAlertAction(title: "Dismiss", style: .Default, handler: nil)
+func alert(_ message: String) -> UIAlertController {
+    let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+    let action = UIAlertAction(title: "Dismiss", style: .default, handler: nil)
     alert.addAction(action)
     return alert
 }
 
 // afterDelay executes a closure after a certain amount of time
-func afterDelay(seconds: Double, closure: () -> ()) {
-    let when = dispatch_time(DISPATCH_TIME_NOW, Int64(seconds * Double(NSEC_PER_SEC)))
-    dispatch_after(when, dispatch_get_main_queue(), closure)
+func afterDelay(_ seconds: Double, closure: () -> ()) {
+    let when = DispatchTime.now() + Double(Int64(seconds * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+    DispatchQueue.main.asyncAfter(deadline: when, execute: closure)
 }
 
 /* GCD function to update main queue */
-func performOnMain(updates: () -> Void) {
-    dispatch_async(dispatch_get_main_queue()) {
+func performOnMain(_ updates: () -> Void) {
+    DispatchQueue.main.async {
         updates()
     }
 }

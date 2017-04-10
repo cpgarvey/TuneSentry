@@ -21,17 +21,17 @@ class Artist: NSManagedObject {
     @NSManaged var artistName: String
     @NSManaged var primaryGenreName: String
     @NSManaged var mostRecentRelease: Int
-    @NSManaged var mostRecentArtwork: NSData?
+    @NSManaged var mostRecentArtwork: Data?
     
     var delegate: ArtistDelegate?
     
-    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
     }
     
     init(searchResult: SearchResult, context: NSManagedObjectContext, completion: (success: Bool, errorString: String?) -> Void) {
-        let entity = NSEntityDescription.entityForName("Artist", inManagedObjectContext: context)!
-        super.init(entity: entity, insertIntoManagedObjectContext: context)
+        let entity = NSEntityDescription.entity(forEntityName: "Artist", in: context)!
+        super.init(entity: entity, insertInto: context)
         
         // assign all the variables using the SearchResult that is passed in
         self.artistId = searchResult.artistId
@@ -79,8 +79,8 @@ class Artist: NSManagedObject {
                 
                 for newRelease in newReleases {
                     NewRelease.newReleases.append(newRelease)
-                    NewRelease.newReleases.sortInPlace {
-                        $0.artistName.localizedCaseInsensitiveCompare($1.artistName) == NSComparisonResult.OrderedAscending
+                    NewRelease.newReleases.sort {
+                        $0.artistName.localizedCaseInsensitiveCompare($1.artistName) == ComparisonResult.orderedAscending
                     }
                 }
                 

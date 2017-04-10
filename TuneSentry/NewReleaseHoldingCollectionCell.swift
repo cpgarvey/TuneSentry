@@ -25,10 +25,10 @@ class NewReleaseHoldingCollectionCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
      
-        holdingCollectionView.backgroundColor = UIColor.clearColor()
+        holdingCollectionView.backgroundColor = UIColor.clear
         
         let cellNib = UINib(nibName: CollectionViewCellIdentifiers.newReleaseCollectionCell, bundle: nil)
-        holdingCollectionView.registerNib(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.newReleaseCollectionCell)
+        holdingCollectionView.register(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.newReleaseCollectionCell)
         
     }
 
@@ -38,7 +38,7 @@ class NewReleaseHoldingCollectionCell: UICollectionViewCell {
     // citation: https://ashfurrow.com/blog/putting-a-uicollectionview-in-a-uitableviewcell-in-swift/
     func setCollectionViewDataSourceDelegate
         <D: protocol<UICollectionViewDataSource, UICollectionViewDelegate>>
-        (dataSourceDelegate: D, forRow row: Int) {
+        (_ dataSourceDelegate: D, forRow row: Int) {
         
         holdingCollectionView.delegate = dataSourceDelegate
         holdingCollectionView.dataSource = dataSourceDelegate
@@ -55,7 +55,7 @@ extension NewReleaseHoldingCollectionCell: UICollectionViewDelegate {
         let newReleaseLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         newReleaseLayout.sectionInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
         newReleaseLayout.minimumInteritemSpacing = 5
-        newReleaseLayout.scrollDirection = .Horizontal
+        newReleaseLayout.scrollDirection = .horizontal
         holdingCollectionView.collectionViewLayout = newReleaseLayout
         
     }

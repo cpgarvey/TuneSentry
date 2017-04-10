@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 
 protocol SearchResultCellDelegate: class {
-    func showUrlError(errorMessage: String)
-    func addArtistToTracker(searchResult: SearchResult)
-    func removeArtistFromTracker(searchResult: SearchResult)
+    func showUrlError(_ errorMessage: String)
+    func addArtistToTracker(_ searchResult: SearchResult)
+    func removeArtistFromTracker(_ searchResult: SearchResult)
     func dismissKeyboard()
 }
 
@@ -37,7 +37,7 @@ class SearchResultCell: UICollectionViewCell {
         super.awakeFromNib()
         
         layer.borderWidth = 1
-        layer.borderColor = UIColor.lightGrayColor().CGColor
+        layer.borderColor = UIColor.lightGray.cgColor
         layer.cornerRadius = 5
         
     }
@@ -45,10 +45,10 @@ class SearchResultCell: UICollectionViewCell {
     
     // MARK: - Actions
     
-    @IBAction func openArtistUrl(sender: UIButton) {
+    @IBAction func openArtistUrl(_ sender: UIButton) {
         delegate?.dismissKeyboard()
-        if let url = NSURL(string: searchResult!.artistLinkUrl) {
-            guard UIApplication.sharedApplication().openURL(url) else {
+        if let url = URL(string: searchResult!.artistLinkUrl) {
+            guard UIApplication.shared.openURL(url) else {
                 delegate?.showUrlError("There was an error opening this Artist in iTunes.")
                 return
             }
@@ -58,7 +58,7 @@ class SearchResultCell: UICollectionViewCell {
     }
     
     
-    @IBAction func addArtistToWatchlist(sender: UIButton) {
+    @IBAction func addArtistToWatchlist(_ sender: UIButton) {
         delegate?.dismissKeyboard()
         if searchResult!.inTracker {
             // if the artist is already being tracked, then send a message to the delegate removing the artist

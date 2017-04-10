@@ -18,15 +18,15 @@ class HudView: UIView {
     static var actionType: TrackerAction?
     
     enum TrackerAction {
-        case Add
-        case Remove
+        case add
+        case remove
     }
     
-    class func hudInView(view: UIView, animated: Bool) -> HudView {
+    class func hudInView(_ view: UIView, animated: Bool) -> HudView {
 
         let hudView = HudView(frame: view.bounds)
         
-        hudView.opaque = false
+        hudView.isOpaque = false
         
         view.addSubview(hudView)
         
@@ -34,7 +34,7 @@ class HudView: UIView {
         return hudView
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         
         let boxWidth: CGFloat = 96
         let boxHeight: CGFloat = 96
@@ -49,7 +49,7 @@ class HudView: UIView {
         UIColor(white: 0.3, alpha: 0.8).setFill()
         roundedRect.fill()
         
-        if HudView.actionType == .Add {
+        if HudView.actionType == .add {
             symbol = "+"
             text = "Added!"
         } else {
@@ -58,56 +58,56 @@ class HudView: UIView {
         }
         
         // set the text (either "Added!" or "Removed!")
-        let textAttribs = [ NSFontAttributeName: UIFont.systemFontOfSize(16),
-                        NSForegroundColorAttributeName: UIColor.whiteColor() ]
+        let textAttribs = [ NSFontAttributeName: UIFont.systemFont(ofSize: 16),
+                        NSForegroundColorAttributeName: UIColor.white ]
         
-        let textSize = text.sizeWithAttributes(textAttribs)
+        let textSize = text.size(attributes: textAttribs)
         
         let textPoint = CGPoint(
             x: center.x - round(textSize.width / 2),
             y: center.y - round(textSize.height / 2) + boxHeight / 4)
         
         
-        text.drawAtPoint(textPoint, withAttributes: textAttribs)
+        text.draw(at: textPoint, withAttributes: textAttribs)
         
         // set the symbol (either + or - )
-        let symbolAttribs = [ NSFontAttributeName: UIFont.systemFontOfSize(64),
-                            NSForegroundColorAttributeName: UIColor.whiteColor() ]
+        let symbolAttribs = [ NSFontAttributeName: UIFont.systemFont(ofSize: 64),
+                            NSForegroundColorAttributeName: UIColor.white ]
         
         
-        let symbolSize = symbol.sizeWithAttributes(symbolAttribs)
+        let symbolSize = symbol.size(attributes: symbolAttribs)
         
         let symbolPoint = CGPoint(
             x: center.x - round(symbolSize.width / 2),
             y: center.y - round(symbolSize.height / 2) - boxHeight / 8)
         
-        symbol.drawAtPoint(symbolPoint, withAttributes: symbolAttribs)
+        symbol.draw(at: symbolPoint, withAttributes: symbolAttribs)
         
     }
     
-    func showAnimated(animated: Bool) {
+    func showAnimated(_ animated: Bool) {
         if animated {
             alpha = 0
-            transform = CGAffineTransformMakeScale(1.3, 1.3)
+            transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
             
-            UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.7,
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7,
                                        initialSpringVelocity: 0.5, options: [], animations: {
                                         self.alpha = 1
-                                        self.transform = CGAffineTransformIdentity
+                                        self.transform = CGAffineTransform.identity
                 },
                                        completion: nil)
         }
     }
     
-    func hideAnimated(animated: Bool) {
+    func hideAnimated(_ animated: Bool) {
         if animated {
             alpha = 1
-            transform = CGAffineTransformMakeScale(1.3, 1.3)
+            transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
             
-            UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.7,
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7,
                                        initialSpringVelocity: 0.5, options: [], animations: {
                                         self.alpha = 0
-                                        self.transform = CGAffineTransformIdentity
+                                        self.transform = CGAffineTransform.identity
                 },
                                        completion: nil)
         }

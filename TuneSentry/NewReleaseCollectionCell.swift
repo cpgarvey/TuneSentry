@@ -27,7 +27,7 @@ class NewReleaseCollectionCell: UICollectionViewCell {
         }
     }
     
-    var downloadTask: NSURLSessionDownloadTask?
+    var downloadTask: URLSessionDownloadTask?
     
     
     // MARK: - Life Cycle
@@ -36,7 +36,7 @@ class NewReleaseCollectionCell: UICollectionViewCell {
         super.awakeFromNib()
         
         layer.borderWidth = 1
-        layer.borderColor = UIColor.darkGrayColor().CGColor
+        layer.borderColor = UIColor.darkGray.cgColor
         layer.cornerRadius = 5
         
     }
@@ -46,7 +46,7 @@ class NewReleaseCollectionCell: UICollectionViewCell {
     
     func downloadAlbumCover() {
         
-        if let url = NSURL(string: artworkUrl100!) {
+        if let url = URL(string: artworkUrl100!) {
             downloadTask = newReleaseImage.loadImageWithUrl(url)
         }
         

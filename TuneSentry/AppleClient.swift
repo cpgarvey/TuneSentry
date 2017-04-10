@@ -11,28 +11,28 @@ import UIKit
 import CoreData
 
 // define completion handlers for convenience
-typealias SearchComplete = (success: Bool, errorString: String?) -> Void
-typealias LookupComplete = (success: Bool, collectionId: Int?, artworkUrl: String?, errorString: String?) -> Void
-typealias NewReleaseCheckComplete = (success: Bool, newReleases: [NewRelease], updatedMostRecentRelease: Int?,  errorString: String?) -> Void
+typealias SearchComplete = (_ success: Bool, _ errorString: String?) -> Void
+typealias LookupComplete = (_ success: Bool, _ collectionId: Int?, _ artworkUrl: String?, _ errorString: String?) -> Void
+typealias NewReleaseCheckComplete = (_ success: Bool, _ newReleases: [NewRelease], _ updatedMostRecentRelease: Int?,  _ errorString: String?) -> Void
 
 class AppleClient: NSObject {
     
     /* Enum to track the state of the searching by the client */
     enum SearchState {
-        case NotSearchedYet
-        case Searching
-        case Error
-        case NoResults
-        case Results([SearchResult]) // the .Results case has an "associated value" of an array of Artists
-        case NewReleases([NewRelease]) // the .NewReleases case has an associated value of an array of new releases
+        case notSearchedYet
+        case searching
+        case error
+        case noResults
+        case results([SearchResult]) // the .Results case has an "associated value" of an array of Artists
+        case newReleases([NewRelease]) // the .NewReleases case has an associated value of an array of new releases
     }
     
     /* Use set parameter on private variable to indicate that other objects can read the variable but cannot assign new values to it */
-    private(set) var state: SearchState = .NotSearchedYet
+    fileprivate(set) var state: SearchState = .notSearchedYet
     
-    private var dataTaskSearch: NSURLSessionDataTask? = nil
-    private var dataTaskLookup: NSURLSessionDataTask? = nil
-    private var dataTaskNewRelease: NSURLSessionDataTask? = nil
+    fileprivate var dataTaskSearch: URLSessionDataTask? = nil
+    fileprivate var dataTaskLookup: URLSessionDataTask? = nil
+    fileprivate var dataTaskNewRelease: URLSessionDataTask? = nil
     
     /* Core Data Convenience */
     lazy var sharedContext: NSManagedObjectContext = {
@@ -42,7 +42,7 @@ class AppleClient: NSObject {
     
     // MARK: - API Functionality
     
-    func performSearchForText(text: String, completion: SearchComplete) {
+    func performSearchForText(_ text: String, completion: SearchComplete) {
         
         if !text.isEmpty {
             
@@ -62,39 +62,38 @@ class AppleClient: NSObject {
             dataTaskSearch?.cancel()
             
             // activate the network activity indicator to show search is occurring 
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             
             // set the state of the search
-            state = .Searching
+            state = .searching
             
             let url = constructSearchURL(withTermDictionary, search: true)
-            let session = NSURLSession.sharedSession()
-            dataTaskSearch = session.dataTaskWithURL(url, completionHandler: { data, response, error in
-                self.state = .NotSearchedYet
+            let session = URLSession.shared
+            dataTaskSearch = session.dataTask(with: url, completionHandler: { data, response, error in
+                self.state = .notSearchedYet
                 var success = false
-                if let error = error where error.code == -999 {
+                if let error = error, error.code == -999 {
                     return // search was cancelled
                 }
                 
-                if let httpResponse = response as? NSHTTPURLResponse
-                    where httpResponse.statusCode == 200,
-                    let data = data, dictionary = self.parseJSON(data) {
+                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200,
+                    let data = data, let dictionary = self.parseJSON(data) {
                     
                     let searchResults = self.parseDictionaryForSearch(dictionary)
                     if searchResults.isEmpty {
-                        self.state = .NoResults
+                        self.state = .noResults
                     } else {
-                        self.state = .Results(searchResults)
+                        self.state = .results(searchResults)
                     }
                     
                     success = true
                     
                 } else {
-                    self.state = .Error
+                    self.state = .error
                 }
                 
                 performOnMain {
-                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     completion(success: success, errorString: nil)
                     return
                 }
@@ -106,7 +105,7 @@ class AppleClient: NSObject {
     }
     
     
-    func performLookupForArtistId(artistId: Int, completion: LookupComplete) {
+    func performLookupForArtistId(_ artistId: Int, completion: LookupComplete) {
         
         /* Set the parameters of the search */
         let methodArguments = [
@@ -117,12 +116,11 @@ class AppleClient: NSObject {
         ]
         
         let url = constructSearchURL(methodArguments, search: false)
-        let session = NSURLSession.sharedSession()
-        dataTaskLookup = session.dataTaskWithURL(url, completionHandler: { data, response, error in
+        let session = URLSession.shared
+        dataTaskLookup = session.dataTask(with: url, completionHandler: { data, response, error in
             
-            if let httpResponse = response as? NSHTTPURLResponse
-                where httpResponse.statusCode == 200,
-                let data = data, dictionary = self.parseJSON(data) {
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200,
+                let data = data, let dictionary = self.parseJSON(data) {
                 
                 guard let results = dictionary["results"] as? [[String:AnyObject]] else {
                     completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "results failed")
@@ -162,7 +160,7 @@ class AppleClient: NSObject {
     
     }
 
-    func checkNewRelease(artistId: Int, mostRecentRelease: Int, completion: NewReleaseCheckComplete) {
+    func checkNewRelease(_ artistId: Int, mostRecentRelease: Int, completion: NewReleaseCheckComplete) {
         
         /* Set the parameters of the search */
         let methodArguments = [
@@ -175,12 +173,11 @@ class AppleClient: NSObject {
         var newReleases = [NewRelease]()
         
         let url = constructSearchURL(methodArguments, search: false)
-        let session = NSURLSession.sharedSession()
-        dataTaskNewRelease = session.dataTaskWithURL(url) { (data, response, error) in
+        let session = URLSession.shared
+        dataTaskNewRelease = session.dataTask(with: url, completionHandler: { (data, response, error) in
             
-            if let httpResponse = response as? NSHTTPURLResponse
-                where httpResponse.statusCode == 200,
-                let data = data, dictionary = self.parseJSON(data) {
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200,
+                let data = data, let dictionary = self.parseJSON(data) {
                 
                 guard let results = dictionary["results"] as? [[String:AnyObject]] else {
                     completion(success: false, newReleases: newReleases, updatedMostRecentRelease: nil, errorString: "results failed")
@@ -235,18 +232,18 @@ class AppleClient: NSObject {
             } else {
                 completion(success: false, newReleases: newReleases, updatedMostRecentRelease: nil, errorString: "results failed")
             }
-        }
+        }) 
         
         dataTaskNewRelease?.resume()
         
     }
     
-    func downloadPhoto(artworkUrl: String, completionHandler: (success: Bool, mostRecentArtwork: NSData?, errorString: String?) -> Void) {
+    func downloadPhoto(_ artworkUrl: String, completionHandler: (_ success: Bool, _ mostRecentArtwork: Data?, _ errorString: String?) -> Void) {
         
-        let session = NSURLSession.sharedSession()
-        let imageURL = NSURL(string: artworkUrl)
+        let session = URLSession.shared
+        let imageURL = URL(string: artworkUrl)
         
-        let sessionTask = session.dataTaskWithURL(imageURL!) { data, response, error in
+        let sessionTask = session.dataTask(with: imageURL!, completionHandler: { data, response, error in
             
             /* GUARD: Was data returned? */
             guard let data = data else {
@@ -256,7 +253,7 @@ class AppleClient: NSObject {
             
             completionHandler(success: true, mostRecentArtwork: data, errorString: nil)
             
-        }
+        }) 
         
         sessionTask.resume()
     }
@@ -265,9 +262,9 @@ class AppleClient: NSObject {
     // MARK: - Helper Functions
 
     /* Construct a iTunes Search URL from parameters */
-    func constructSearchURL(parameters: [String:AnyObject]?, search: Bool) -> NSURL {
+    func constructSearchURL(_ parameters: [String:AnyObject]?, search: Bool) -> URL {
         
-        let components = NSURLComponents()
+        let components = URLComponents()
         components.scheme = Constants.ApiScheme
         components.host = Constants.ApiHost
         if search {
@@ -276,25 +273,25 @@ class AppleClient: NSObject {
             components.path = Constants.ApiPathLookup
         }
         
-        components.queryItems = [NSURLQueryItem]()
+        components.queryItems = [URLQueryItem]()
         
         if parameters != nil {
             
             for (key, value) in parameters! {
-                let queryItem = NSURLQueryItem(name: key, value: "\(value)")
+                let queryItem = URLQueryItem(name: key, value: "\(value)")
                 components.queryItems!.append(queryItem)
             }
             
         }
         
-        return components.URL!
+        return components.url!
     }
     
     /* Parse JSON into swift readable dictionary */
-    private func parseJSON(data: NSData) -> [String: AnyObject]? {
+    fileprivate func parseJSON(_ data: Data) -> [String: AnyObject]? {
         
         do {
-            return try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String: AnyObject]
+            return try JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]
         } catch {
             print("JSON Error: \(error)")
             return nil
@@ -303,7 +300,7 @@ class AppleClient: NSObject {
     }
     
     /* Parse the dictionary to return an array of search results */
-    private func parseDictionaryForSearch(dictionary: [String: AnyObject]) -> [SearchResult] {
+    fileprivate func parseDictionaryForSearch(_ dictionary: [String: AnyObject]) -> [SearchResult] {
         
         guard let array = dictionary["results"] as? [AnyObject] else {
             print("Expected 'results' array")
@@ -332,7 +329,7 @@ class AppleClient: NSObject {
     
     
     /* Parse the search result dictionary */
-    private func parseSearchResult(dictionary: [String: AnyObject]) -> SearchResult {
+    fileprivate func parseSearchResult(_ dictionary: [String: AnyObject]) -> SearchResult {
         let searchResult = SearchResult()
 
         if let artistId = dictionary["artistId"] as? Int {
