@@ -67,7 +67,7 @@ class AppleClient: NSObject {
             // set the state of the search
             state = .searching
             
-            let url = constructSearchURL(withTermDictionary, search: true)
+            let url = constructSearchURL(withTermDictionary as [String : AnyObject], search: true)
             let session = URLSession.shared
             dataTaskSearch = session.dataTask(with: url, completionHandler: { data, response, error in
                 self.state = .notSearchedYet
@@ -115,7 +115,7 @@ class AppleClient: NSObject {
             "limit": "1"
         ]
         
-        let url = constructSearchURL(methodArguments, search: false)
+        let url = constructSearchURL(methodArguments as [String : AnyObject], search: false)
         let session = URLSession.shared
         dataTaskLookup = session.dataTask(with: url, completionHandler: { data, response, error in
             
@@ -172,7 +172,7 @@ class AppleClient: NSObject {
         
         var newReleases = [NewRelease]()
         
-        let url = constructSearchURL(methodArguments, search: false)
+        let url = constructSearchURL(methodArguments as [String : AnyObject], search: false)
         let session = URLSession.shared
         dataTaskNewRelease = session.dataTask(with: url, completionHandler: { (data, response, error) in
             
@@ -247,11 +247,11 @@ class AppleClient: NSObject {
             
             /* GUARD: Was data returned? */
             guard let data = data else {
-                completionHandler(success: false, mostRecentArtwork: nil, errorString: error?.localizedDescription)
+                completionHandler(false, nil, error?.localizedDescription)
                 return
             }
             
-            completionHandler(success: true, mostRecentArtwork: data, errorString: nil)
+            completionHandler(true, data, nil)
             
         }) 
         
@@ -264,7 +264,7 @@ class AppleClient: NSObject {
     /* Construct a iTunes Search URL from parameters */
     func constructSearchURL(_ parameters: [String:AnyObject]?, search: Bool) -> URL {
         
-        let components = URLComponents()
+        var components = URLComponents()
         components.scheme = Constants.ApiScheme
         components.host = Constants.ApiHost
         if search {

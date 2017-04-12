@@ -27,10 +27,4 @@ func afterDelay(_ seconds: Double, closure: () -> ()) {
     DispatchQueue.main.asyncAfter(deadline: when, execute: closure)
 }
 
-/* GCD function to update main queue */
-func performOnMain(_ updates: () -> Void) {
-    DispatchQueue.main.async {
-        updates()
-    }
-}
 

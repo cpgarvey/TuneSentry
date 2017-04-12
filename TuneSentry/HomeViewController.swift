@@ -22,12 +22,9 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
     var deletedIndexPathsForTracker: [IndexPath]!
     var updatedIndexPathsForTracker: [IndexPath]!
     
-    /* Core Data Convenience */
-    lazy var sharedContext: NSManagedObjectContext = {
-        return CoreDataStackManager.sharedInstance().managedObjectContext
-    }()
+    /* Core Data Properties */
+    var coreDataStack: CoreDataStack!
     
-    /* Fetched Results Controller for the Tracker */
     lazy var fetchedResultsControllerForTracker: NSFetchedResultsController = {
         
         let fetchRequest = NSFetchRequest(entityName: "Artist")

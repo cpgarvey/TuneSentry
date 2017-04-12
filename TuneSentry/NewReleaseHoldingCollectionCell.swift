@@ -37,7 +37,7 @@ class NewReleaseHoldingCollectionCell: UICollectionViewCell {
     
     // citation: https://ashfurrow.com/blog/putting-a-uicollectionview-in-a-uitableviewcell-in-swift/
     func setCollectionViewDataSourceDelegate
-        <D: protocol<UICollectionViewDataSource, UICollectionViewDelegate>>
+        <D: UICollectionViewDataSource & UICollectionViewDelegate>
         (_ dataSourceDelegate: D, forRow row: Int) {
         
         holdingCollectionView.delegate = dataSourceDelegate

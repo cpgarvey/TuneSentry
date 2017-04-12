@@ -9,7 +9,7 @@
 import Foundation
 
 
-class NewRelease {
+struct NewRelease {
     
     var collectionID: Int
     var collectionName: String

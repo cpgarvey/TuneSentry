@@ -18,7 +18,7 @@ extension UIImageView {
             [weak self] url, response, error in
             
             if error == nil, let url = url,
-                data = try? Data(contentsOf: url), image = UIImage(data: data) {
+                let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
                 performOnMain {
                     if let strongSelf = self {
                         strongSelf.image = image

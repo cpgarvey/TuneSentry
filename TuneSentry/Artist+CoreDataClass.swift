@@ -1,12 +1,13 @@
 //
-//  Artist.swift
+//  Artist+CoreDataClass.swift
 //  TuneSentry
 //
-//  Created by Chris Garvey on 5/24/16.
-//  Copyright © 2016 Chris Garvey. All rights reserved.
+//  Created by Chris Garvey on 4/12/17.
+//  Copyright © 2017 Chris Garvey. All rights reserved.
 //
 
 import Foundation
+
 import CoreData
 
 protocol ArtistDelegate: class {
@@ -16,22 +17,9 @@ protocol ArtistDelegate: class {
 
 class Artist: NSManagedObject {
     
-    @NSManaged var artistId: Int
-    @NSManaged var artistLinkUrl: String
-    @NSManaged var artistName: String
-    @NSManaged var primaryGenreName: String
-    @NSManaged var mostRecentRelease: Int
-    @NSManaged var mostRecentArtwork: Data?
+    public var delegate: ArtistDelegate?
     
-    var delegate: ArtistDelegate?
-    
-    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertInto: context)
-    }
-    
-    init(searchResult: SearchResult, context: NSManagedObjectContext, completion: (success: Bool, errorString: String?) -> Void) {
-        let entity = NSEntityDescription.entity(forEntityName: "Artist", in: context)!
-        super.init(entity: entity, insertInto: context)
+    func populateArtistFieldsWith(searchResult: SearchResult, completion: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
         // assign all the variables using the SearchResult that is passed in
         self.artistId = searchResult.artistId
@@ -47,25 +35,24 @@ class Artist: NSManagedObject {
             if success {
                 
                 if mostRecentArtwork != nil {
-                    performOnMain {
+                    DispatchQueue.main.async {
                         self.mostRecentRelease = mostRecentRelease!
                         self.mostRecentArtwork = mostRecentArtwork!
-                        completion(success: true, errorString: nil)
+                        completion(true, nil)
                     }
                 } else {
-                    performOnMain {
+                    DispatchQueue.main.async {
                         self.mostRecentRelease = mostRecentRelease!
                         self.mostRecentArtwork = nil
-                        completion(success: true, errorString: nil)
+                        completion(true, nil)
                     }
                 }
                 
             } else {
-                print("Init failed")
-                completion(success: false, errorString: errorString)
+                print("Unable to download most recent release and artwork")
+                completion(false, errorString)
             }
         })
-       
     }
     
     func checkForNewRelease() {
@@ -84,8 +71,8 @@ class Artist: NSManagedObject {
                     }
                 }
                 
-                // notify the delegate there are new releases so update the collection view 
-                performOnMain {
+                // notify the delegate there are new releases so update the collection view
+                DispatchQueue.main.async {
                     self.mostRecentRelease = updatedMostRecentRelease!
                     NewRelease.artistsHaveBeenChecked += 1
                     print("Artists checked: \(NewRelease.artistsHaveBeenChecked)")
@@ -107,5 +94,4 @@ class Artist: NSManagedObject {
             }
         }
     }
-    
 }

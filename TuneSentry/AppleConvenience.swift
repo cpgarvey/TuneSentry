@@ -11,7 +11,7 @@ import Foundation
 extension AppleClient {
     
     // if an artist is added to the tracker than determine its most recent release and artwork
-    func downloadDataForArtist(_ artistId: Int, completionHandler: (success: Bool, mostRecentRelease: Int?, mostRecentArtwork: Data?, errorString: String?) -> Void) {
+    func downloadDataForArtist(_ artistId: Int, completionHandler: (_ success: Bool, _ mostRecentRelease: Int?, _ mostRecentArtwork: Data?, _ errorString: String?) -> Void) {
         
         // first use the lookupto determine the most recent release and the artwork URL
         performLookupForArtistId(artistId, completion: { success, collectionId, artworkUrl, errorString in

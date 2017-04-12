@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SearchResult {
+struct SearchResult {
     
     var artistId: Int = 0
     var artistName = ""
