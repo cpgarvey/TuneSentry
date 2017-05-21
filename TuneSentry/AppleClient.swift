@@ -17,6 +17,8 @@ typealias NewReleaseCheckComplete = (_ success: Bool, _ newReleases: [NewRelease
 
 class AppleClient: NSObject {
     
+    // this should have a child context variable that is set by the parent
+    
     /* Enum to track the state of the searching by the client */
     enum SearchState {
         case notSearchedYet
@@ -34,15 +36,10 @@ class AppleClient: NSObject {
     fileprivate var dataTaskLookup: URLSessionDataTask? = nil
     fileprivate var dataTaskNewRelease: URLSessionDataTask? = nil
     
-    /* Core Data Convenience */
-    lazy var sharedContext: NSManagedObjectContext = {
-        return CoreDataStackManager.sharedInstance().managedObjectContext
-    }()
-    
     
     // MARK: - API Functionality
     
-    func performSearchForText(_ text: String, completion: SearchComplete) {
+    func performSearchForText(_ text: String, completion: @escaping SearchComplete) {
         
         if !text.isEmpty {
             
@@ -70,9 +67,11 @@ class AppleClient: NSObject {
             let url = constructSearchURL(withTermDictionary as [String : AnyObject], search: true)
             let session = URLSession.shared
             dataTaskSearch = session.dataTask(with: url, completionHandler: { data, response, error in
+                
                 self.state = .notSearchedYet
                 var success = false
-                if let error = error, error.code == -999 {
+                
+                if let error = error, (error as NSError).code == -999 {
                     return // search was cancelled
                 }
                 
@@ -92,12 +91,9 @@ class AppleClient: NSObject {
                     self.state = .error
                 }
                 
-                performOnMain {
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                    completion(success: success, errorString: nil)
-                    return
-                }
-                
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                completion(success, nil)
+                return
             })
             
             dataTaskSearch?.resume()
@@ -105,7 +101,7 @@ class AppleClient: NSObject {
     }
     
     
-    func performLookupForArtistId(_ artistId: Int, completion: LookupComplete) {
+    func performLookupForArtistId(_ artistId: Int, completion: @escaping LookupComplete) {
         
         /* Set the parameters of the search */
         let methodArguments = [
@@ -123,7 +119,7 @@ class AppleClient: NSObject {
                 let data = data, let dictionary = self.parseJSON(data) {
                 
                 guard let results = dictionary["results"] as? [[String:AnyObject]] else {
-                    completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "results failed")
+                    completion(false, nil, nil, "results failed")
                     return
                 }
                 
@@ -131,36 +127,33 @@ class AppleClient: NSObject {
                     
                     // find the most recent collection id that will be used to check for new releases in the future
                     guard let collectionId = results[1]["collectionId"] as? Int else {
-                        completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "Determining most recent release failed: cannot add to tracker")
+                        completion(false, nil, nil, "Determining most recent release failed: cannot add to tracker")
                         return
                     }
                     
                     // obtain the most recent artwork so that it can be displayed with the artist cell
                     guard let mostRecentArtworkUrl = results[1]["artworkUrl100"] as? String else {
-                        completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "Determining artwork failed: cannot add to tracker")
+                        completion(false, nil, nil, "Determining artwork failed: cannot add to tracker")
                         return
                     }
                     
-                    completion(success: true, collectionId: collectionId, artworkUrl: mostRecentArtworkUrl, errorString: nil)
+                    completion(true, collectionId, mostRecentArtworkUrl, nil)
+                    return
                     
                 } else {
-                    completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "No releases for artist: cannot add to tracker")
-                    return
-
+                    completion(false, nil, nil, "No releases for artist: cannot add to tracker")
                 }
-                
             } else {
-                completion(success: false, collectionId: nil, artworkUrl: nil, errorString: "Unable to lookup artist: cannot add to tracker")
+                completion(false, nil, nil, "Unable to lookup artist: cannot add to tracker")
                 return
             }
-            
         })
         
         dataTaskLookup?.resume()
     
     }
 
-    func checkNewRelease(_ artistId: Int, mostRecentRelease: Int, completion: NewReleaseCheckComplete) {
+    func checkNewRelease(_ artistId: Int, mostRecentRelease: Int, completion: @escaping NewReleaseCheckComplete) {
         
         /* Set the parameters of the search */
         let methodArguments = [
@@ -180,20 +173,20 @@ class AppleClient: NSObject {
                 let data = data, let dictionary = self.parseJSON(data) {
                 
                 guard let results = dictionary["results"] as? [[String:AnyObject]] else {
-                    completion(success: false, newReleases: newReleases, updatedMostRecentRelease: nil, errorString: "results failed")
+                    completion(false, newReleases, nil, "results failed")
                     return
                 }
                 
                 if results.count > 1 {
                     
                     guard let firstCollectionId = results[1]["collectionId"] as? Int else {
-                        completion(success: false, newReleases: newReleases, updatedMostRecentRelease: nil, errorString: "results failed")
+                        completion(false, newReleases, nil, "results failed")
                         return
                     }
 
                     // check to see if the first id in the results matches the most recent release for the artist... if so, no new releases
                     if firstCollectionId == mostRecentRelease {
-                        completion(success: true, newReleases: newReleases, updatedMostRecentRelease: nil, errorString: nil)
+                        completion(true, newReleases, nil, nil)
                         return
                     }
                     
@@ -202,7 +195,7 @@ class AppleClient: NSObject {
                         
                         if result["collectionId"] as? Int == mostRecentRelease {
                             // if the loop has reached the artist's most recent release, then update the most recent release to the first id
-                            completion(success: true, newReleases: newReleases, updatedMostRecentRelease: firstCollectionId, errorString: nil)
+                            completion(true, newReleases, firstCollectionId, nil)
                             return
                         } else {
                             let newRelease = NewRelease(dictionary: result)
@@ -220,17 +213,17 @@ class AppleClient: NSObject {
 //                                    }
                     
                     // call the completion handler in the event that the loop goes through all of the results and doesn't hit the mostRecentRelease
-                    completion(success: true, newReleases: newReleases, updatedMostRecentRelease: firstCollectionId, errorString: nil)
+                    completion(true, newReleases, firstCollectionId, nil)
                     return
                     
                 } else {
-                    completion(success: false, newReleases: newReleases, updatedMostRecentRelease: nil, errorString: "No releases available to check")
+                    completion(false, newReleases, nil, "No releases available to check")
                     return
                 }
                 
                 
             } else {
-                completion(success: false, newReleases: newReleases, updatedMostRecentRelease: nil, errorString: "results failed")
+                completion(false, newReleases, nil, "results failed")
             }
         }) 
         
@@ -238,7 +231,7 @@ class AppleClient: NSObject {
         
     }
     
-    func downloadPhoto(_ artworkUrl: String, completionHandler: (_ success: Bool, _ mostRecentArtwork: Data?, _ errorString: String?) -> Void) {
+    func downloadPhoto(_ artworkUrl: String, completionHandler: @escaping (_ success: Bool, _ mostRecentArtwork: Data?, _ errorString: String?) -> Void) {
         
         let session = URLSession.shared
         let imageURL = URL(string: artworkUrl)
@@ -261,7 +254,7 @@ class AppleClient: NSObject {
     
     // MARK: - Helper Functions
 
-    /* Construct a iTunes Search URL from parameters */
+    /* Construct an iTunes Search URL from parameters */
     func constructSearchURL(_ parameters: [String:AnyObject]?, search: Bool) -> URL {
         
         var components = URLComponents()
@@ -327,10 +320,9 @@ class AppleClient: NSObject {
         return searchResults
     }
     
-    
     /* Parse the search result dictionary */
     fileprivate func parseSearchResult(_ dictionary: [String: AnyObject]) -> SearchResult {
-        let searchResult = SearchResult()
+        var searchResult = SearchResult()
 
         if let artistId = dictionary["artistId"] as? Int {
             searchResult.artistId = artistId

@@ -11,7 +11,7 @@ import Foundation
 extension AppleClient {
     
     // if an artist is added to the tracker than determine its most recent release and artwork
-    func downloadDataForArtist(_ artistId: Int, completionHandler: (_ success: Bool, _ mostRecentRelease: Int?, _ mostRecentArtwork: Data?, _ errorString: String?) -> Void) {
+    func downloadDataForArtist(_ artistId: Int, completionHandler: @escaping (_ success: Bool, _ mostRecentRelease: Int?, _ mostRecentArtwork: Data?, _ errorString: String?) -> Void) {
         
         // first use the lookupto determine the most recent release and the artwork URL
         performLookupForArtistId(artistId, completion: { success, collectionId, artworkUrl, errorString in
@@ -23,21 +23,20 @@ extension AppleClient {
                     
                     if success {
                     
-                        completionHandler(success: true, mostRecentRelease: collectionId, mostRecentArtwork: mostRecentArtwork!, errorString: nil)
+                        completionHandler(true, collectionId, mostRecentArtwork!, nil)
                         
                     } else {
                         // unable to download artwork but the most recent release is OK
-                        completionHandler(success: true, mostRecentRelease: collectionId, mostRecentArtwork: nil, errorString: "Unable to download artwork")
+                        completionHandler(true, collectionId, nil, "Unable to download artwork")
                     }
                 
                 })
         
             } else {
                 // unable to lookup artist
-                completionHandler(success: false, mostRecentRelease: nil, mostRecentArtwork: nil, errorString: errorString)
+                completionHandler(false, nil, nil, errorString)
             }
     
         })
     }
-    
 }

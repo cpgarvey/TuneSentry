@@ -48,10 +48,18 @@ class ArtistTrackerCell: UICollectionViewCell {
     @IBAction func openArtistUrl(_ sender: UIButton) {
         
         if let url = URL(string: artist!.artistLinkUrl) {
-            guard UIApplication.shared.openURL(url) else {
-                delegate?.showUrlError("There was an error opening this Artist in iTunes.")
-                return
-            }
+            
+            let options = ["UIApplicationOpenURLOptionUniversalLinksOnly" : 0]
+            
+            UIApplication.shared.open(url, options: options, completionHandler: { success in
+                
+                if !success {
+                    
+                    self.delegate?.showUrlError("There was an error opening this Artist in iTunes.")
+                    return
+                    
+                }
+            })
         } else {
             delegate?.showUrlError("There was an error opening this Artist in iTunes.")
         }

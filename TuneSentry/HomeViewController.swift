@@ -22,18 +22,21 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
     var deletedIndexPathsForTracker: [IndexPath]!
     var updatedIndexPathsForTracker: [IndexPath]!
     
-    /* Core Data Properties */
-    var coreDataStack: CoreDataStack!
     
-    lazy var fetchedResultsControllerForTracker: NSFetchedResultsController = {
+    /* Core Data Convenience */
+    lazy var sharedContext: NSManagedObjectContext = {
+        return CoreDataStack.sharedInstance.mainContext
+    }()
+    
+    lazy var fetchedResultsControllerForTracker: NSFetchedResultsController<Artist> = {
         
-        let fetchRequest = NSFetchRequest(entityName: "Artist")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
         let nameSort = NSSortDescriptor(key: "artistName", ascending: true)
         fetchRequest.sortDescriptors = [nameSort]
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
         
-        return fetchedResultsController
+        return fetchedResultsController as! NSFetchedResultsController<Artist>
         
     }()
     
@@ -82,6 +85,7 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
         } catch {}
         
         fetchedResultsControllerForTracker.delegate = self
+        
         if !(fetchedResultsControllerForTracker.fetchedObjects?.isEmpty)! {
         
             /* Check for new releases from the artists currently in the tracker */
@@ -100,7 +104,7 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
     // MARK: - Helper Functions
     
     func checkForNewReleases() {
-        guard let trackedArtists = fetchedResultsControllerForTracker.fetchedObjects as? [Artist] else { return }
+        guard let trackedArtists = fetchedResultsControllerForTracker.fetchedObjects else { return }
         
         NewRelease.checkingForNewReleases = true
         mainCollectionView.reloadSections(IndexSet(integer: 0))
@@ -121,10 +125,18 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
         sharedContext.delete(artist)
         
         /* Save the context */
-        CoreDataStackManager.sharedInstance().saveContext()
-        
-        if fetchedResultsControllerForTracker.sections![0].numberOfObjects == 0 {
-            mainCollectionView.reloadSections(IndexSet(integer: 0))
+        CoreDataStack.sharedInstance.saveContext() { success in
+            
+            if success {
+                
+                if fetchedResultsControllerForTracker.sections![0].numberOfObjects == 0 {
+                    self.mainCollectionView.reloadSections(IndexSet(integer: 0))
+                }
+                
+            } else {
+                print("Error: couldn't save context")
+            }
+            
         }
     }
     
@@ -134,7 +146,7 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
     
     func updateNewReleasesCollectionView() {
         
-        performOnMain {
+        DispatchQueue.main.async {
             NewRelease.checkingForNewReleases = false
             self.mainCollectionView.reloadData()
         }
@@ -262,7 +274,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 let indexNumber = indexPath.item
                 let adjustedIndexPath = IndexPath(item: indexNumber, section: 0)
                 
-                let artist = fetchedResultsControllerForTracker.object(at: adjustedIndexPath) as! Artist
+                let artist = fetchedResultsControllerForTracker.object(at: adjustedIndexPath) 
                 
                 cell.artist = artist
                 cell.artistNameLabel.text = artist.artistName
@@ -394,10 +406,16 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let cell = collectionView.cellForItem(at: indexPath) as! NewReleaseCollectionCell
             
             if let url = URL(string: cell.newRelease!.collectionViewUrl) {
-                guard UIApplication.shared.openURL(url) else {
-                    showUrlError("There was an error opening this Artist in iTunes.")
-                    return
-                }
+                let options = ["UIApplicationOpenURLOptionUniversalLinksOnly" : 0]
+                
+                UIApplication.shared.open(url, options: options, completionHandler: { success in
+                    
+                    if !success {
+                        
+                        self.showUrlError("Unable to open web application at this time.")
+                        
+                    }
+                })
             } else {
                 showUrlError("There was an error opening this Artist in iTunes.")
             }

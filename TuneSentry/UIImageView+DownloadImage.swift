@@ -19,7 +19,7 @@ extension UIImageView {
             
             if error == nil, let url = url,
                 let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
-                performOnMain {
+                DispatchQueue.main.async {
                     if let strongSelf = self {
                         strongSelf.image = image
                     }

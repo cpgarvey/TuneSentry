@@ -41,6 +41,10 @@ class CoreDataStack {
         self.modelName = modelName
     }
     
+    
+    // MARK: Singleton
+    
+    static let sharedInstance = CoreDataStack(modelName: "DataModel")
 }
 
 

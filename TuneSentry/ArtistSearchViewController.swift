@@ -22,7 +22,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     
     /* Core Data Convenience */
     lazy var sharedContext: NSManagedObjectContext = {
-        return CoreDataStackManager.sharedInstance().managedObjectContext
+        return CoreDataStack.sharedInstance.mainContext
     }()
     
     
@@ -91,24 +91,34 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     func addArtistToTracker(_ searchResult: SearchResult) {
         
         /* create an Artist object and save it to Core Data */
-        let _ = Artist(searchResult: searchResult, context: sharedContext) { success, errorString in
+        let artist = Artist(context: sharedContext)
+        artist.populateArtistFieldsWith(searchResult: searchResult, completion: { success, errorString in
+        
             if success {
                 
-                performOnMain {
                     /* Save the Core Data Context that includes the new Artist object */
-                    CoreDataStackManager.sharedInstance().saveContext()
-                
-                    /* show HUD indicating to user that Artist was saved */
-                    self.showHUD(HudView.TrackerAction.add)
-                
-                    /* update the watchlist */
-                    self.trackerList = self.fetchTrackedArtists()
+                CoreDataStack.sharedInstance.saveContext() { success in
                     
-                    /* reload the table data */
-                    self.collectionView.reloadData()
+                    if success {
+                    
+                        /* show HUD indicating to user that Artist was saved */
+                        self.showHUD(HudView.TrackerAction.add)
+                        
+                        /* update the watchlist */
+                        self.trackerList = self.fetchTrackedArtists()
+                        
+                        /* reload the table data */
+                        self.collectionView.reloadData()
+                        
+                    } else {
+                        
+                        print("Core Data save failed")
+                        
+                    }
                 }
+                
             } else {
-                performOnMain {
+                
                     /* update the watchlist */
                     self.trackerList = self.fetchTrackedArtists()
 
@@ -116,14 +126,23 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
                     for artist in self.trackerList! where artist.artistId == searchResult.artistId {
                         self.sharedContext.delete(artist)
                     }
+                
                     /* Save the context */
-                    CoreDataStackManager.sharedInstance().saveContext()
-
-                    /* Display error message */
-                    self.present(alert(errorString!), animated: true, completion: nil)
-                }
+                    CoreDataStack.sharedInstance.saveContext() { success in
+                    
+                        if success {
+                    
+                            /* Display error message */
+                            self.present(alert(errorString!), animated: true, completion: nil)
+                            
+                        } else {
+                            
+                            print("Core Data save failed")
+                            
+                        }
+                    }
             }
-        }
+        })
     }
     
     func removeArtistFromTracker(_ searchResult: SearchResult) {
@@ -134,17 +153,26 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         }
         
         /* Save the context */
-        CoreDataStackManager.sharedInstance().saveContext()
-        
-        /* show the user a removal HUD */
-        showHUD(HudView.TrackerAction.remove)
-        
-        /* update the watchlist to reflect current artists after removal of this artist */
-        trackerList = fetchTrackedArtists()
-        
-        /* reload the table data */
-        self.collectionView.reloadData()
-        
+        CoreDataStack.sharedInstance.saveContext() { success in
+         
+            if success {
+                
+                /* show the user a removal HUD */
+                showHUD(HudView.TrackerAction.remove)
+                
+                /* update the watchlist to reflect current artists after removal of this artist */
+                trackerList = fetchTrackedArtists()
+                
+                /* reload the table data */
+                self.collectionView.reloadData()
+                
+            } else {
+                
+                print("Unable to save context")
+                
+            }
+            
+        }
     }
     
     
@@ -155,7 +183,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     }
     
     func fetchTrackedArtists() -> [Artist] {
-        let fetchRequest = NSFetchRequest(entityName: "Artist")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
         
         do {
             return try sharedContext.fetch(fetchRequest) as! [Artist]
@@ -251,7 +279,7 @@ extension ArtistSearchViewController: UICollectionViewDataSource {
             
         case .results(let list):
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCellIdentifiers.searchResultCell, for: indexPath) as! SearchResultCell
-            let searchResult = list[indexPath.row]
+            var searchResult = list[indexPath.row]
             
             // set default inTracker to false to make sure a search result that was formerly in the tracker but removed is now marked false
             searchResult.inTracker = false
