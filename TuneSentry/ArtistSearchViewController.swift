@@ -31,40 +31,6 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // keyboard should appear upon view loading
-        searchBar.becomeFirstResponder()
-    
-        // set the contentInset so that the first rows of the table always fully appears: 44 pts (search bar) 
-        collectionView.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
-        
-        // load the nibs
-        var cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchingCell, bundle: nil)
-        collectionView.register(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchingCell)
-        
-        cellNib = UINib(nibName: CollectionViewCellIdentifiers.nothingFoundCell, bundle: nil)
-        collectionView.register(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.nothingFoundCell)
-        
-        cellNib = UINib(nibName: CollectionViewCellIdentifiers.errorCell, bundle: nil)
-        collectionView.register(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.errorCell)
-        
-        cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchResultCell, bundle: nil)
-        collectionView.register(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchResultCell)
-        
-        // set the artists in the tracker
-        trackerList = fetchTrackedArtists()
-        
-        // set up the flow layout for the collection view cells
-        let artistSearchResultLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        artistSearchResultLayout.sectionInset = UIEdgeInsets(top: 6, left: 8, bottom: 0, right: 8)
-        artistSearchResultLayout.minimumLineSpacing = 6
-        artistSearchResultLayout.scrollDirection = .vertical
-        
-        let height = 100
-        let width = Int(self.view.bounds.size.width - 16)
-        
-        artistSearchResultLayout.itemSize = CGSize(width: width, height: height)
-        collectionView.collectionViewLayout = artistSearchResultLayout
-        
         // close keyboard if touching anywhere on the screen
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -177,6 +143,44 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     
     
     // MARK: - Helper Methods
+    
+    func configureView() {
+        
+        // keyboard should appear upon view loading
+        searchBar.becomeFirstResponder()
+        
+        // set the contentInset so that the first rows of the table always fully appears: 44 pts (search bar)
+        collectionView.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
+        
+        // load the nibs
+        var cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchingCell, bundle: nil)
+        collectionView.register(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchingCell)
+        
+        cellNib = UINib(nibName: CollectionViewCellIdentifiers.nothingFoundCell, bundle: nil)
+        collectionView.register(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.nothingFoundCell)
+        
+        cellNib = UINib(nibName: CollectionViewCellIdentifiers.errorCell, bundle: nil)
+        collectionView.register(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.errorCell)
+        
+        cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchResultCell, bundle: nil)
+        collectionView.register(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchResultCell)
+        
+        // set the artists in the tracker
+        trackerList = fetchTrackedArtists()
+        
+        // set up the flow layout for the collection view cells
+        let artistSearchResultLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        artistSearchResultLayout.sectionInset = UIEdgeInsets(top: 6, left: 8, bottom: 0, right: 8)
+        artistSearchResultLayout.minimumLineSpacing = 6
+        artistSearchResultLayout.scrollDirection = .vertical
+        
+        let height = 100
+        let width = Int(self.view.bounds.size.width - 16)
+        
+        artistSearchResultLayout.itemSize = CGSize(width: width, height: height)
+        collectionView.collectionViewLayout = artistSearchResultLayout
+        
+    }
     
     func dismissKeyboard() {
         view.endEditing(true)
