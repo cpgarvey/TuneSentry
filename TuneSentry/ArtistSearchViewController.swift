@@ -31,6 +31,9 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureView()
+        configureData()
+        
         // close keyboard if touching anywhere on the screen
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -71,10 +74,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
                         self.showHUD(HudView.TrackerAction.add)
                         
                         /* update the watchlist */
-                        self.trackerList = self.fetchTrackedArtists()
-                        
-                        /* reload the table data */
-                        self.collectionView.reloadData()
+                        Artist.trackedArtists = self.fetchTrackedArtists()
                         
                     } else {
                         
@@ -86,10 +86,10 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
             } else {
                 
                     /* update the watchlist */
-                    self.trackerList = self.fetchTrackedArtists()
+                    Artist.trackedArtists = self.fetchTrackedArtists()
 
                     /* delete the artist object from Core Data */
-                    for artist in self.trackerList! where artist.artistId == searchResult.artistId {
+                    for artist in Artist.trackedArtists! where artist.artistId == searchResult.artistId {
                         self.sharedContext.delete(artist)
                     }
                 
@@ -108,13 +108,16 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
                         }
                     }
             }
+            
+            /* reload the table data */
+            self.collectionView.reloadData()
         })
     }
     
     func removeArtistFromTracker(_ searchResult: SearchResult) {
         
         /* delete the artist object from Core Data */
-        for artist in trackerList! where artist.artistId == searchResult.artistId {
+        for artist in Artist.trackedArtists! where artist.artistId == searchResult.artistId {
             sharedContext.delete(artist)
         }
         
@@ -127,18 +130,18 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
                 showHUD(HudView.TrackerAction.remove)
                 
                 /* update the watchlist to reflect current artists after removal of this artist */
-                trackerList = fetchTrackedArtists()
-                
-                /* reload the table data */
-                self.collectionView.reloadData()
+                Artist.trackedArtists = fetchTrackedArtists()
                 
             } else {
                 
                 print("Unable to save context")
                 
             }
-            
         }
+        
+        /* reload the table data */
+        self.collectionView.reloadData()
+
     }
     
     
@@ -165,9 +168,6 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchResultCell, bundle: nil)
         collectionView.register(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchResultCell)
         
-        // set the artists in the tracker
-        trackerList = fetchTrackedArtists()
-        
         // set up the flow layout for the collection view cells
         let artistSearchResultLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         artistSearchResultLayout.sectionInset = UIEdgeInsets(top: 6, left: 8, bottom: 0, right: 8)
@@ -179,6 +179,13 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         
         artistSearchResultLayout.itemSize = CGSize(width: width, height: height)
         collectionView.collectionViewLayout = artistSearchResultLayout
+        
+    }
+    
+    func configureData() {
+        
+        // update the trackedArtists
+        Artist.trackedArtists = fetchTrackedArtists()
         
     }
     
@@ -221,6 +228,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
             hudView.hideAnimated(true)
         }
         hudView.isUserInteractionEnabled = true
+
     }
 }
 
@@ -236,11 +244,11 @@ extension ArtistSearchViewController: UISearchBarDelegate {
         collectionView.reloadData()
     }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        performSearch(searchBar.text!)
-        // reload the collection view so that the searching cell can be displayed
-        collectionView.reloadData()
-    }
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        performSearch(searchBar.text!)
+//        // reload the collection view so that the searching cell can be displayed
+//        collectionView.reloadData()
+//    }
 }
 
 
@@ -283,25 +291,8 @@ extension ArtistSearchViewController: UICollectionViewDataSource {
             
         case .results(let list):
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCellIdentifiers.searchResultCell, for: indexPath) as! SearchResultCell
-            var searchResult = list[indexPath.row]
+            let searchResult = list[indexPath.row]
             
-            // set default inTracker to false to make sure a search result that was formerly in the tracker but removed is now marked false
-            searchResult.inTracker = false
-            
-            // check to see if the search result artist is already in the tracker
-            for artist in trackerList! where artist.artistId == searchResult.artistId {
-                searchResult.inTracker = true
-            }
-            
-            cell.artistNameLabel.text = searchResult.artistName
-            cell.genreLabel.text = searchResult.primaryGenreName
-            cell.artistId.text = String(format: "Artist Id: %d", searchResult.artistId)
-            
-            if searchResult.inTracker {
-                cell.addArtistToTracker.setTitle("Remove From Tracker", for: UIControlState())
-            } else {
-                cell.addArtistToTracker.setTitle("Add Artist To Tracker", for: UIControlState())
-            }
             cell.searchResult = searchResult
             cell.delegate = self
             

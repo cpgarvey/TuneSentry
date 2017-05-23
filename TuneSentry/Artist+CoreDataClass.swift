@@ -19,6 +19,8 @@ class Artist: NSManagedObject {
     
     public var delegate: ArtistDelegate?
     
+    public static var trackedArtists: [Artist]?
+    
     func populateArtistFieldsWith(searchResult: SearchResult, completion: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
         // assign all the variables using the SearchResult that is passed in

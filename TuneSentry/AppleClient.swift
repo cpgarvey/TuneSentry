@@ -58,9 +58,6 @@ class AppleClient: NSObject {
             // if there is an active data task, then cancel it so we can begin a new one
             dataTaskSearch?.cancel()
             
-            // activate the network activity indicator to show search is occurring 
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            
             // set the state of the search
             state = .searching
             
@@ -68,10 +65,10 @@ class AppleClient: NSObject {
             let session = URLSession.shared
             dataTaskSearch = session.dataTask(with: url, completionHandler: { data, response, error in
                 
-                self.state = .notSearchedYet
                 var success = false
                 
                 if let error = error, (error as NSError).code == -999 {
+                    self.state = .notSearchedYet
                     return // search was cancelled
                 }
                 
@@ -79,6 +76,7 @@ class AppleClient: NSObject {
                     let data = data, let dictionary = self.parseJSON(data) {
                     
                     let searchResults = self.parseDictionaryForSearch(dictionary)
+                    
                     if searchResults.isEmpty {
                         self.state = .noResults
                     } else {
@@ -91,7 +89,6 @@ class AppleClient: NSObject {
                     self.state = .error
                 }
                 
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 completion(success, nil)
                 return
             })
