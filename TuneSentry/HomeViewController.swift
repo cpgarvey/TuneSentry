@@ -22,23 +22,8 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
     var deletedIndexPathsForTracker: [IndexPath]!
     var updatedIndexPathsForTracker: [IndexPath]!
     
-    
-    /* Core Data Convenience */
-    lazy var sharedContext: NSManagedObjectContext = {
-        return CoreDataStack.sharedInstance.mainContext
-    }()
-    
-    lazy var fetchedResultsControllerForTracker: NSFetchedResultsController<Artist> = {
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-        let nameSort = NSSortDescriptor(key: "artistName", ascending: true)
-        fetchRequest.sortDescriptors = [nameSort]
-        
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
-        
-        return fetchedResultsController as! NSFetchedResultsController<Artist>
-        
-    }()
+    var coreDataStack: CoreDataStack!
+    var fetchedResultsController: NSFetchedResultsController<Artist> = NSFetchedResultsController()
     
     struct CollectionViewCellIdentifiers {
         static let newReleaseCollectionCell = "NewReleaseCollectionCell"
@@ -53,7 +38,46 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        configureView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // reload the main collection view so that new artists can be displayed after being added from the search
+        mainCollectionView.reloadSections(IndexSet(integer: 1))
+    }
+    
+    
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SearchSegue" {
+            
+            let currentlyTrackedArtists = Artist.trackedArtists
+            
+            var currentlyTrackedArtistIds = [Int]()
+            
+            currentlyTrackedArtists?.forEach { artist in
+                
+                currentlyTrackedArtistIds.append(artist.artistId)
+            }
+            
+            let artistSearchViewController = segue.destination as! ArtistSearchViewController
+            
+            artistSearchViewController.currentlyTrackedArtistIds = currentlyTrackedArtistIds
+            
+            artistSearchViewController.artistSearchViewControllerDelegate = self
+        }
+    }
+    
+    
+    // MARK: - Helper Functions
+    
+    func configureView() {
+        
+        fetchedResultsController = fetchedResultsControllerForTracker()
+        
         mainCollectionView.backgroundColor = UIColor.clear
         
         var cellNib = UINib(nibName: CollectionViewCellIdentifiers.newReleaseHoldingCollectionCell, bundle: nil)
@@ -78,33 +102,52 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
         mainLayout.scrollDirection = .vertical
         mainLayout.headerReferenceSize = CGSize(width: self.view.frame.size.width, height: 90)
         mainCollectionView.collectionViewLayout = mainLayout
-        
+
         /* Perform the fetch for the tracker */
         do {
-            try fetchedResultsControllerForTracker.performFetch()
+            try fetchedResultsController.performFetch()
         } catch {}
         
-        fetchedResultsControllerForTracker.delegate = self
+        fetchedResultsController.delegate = self
         
-        if !(fetchedResultsControllerForTracker.fetchedObjects?.isEmpty)! {
-        
+        if !(fetchedResultsController.fetchedObjects?.isEmpty)! {
+            
             /* Check for new releases from the artists currently in the tracker */
             checkForNewReleases()
         }
         
+        Artist.trackedArtists = fetchTrackedArtists()
+        
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // reload the main collection view so that new artists can be displayed after being added from the search
-        mainCollectionView.reloadSections(IndexSet(integer: 1))
+    func fetchedResultsControllerForTracker() -> NSFetchedResultsController<Artist> {
+        let fetchedResultController = NSFetchedResultsController(fetchRequest: artistFetchRequest(),
+                                                                 managedObjectContext: coreDataStack.mainContext,
+                                                                 sectionNameKeyPath: nil,
+                                                                 cacheName: nil)
+        fetchedResultController.delegate = self
+        
+        do {
+            try fetchedResultController.performFetch()
+        } catch let error as NSError {
+            fatalError("Error: \(error.localizedDescription)")
+        }
+        
+        return fetchedResultController
     }
     
-    
-    // MARK: - Helper Functions
+    func artistFetchRequest() -> NSFetchRequest<Artist> {
+        let fetchRequest = NSFetchRequest<Artist>(entityName: "Artist")
+        fetchRequest.fetchBatchSize = 20
+        
+        let sortDescriptor = NSSortDescriptor(key: "artistName", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        return fetchRequest
+    }
     
     func checkForNewReleases() {
-        guard let trackedArtists = fetchedResultsControllerForTracker.fetchedObjects else { return }
+        guard let trackedArtists = fetchedResultsController.fetchedObjects else { return }
         
         NewRelease.checkingForNewReleases = true
         mainCollectionView.reloadSections(IndexSet(integer: 0))
@@ -116,20 +159,19 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
             artist.checkForNewRelease()
             
         }
-    
     }
     
     func removeArtistFromTracker(_ artist: Artist) {
         
         /* Delete the artist object */
-        sharedContext.delete(artist)
+        coreDataStack.mainContext.delete(artist)
         
         /* Save the context */
-        CoreDataStack.sharedInstance.saveContext() { success in
+        coreDataStack.saveContext() { success in
             
             if success {
                 
-                if fetchedResultsControllerForTracker.sections![0].numberOfObjects == 0 {
+                if fetchedResultsController.sections![0].numberOfObjects == 0 {
                     self.mainCollectionView.reloadSections(IndexSet(integer: 0))
                 }
                 
@@ -149,6 +191,16 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
         DispatchQueue.main.async {
             NewRelease.checkingForNewReleases = false
             self.mainCollectionView.reloadData()
+        }
+    }
+    
+    func fetchTrackedArtists() -> [Artist] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
+        
+        do {
+            return try coreDataStack.mainContext.fetch(fetchRequest) as! [Artist]
+        } catch _ {
+            return [Artist]()
         }
     }
 
@@ -225,7 +277,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 return 1
             } else {
                 // the second section of main collection view will display artists
-                return fetchedResultsControllerForTracker.sections![0].numberOfObjects
+                return fetchedResultsController.sections![0].numberOfObjects
             }
         } else {
             // the collection view in the NewReleasesHoldingCollectionCell will display the new releases (if any)
@@ -246,14 +298,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                     let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
                     spinner.startAnimating()
                     return cell
-                } else if NewRelease.newReleases.isEmpty && fetchedResultsControllerForTracker.sections![0].numberOfObjects > 0 {
+                } else if NewRelease.newReleases.isEmpty && fetchedResultsController.sections![0].numberOfObjects > 0 {
                     
                     // if there are no new releases, just display a blank spacer cell
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCellIdentifiers.noNewReleasesCollectionCell,
                                                                                      for: indexPath)
                     
                     return cell
-                } else if fetchedResultsControllerForTracker.sections![0].numberOfObjects == 0 {
+                } else if fetchedResultsController.sections![0].numberOfObjects == 0 {
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCellIdentifiers.newReleasesCollectionSpacerCell,
                                                                                      for: indexPath)
                     
@@ -274,7 +326,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 let indexNumber = indexPath.item
                 let adjustedIndexPath = IndexPath(item: indexNumber, section: 0)
                 
-                let artist = fetchedResultsControllerForTracker.object(at: adjustedIndexPath) 
+                let artist = fetchedResultsController.object(at: adjustedIndexPath) 
                 
                 cell.artist = artist
                 cell.artistNameLabel.text = artist.artistName
@@ -423,4 +475,99 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     }
 
+}
+
+
+// MARK: - ArtistSearchViewControllerDelegate
+
+extension HomeViewController: ArtistSearchViewControllerDelegate {
+    
+    func addNewArtists(artistsToAdd: [SearchResult]) {
+        
+        artistsToAdd.forEach { searchResult in
+         
+            addArtistToTracker(searchResult)
+        }
+    }
+    
+    func removeOldArtists(artistsToRemove: [SearchResult]) {
+        
+        artistsToRemove.forEach { searchResult in
+            
+            removeArtistFromTracker(searchResult)
+        }
+    }
+    
+    func addArtistToTracker(_ searchResult: SearchResult) {
+        
+        /* create an Artist object and save it to Core Data */
+        let artist = Artist(context: coreDataStack.mainContext)
+        artist.populateArtistFieldsWith(searchResult: searchResult, completion: { success, errorString in
+            
+            if success {
+                
+                /* Save the Core Data Context that includes the new Artist object */
+                self.coreDataStack.saveContext() { success in
+                    
+                    if success {
+                        
+                        Artist.trackedArtists = self.fetchTrackedArtists()
+                        
+                    } else {
+                        
+                        print("Core Data save failed")
+                        
+                    }
+                }
+                
+            } else {
+                
+                /* update the watchlist */
+                Artist.trackedArtists = self.fetchTrackedArtists()
+                
+                /* delete the artist object from Core Data */
+                for artist in Artist.trackedArtists! where artist.artistId == searchResult.artistId {
+                    self.coreDataStack.mainContext.delete(artist)
+                }
+                
+                /* Save the context */
+                self.coreDataStack.saveContext() { success in
+                    
+                    if success {
+                        
+                        /* Display error message */
+                        self.present(alert(errorString!), animated: true, completion: nil)
+                        
+                    } else {
+                        
+                        print("Core Data save failed")
+                        
+                    }
+                }
+            }
+        })
+    }
+
+    func removeArtistFromTracker(_ searchResult: SearchResult) {
+        
+        /* delete the artist object from Core Data */
+        for artist in Artist.trackedArtists! where artist.artistId == searchResult.artistId {
+            coreDataStack.mainContext.delete(artist)
+        }
+        
+        /* Save the context */
+        coreDataStack.saveContext() { success in
+            
+            if success {
+                
+                /* update the watchlist to reflect current artists after removal of this artist */
+                Artist.trackedArtists = fetchTrackedArtists()
+                
+            } else {
+                
+                print("Unable to save context")
+                
+            }
+        }
+    }
 }

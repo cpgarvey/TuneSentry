@@ -11,13 +11,11 @@ import UIKit
 import CoreData
 
 // define completion handlers for convenience
-typealias SearchComplete = (_ success: Bool, _ errorString: String?) -> Void
+typealias SearchComplete = (_ success: Bool, _ errorString: String?, _ results: [SearchResult]?) -> Void
 typealias LookupComplete = (_ success: Bool, _ collectionId: Int?, _ artworkUrl: String?, _ errorString: String?) -> Void
 typealias NewReleaseCheckComplete = (_ success: Bool, _ newReleases: [NewRelease], _ updatedMostRecentRelease: Int?,  _ errorString: String?) -> Void
 
 class AppleClient: NSObject {
-    
-    // this should have a child context variable that is set by the parent
     
     /* Enum to track the state of the searching by the client */
     enum SearchState {
@@ -65,8 +63,6 @@ class AppleClient: NSObject {
             let session = URLSession.shared
             dataTaskSearch = session.dataTask(with: url, completionHandler: { data, response, error in
                 
-                var success = false
-                
                 if let error = error, (error as NSError).code == -999 {
                     self.state = .notSearchedYet
                     return // search was cancelled
@@ -78,19 +74,21 @@ class AppleClient: NSObject {
                     let searchResults = self.parseDictionaryForSearch(dictionary)
                     
                     if searchResults.isEmpty {
+                        let noResults = [SearchResult]()
                         self.state = .noResults
+                        completion(true, nil, noResults)
+                        return
                     } else {
                         self.state = .results(searchResults)
+                        completion(true, nil, searchResults)
+                        return
                     }
-                    
-                    success = true
                     
                 } else {
                     self.state = .error
+                    completion(false, nil, nil)
+                    return
                 }
-                
-                completion(success, nil)
-                return
             })
             
             dataTaskSearch?.resume()

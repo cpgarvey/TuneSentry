@@ -28,11 +28,18 @@ class SearchResultCell: UICollectionViewCell {
     
     var searchResult: SearchResult? {
         didSet {
-            configureView()
+            
+            artistNameLabel.text = searchResult!.artistName
+            genreLabel.text = searchResult!.primaryGenreName
+            artistId.text = String(format: "Artist Id: %d", searchResult!.artistId)
         }
     }
     
-    var isBeingTracked = false
+    var isBeingTracked: Bool? {
+        didSet {
+            isBeingTracked! ? addArtistToTracker.setTitle("Remove From Tracker", for: UIControlState()) : addArtistToTracker.setTitle("Add Artist To Tracker", for: UIControlState())
+        }
+    }
     
     weak var delegate: SearchResultCellDelegate?
     
@@ -71,42 +78,15 @@ class SearchResultCell: UICollectionViewCell {
         }
     }
     
-    
     @IBAction func addArtistToWatchlist(_ sender: UIButton) {
         delegate?.dismissKeyboard()
         
-        isBeingTracked ? delegate?.removeArtistFromTracker(searchResult!) : delegate?.addArtistToTracker(searchResult!)
-        
-    }
-    
-    // MARK: Helper Function
-    
-    func configureView() {
-        
-        guard let searchResult = searchResult else {
-            return
-        }
-        
-        artistNameLabel.text = searchResult.artistName
-        genreLabel.text = searchResult.primaryGenreName
-        artistId.text = String(format: "Artist Id: %d", searchResult.artistId)
-        
-        DispatchQueue.main.async {
-            self.setTrackedStatus(searchResult: searchResult)
-        }
-        
-        
-    }
-    
-    func setTrackedStatus(searchResult: SearchResult) {
-        
-        // check to see if the search result artist is already in the tracker
-        for artist in Artist.trackedArtists! where artist.artistId == searchResult.artistId {
+        if isBeingTracked! {
+            delegate?.removeArtistFromTracker(searchResult!)
+            isBeingTracked = false
+        } else {
+            delegate?.addArtistToTracker(searchResult!)
             isBeingTracked = true
         }
-        
-        isBeingTracked ? addArtistToTracker.setTitle("Remove From Tracker", for: UIControlState()) : addArtistToTracker.setTitle("Add Artist To Tracker", for: UIControlState())
-
     }
-    
 }

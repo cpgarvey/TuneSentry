@@ -12,9 +12,19 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    lazy var coreDataStack = CoreDataStack(modelName: "DataModel")
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+       
+        _ = coreDataStack.mainContext
+        
+        guard let navigationController = window?.rootViewController as? UINavigationController,
+            let homeViewController = navigationController.topViewController as? HomeViewController else {
+                fatalError("Application Storyboard mis-configuration")
+        }
+        
+        homeViewController.coreDataStack = coreDataStack
+
         
         return true
     }

@@ -44,6 +44,9 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="gf7-zw-tPt"/>
                                 </connections>
                             </searchBar>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="IU3-s4-gco">
+                                <rect key="frame" x="150" y="274" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -54,10 +57,13 @@
                             <constraint firstItem="1fM-bh-gvT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="RFC-4z-cGn"/>
                             <constraint firstItem="1fM-bh-gvT" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="a9B-BI-Lxv"/>
                             <constraint firstAttribute="trailing" secondItem="1fM-bh-gvT" secondAttribute="trailing" id="mEF-bb-i6U"/>
+                            <constraint firstItem="IU3-s4-gco" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="nep-0s-7fN"/>
+                            <constraint firstItem="IU3-s4-gco" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="slH-SZ-9RD"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Artist Search" id="t1P-s5-JkN"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="IU3-s4-gco" id="CTL-Jy-Sp4"/>
                         <outlet property="collectionView" destination="1fM-bh-gvT" id="GcA-nv-hF2"/>
                         <outlet property="searchBar" destination="ShQ-PU-D7n" id="bIi-jg-l6F"/>
                     </connections>
@@ -162,7 +168,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="Hr7-PO-Tm3">
                             <connections>
-                                <segue destination="BYZ-38-t0r" kind="show" id="fZr-bP-U8d"/>
+                                <segue destination="BYZ-38-t0r" kind="show" identifier="SearchSegue" id="fZr-bP-U8d"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

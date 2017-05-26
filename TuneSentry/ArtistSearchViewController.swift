@@ -7,7 +7,11 @@
 //
 
 import UIKit
-import CoreData
+
+protocol ArtistSearchViewControllerDelegate {
+    func addNewArtists(artistsToAdd: [SearchResult])
+    func removeOldArtists(artistsToRemove: [SearchResult])
+}
 
 class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
 
@@ -15,29 +19,46 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    var trackerList: [Artist]?
+    var searchResults: [SearchResult]?
+    
+    var currentlyTrackedArtistIds: [Int]? {
+        didSet {
+            print(currentlyTrackedArtistIds!)
+        }
+    }
     
     let search = AppleClient()
     
-    /* Core Data Convenience */
-    lazy var sharedContext: NSManagedObjectContext = {
-        return CoreDataStack.sharedInstance.mainContext
-    }()
+    var isSearching = false
     
+    var artistSearchViewControllerDelegate: ArtistSearchViewControllerDelegate?
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("viewDidLoad called")
         
         configureView()
-        configureData()
         
         // close keyboard if touching anywhere on the screen
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
 
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if !(artistsToAdd.isEmpty) {
+            artistSearchViewControllerDelegate?.addNewArtists(artistsToAdd: artistsToAdd)
+        }
+        
+        if !(artistsToRemove.isEmpty) {
+            artistSearchViewControllerDelegate?.removeOldArtists(artistsToRemove: artistsToRemove)
+        }
     }
     
     
@@ -59,89 +80,17 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     
     func addArtistToTracker(_ searchResult: SearchResult) {
         
-        /* create an Artist object and save it to Core Data */
-        let artist = Artist(context: sharedContext)
-        artist.populateArtistFieldsWith(searchResult: searchResult, completion: { success, errorString in
-        
-            if success {
-                
-                    /* Save the Core Data Context that includes the new Artist object */
-                CoreDataStack.sharedInstance.saveContext() { success in
-                    
-                    if success {
-                    
-                        /* show HUD indicating to user that Artist was saved */
-                        self.showHUD(HudView.TrackerAction.add)
-                        
-                        /* update the watchlist */
-                        Artist.trackedArtists = self.fetchTrackedArtists()
-                        
-                    } else {
-                        
-                        print("Core Data save failed")
-                        
-                    }
-                }
-                
-            } else {
-                
-                    /* update the watchlist */
-                    Artist.trackedArtists = self.fetchTrackedArtists()
-
-                    /* delete the artist object from Core Data */
-                    for artist in Artist.trackedArtists! where artist.artistId == searchResult.artistId {
-                        self.sharedContext.delete(artist)
-                    }
-                
-                    /* Save the context */
-                    CoreDataStack.sharedInstance.saveContext() { success in
-                    
-                        if success {
-                    
-                            /* Display error message */
-                            self.present(alert(errorString!), animated: true, completion: nil)
-                            
-                        } else {
-                            
-                            print("Core Data save failed")
-                            
-                        }
-                    }
-            }
-            
-            /* reload the table data */
-            self.collectionView.reloadData()
-        })
+        artistsToAdd?.append(searchResult)
+        currentlyTrackedArtistIds?.append(searchResult.artistId)
     }
     
     func removeArtistFromTracker(_ searchResult: SearchResult) {
+    
+        artistsToRemove?.append(searchResult)
         
-        /* delete the artist object from Core Data */
-        for artist in Artist.trackedArtists! where artist.artistId == searchResult.artistId {
-            sharedContext.delete(artist)
+        if let index = currentlyTrackedArtistIds?.index(of: searchResult.artistId) {
+            currentlyTrackedArtistIds?.remove(at: index)
         }
-        
-        /* Save the context */
-        CoreDataStack.sharedInstance.saveContext() { success in
-         
-            if success {
-                
-                /* show the user a removal HUD */
-                showHUD(HudView.TrackerAction.remove)
-                
-                /* update the watchlist to reflect current artists after removal of this artist */
-                Artist.trackedArtists = fetchTrackedArtists()
-                
-            } else {
-                
-                print("Unable to save context")
-                
-            }
-        }
-        
-        /* reload the table data */
-        self.collectionView.reloadData()
-
     }
     
     
@@ -155,17 +104,8 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         // set the contentInset so that the first rows of the table always fully appears: 44 pts (search bar)
         collectionView.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
         
-        // load the nibs
-        var cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchingCell, bundle: nil)
-        collectionView.register(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchingCell)
-        
-        cellNib = UINib(nibName: CollectionViewCellIdentifiers.nothingFoundCell, bundle: nil)
-        collectionView.register(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.nothingFoundCell)
-        
-        cellNib = UINib(nibName: CollectionViewCellIdentifiers.errorCell, bundle: nil)
-        collectionView.register(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.errorCell)
-        
-        cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchResultCell, bundle: nil)
+        // load the nib
+        let cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchResultCell, bundle: nil)
         collectionView.register(cellNib, forCellWithReuseIdentifier: CollectionViewCellIdentifiers.searchResultCell)
         
         // set up the flow layout for the collection view cells
@@ -180,12 +120,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         artistSearchResultLayout.itemSize = CGSize(width: width, height: height)
         collectionView.collectionViewLayout = artistSearchResultLayout
         
-    }
-    
-    func configureData() {
-        
-        // update the trackedArtists
-        Artist.trackedArtists = fetchTrackedArtists()
+        activityIndicator.isHidden = true
         
     }
     
@@ -193,28 +128,33 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         view.endEditing(true)
     }
     
-    func fetchTrackedArtists() -> [Artist] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Artist")
-        
-        do {
-            return try sharedContext.fetch(fetchRequest) as! [Artist]
-        } catch _ {
-            return [Artist]()
-        }
-    }
-    
     func performSearch(_ searchText: String) {
         
         // iTunes API: https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/#searching
         
+        isSearching = true
+        collectionView.reloadData()
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+        
         search.performSearchForText(searchText, completion: {
-            success, error in
+            success, error, results in
             
-            if !success {
-                let message = "Unable to search at this time"
-                self.present(alert(message), animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.isSearching = false
+                
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.isHidden = true
+                
+                if success {
+                    self.searchResults = results
+                } else {
+                    let message = "Unable to search at this time"
+                    self.present(alert(message), animated: true, completion: nil)
+                }
+                
+                self.collectionView.reloadData()
             }
-            self.collectionView.reloadData()
         })
     }
     
@@ -256,54 +196,48 @@ extension ArtistSearchViewController: UISearchBarDelegate {
 
 extension ArtistSearchViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch search.state {
-        case .notSearchedYet:
+        
+        if isSearching {
+            
             return 0
-        case .searching, .error, .noResults:
-            return 1
-        case .results(let list):
-            // bind the search result array associated with .Results to a temp variable so that you can read how many items are in that associated value
-            return list.count
-        default:
-            fatalError("Should never get here")
+            
+        } else {
+            
+            guard let searchResults = searchResults else {
+                return 0
+            }
+            
+            if searchResults.isEmpty {
+                return 0
+            } else {
+                return searchResults.count
+            }
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        switch search.state {
-            
-        // switch is supposed to be exhaustive, so have .NotSearcedYet even though it should never be reached
-        case .notSearchedYet:
-            
-            return UICollectionViewCell()
-        case .searching:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCellIdentifiers.searchingCell, for: indexPath)
-            let spinner = cell.viewWithTag(100) as! UIActivityIndicatorView
-            spinner.startAnimating()
-            return cell
-            
-        case .error:
-            return collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCellIdentifiers.errorCell, for: indexPath)
-        
-        case .noResults:
-            return collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCellIdentifiers.nothingFoundCell, for: indexPath)
-            
-        case .results(let list):
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCellIdentifiers.searchResultCell, for: indexPath) as! SearchResultCell
-            let searchResult = list[indexPath.row]
-            
-            cell.searchResult = searchResult
-            cell.delegate = self
-            
-            return cell
 
-        default:
-            fatalError("Should never get here")
+        guard let searchResults = searchResults else {
+            return UICollectionViewCell()
         }
         
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCellIdentifiers.searchResultCell, for: indexPath) as! SearchResultCell
+        
+        let searchResult = searchResults[indexPath.row]
+        
+        cell.searchResult = searchResult
+        cell.delegate = self
+        cell.isBeingTracked = false
+        
+        currentlyTrackedArtistIds?.forEach { artistId in
+            
+            if artistId == searchResult.artistId {
+                cell.isBeingTracked = true
+            }
+        }
+        
+        return cell
     }
-    
 }
 
 
