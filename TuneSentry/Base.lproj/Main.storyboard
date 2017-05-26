@@ -44,33 +44,63 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="gf7-zw-tPt"/>
                                 </connections>
                             </searchBar>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="IU3-s4-gco">
-                                <rect key="frame" x="150" y="274" width="20" height="20"/>
-                            </activityIndicatorView>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="9rm-6g-tcd" userLabel="Searching Stack View">
+                                <rect key="frame" x="53" y="274" width="215" height="20.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Searching iTunes Store... " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CTL-jh-XM9">
+                                        <rect key="frame" x="0.0" y="0.0" width="195" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="IU3-s4-gco">
+                                        <rect key="frame" x="195" y="0.5" width="20" height="20"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Results Found!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YmC-3q-bj7">
+                                <rect key="frame" x="90" y="273.5" width="140" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error: Unable To Contact iTunes!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kbC-zz-L8Z">
+                                <rect key="frame" x="36.5" y="273.5" width="248.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="YmC-3q-bj7" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="1ej-zf-31W"/>
                             <constraint firstItem="ShQ-PU-D7n" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="2lq-zU-XaK"/>
                             <constraint firstItem="ShQ-PU-D7n" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Auo-RY-ZWH"/>
+                            <constraint firstItem="9rm-6g-tcd" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Bfj-Ub-W93"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="1fM-bh-gvT" secondAttribute="bottom" id="MNu-Ex-GeO"/>
+                            <constraint firstItem="kbC-zz-L8Z" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Mor-eE-79z"/>
                             <constraint firstAttribute="trailing" secondItem="ShQ-PU-D7n" secondAttribute="trailing" id="QD8-rh-Soh"/>
                             <constraint firstItem="1fM-bh-gvT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="RFC-4z-cGn"/>
                             <constraint firstItem="1fM-bh-gvT" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="a9B-BI-Lxv"/>
+                            <constraint firstItem="YmC-3q-bj7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="aNX-kf-xxt"/>
+                            <constraint firstItem="kbC-zz-L8Z" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ae9-pd-UYq"/>
                             <constraint firstAttribute="trailing" secondItem="1fM-bh-gvT" secondAttribute="trailing" id="mEF-bb-i6U"/>
-                            <constraint firstItem="IU3-s4-gco" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="nep-0s-7fN"/>
-                            <constraint firstItem="IU3-s4-gco" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="slH-SZ-9RD"/>
+                            <constraint firstItem="9rm-6g-tcd" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="pRs-9S-SwR"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Artist Search" id="t1P-s5-JkN"/>
                     <connections>
                         <outlet property="activityIndicator" destination="IU3-s4-gco" id="CTL-Jy-Sp4"/>
                         <outlet property="collectionView" destination="1fM-bh-gvT" id="GcA-nv-hF2"/>
+                        <outlet property="errorUnableToContactiTunes" destination="kbC-zz-L8Z" id="m6L-8o-cSA"/>
+                        <outlet property="noResultsFound" destination="YmC-3q-bj7" id="QpR-WD-rM3"/>
                         <outlet property="searchBar" destination="ShQ-PU-D7n" id="bIi-jg-l6F"/>
+                        <outlet property="searchingStackView" destination="9rm-6g-tcd" id="ZIX-6r-aES"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1117" y="429"/>
+            <point key="canvasLocation" x="1088" y="429"/>
         </scene>
         <!--About-->
         <scene sceneID="bBW-fz-hMs">

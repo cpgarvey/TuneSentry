@@ -20,6 +20,10 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var noResultsFound: UILabel!
+    @IBOutlet weak var searchingStackView: UIStackView!
+    @IBOutlet weak var errorUnableToContactiTunes: UILabel!
+    
     
     var searchResults: [SearchResult]?
     
@@ -28,6 +32,8 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
             print(currentlyTrackedArtistIds!)
         }
     }
+    var artistsToAdd: [SearchResult]!
+    var artistsToRemove: [SearchResult]!
     
     let search = AppleClient()
     
@@ -42,6 +48,10 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         print("viewDidLoad called")
         
         configureView()
+        
+        // reset the artistsToAdd and artistsToRemove
+        artistsToAdd = [SearchResult]()
+        artistsToRemove = [SearchResult]()
         
         // close keyboard if touching anywhere on the screen
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
@@ -110,7 +120,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         
         // set up the flow layout for the collection view cells
         let artistSearchResultLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        artistSearchResultLayout.sectionInset = UIEdgeInsets(top: 6, left: 8, bottom: 0, right: 8)
+        artistSearchResultLayout.sectionInset = UIEdgeInsets(top: 6, left: 8, bottom: 8, right: 8)
         artistSearchResultLayout.minimumLineSpacing = 6
         artistSearchResultLayout.scrollDirection = .vertical
         
@@ -120,7 +130,9 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         artistSearchResultLayout.itemSize = CGSize(width: width, height: height)
         collectionView.collectionViewLayout = artistSearchResultLayout
         
-        activityIndicator.isHidden = true
+        searchingStackView.isHidden = true
+        noResultsFound.isHidden = true
+        errorUnableToContactiTunes.isHidden = true
         
     }
     
@@ -131,26 +143,28 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     func performSearch(_ searchText: String) {
         
         // iTunes API: https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/#searching
+        noResultsFound.isHidden = true
+        errorUnableToContactiTunes.isHidden = true
         
         isSearching = true
         collectionView.reloadData()
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
+
+        searchingStackView.isHidden = false
         
         search.performSearchForText(searchText, completion: {
             success, error, results in
             
             DispatchQueue.main.async {
                 self.isSearching = false
-                
-                self.activityIndicator.stopAnimating()
-                self.activityIndicator.isHidden = true
+                self.searchingStackView.isHidden = true
                 
                 if success {
                     self.searchResults = results
+                    if (results?.isEmpty)! {
+                        self.noResultsFound.isHidden = false
+                    }
                 } else {
-                    let message = "Unable to search at this time"
-                    self.present(alert(message), animated: true, completion: nil)
+                    self.errorUnableToContactiTunes.isHidden = false
                 }
                 
                 self.collectionView.reloadData()
@@ -158,9 +172,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         })
     }
     
-    func showHUD(_ action: HudView.TrackerAction) {
-        
-        HudView.actionType = action
+    func showHUD() {
         
         let hudView = HudView.hudInView(navigationController!.view, animated: true)
         hudView.isUserInteractionEnabled = false

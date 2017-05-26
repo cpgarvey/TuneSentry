@@ -9,18 +9,12 @@
 import Foundation
 import UIKit
 
-// citation: iOS Apprentice, 4th Edition, p. 445
+
 
 class HudView: UIView {
-    var symbol = ""
-    var text = ""
     
-    static var actionType: TrackerAction?
-    
-    enum TrackerAction {
-        case add
-        case remove
-    }
+    var searchingText = "Searching the iTunes Store..."
+    var noResultsFound = "No Results Found."
     
     class func hudInView(_ view: UIView, animated: Bool) -> HudView {
 
@@ -36,12 +30,13 @@ class HudView: UIView {
     
     override func draw(_ rect: CGRect) {
         
-        let boxWidth: CGFloat = 96
-        let boxHeight: CGFloat = 96
+        let boxWidth: CGFloat = bounds.size.width - 40 // 280 for SE, 335 for Regular, 374 for Plus
+        let boxHeight: CGFloat = 80
+        
         
         let boxRect = CGRect(
             x: round((bounds.size.width - boxWidth) / 2),
-            y: round((bounds.size.height - boxHeight) / 2),
+            y: round((bounds.size.height - boxHeight) / 3),
             width: boxWidth,
             height: boxHeight)
         
@@ -49,39 +44,22 @@ class HudView: UIView {
         UIColor(white: 0.3, alpha: 0.8).setFill()
         roundedRect.fill()
         
-        if HudView.actionType == .add {
-            symbol = "+"
-            text = "Added!"
-        } else {
-            symbol = "-"
-            text = "Removed!"
-        }
-        
-        // set the text (either "Added!" or "Removed!")
         let textAttribs = [ NSFontAttributeName: UIFont.systemFont(ofSize: 16),
                         NSForegroundColorAttributeName: UIColor.white ]
         
-        let textSize = text.size(attributes: textAttribs)
+        let textSize = searchingText.size(attributes: textAttribs)
         
         let textPoint = CGPoint(
-            x: center.x - round(textSize.width / 2),
-            y: center.y - round(textSize.height / 2) + boxHeight / 4)
+//            x: center.x - round(textSize.width / 2),
+//            y: center.y - round(textSize.height / 2) + boxHeight / 4
+            
+            x: round((bounds.size.width - boxWidth)),
+            y: round((bounds.size.height - boxHeight) / 3)
+        )
         
         
-        text.draw(at: textPoint, withAttributes: textAttribs)
         
-        // set the symbol (either + or - )
-        let symbolAttribs = [ NSFontAttributeName: UIFont.systemFont(ofSize: 64),
-                            NSForegroundColorAttributeName: UIColor.white ]
-        
-        
-        let symbolSize = symbol.size(attributes: symbolAttribs)
-        
-        let symbolPoint = CGPoint(
-            x: center.x - round(symbolSize.width / 2),
-            y: center.y - round(symbolSize.height / 2) - boxHeight / 8)
-        
-        symbol.draw(at: symbolPoint, withAttributes: symbolAttribs)
+        searchingText.draw(at: textPoint, withAttributes: textAttribs)
         
     }
     
