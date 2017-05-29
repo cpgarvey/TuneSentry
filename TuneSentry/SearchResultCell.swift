@@ -22,22 +22,25 @@ class SearchResultCell: UICollectionViewCell {
     // MARK: - Properties
     
     @IBOutlet weak var artistNameLabel: UILabel!
-    @IBOutlet weak var genreLabel: UILabel!
+    @IBOutlet weak var genreAndIdLabel: UILabel!
     @IBOutlet weak var addArtistToTracker: UIButton!
-    @IBOutlet weak var artistId: UILabel!
+    @IBOutlet weak var openArtistUrlButton: UIButton!
+    
+
     
     var searchResult: SearchResult? {
         didSet {
             
             artistNameLabel.text = searchResult!.artistName
-            genreLabel.text = searchResult!.primaryGenreName
-            artistId.text = String(format: "Artist Id: %d", searchResult!.artistId)
+            genreAndIdLabel.text = searchResult!.primaryGenreName + ", " + String(format: "iTunes# %d", searchResult!.artistId)
+            configureViewFor(button: addArtistToTracker)
+            configureViewFor(button: openArtistUrlButton)
         }
     }
     
     var isBeingTracked: Bool? {
         didSet {
-            isBeingTracked! ? addArtistToTracker.setTitle("Remove From Tracker", for: UIControlState()) : addArtistToTracker.setTitle("Add Artist To Tracker", for: UIControlState())
+            isBeingTracked! ? addArtistToTracker.setTitle("-", for: UIControlState()) : addArtistToTracker.setTitle("+", for: UIControlState())
         }
     }
     
@@ -53,12 +56,19 @@ class SearchResultCell: UICollectionViewCell {
         layer.borderColor = UIColor.lightGray.cgColor
         layer.cornerRadius = 5
         
+        
     }
     
     
     // MARK: - Actions
     
     @IBAction func openArtistUrl(_ sender: UIButton) {
+        // return button to original position
+        UIView.animate(withDuration: 0.05, delay: 0.0, options: [], animations: {
+            self.openArtistUrlButton.center.y -= 2.0
+            self.openArtistUrlButton.layer.shadowOpacity = 0.5
+        }, completion: nil)
+        
         delegate?.dismissKeyboard()
         if let url = URL(string: searchResult!.artistLinkUrl) {
             
@@ -79,6 +89,13 @@ class SearchResultCell: UICollectionViewCell {
     }
     
     @IBAction func addArtistToWatchlist(_ sender: UIButton) {
+        
+        // return button to original position
+        UIView.animate(withDuration: 0.05, delay: 0.0, options: [], animations: {
+            self.addArtistToTracker.center.y -= 2.0
+            self.addArtistToTracker.layer.shadowOpacity = 0.5
+        }, completion: nil)
+        
         delegate?.dismissKeyboard()
         
         if isBeingTracked! {
@@ -89,4 +106,44 @@ class SearchResultCell: UICollectionViewCell {
             isBeingTracked = true
         }
     }
+    
+    
+    // MARK: - Touchdown Methods to Simulate Button Functionality
+    
+    
+    @IBAction func openArtistUrlButtonTouchDown(_ sender: Any) {
+        
+        UIView.animate(withDuration: 0.05, delay: 0.0, options: [], animations: {
+            self.openArtistUrlButton.center.y += 2.0
+            self.openArtistUrlButton.layer.shadowOpacity = 0.0
+        }, completion: nil)
+        
+    }
+    
+    @IBAction func addArtistToTrackerButtonTouchDown(_ sender: Any) {
+        
+        UIView.animate(withDuration: 0.05, delay: 0.0, options: [], animations: {
+            self.addArtistToTracker.center.y += 2.0
+            self.addArtistToTracker.layer.shadowOpacity = 0.0
+        }, completion: nil)
+        
+        
+    }
+    
+    
+    
+    // MARK: - Helper Function
+    
+    func configureViewFor(button: UIButton) {
+        
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOpacity = 0.5
+        button.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        button.layer.shadowRadius = 2
+        button.layer.masksToBounds = false
+        button.clipsToBounds = false
+        button.layer.cornerRadius = 5
+    }
+
+    
 }

@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F21257AA1CED5F5C00FD0200 /* ErrorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F21257A91CED5F5C00FD0200 /* ErrorCell.xib */; };
 		F21257AC1CED8D1900FD0200 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21257AB1CED8D1900FD0200 /* Functions.swift */; };
+		F21FC76E1ED951F5007854BF /* SearchingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F21FC76D1ED951F5007854BF /* SearchingCell.xib */; };
 		F222D8341CFD17C100E53E15 /* NewReleaseHoldingCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F222D8331CFD17C100E53E15 /* NewReleaseHoldingCollectionCell.xib */; };
 		F222D8361CFD187100E53E15 /* NewReleaseHoldingCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F222D8351CFD187100E53E15 /* NewReleaseHoldingCollectionCell.swift */; };
 		F222D8381CFD601800E53E15 /* NewReleaseCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F222D8371CFD601800E53E15 /* NewReleaseCollectionCell.swift */; };
@@ -20,8 +20,6 @@
 		F22CFDFE1CE9635B006CD3BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F22CFDFD1CE9635B006CD3BC /* Assets.xcassets */; };
 		F22CFE011CE9635B006CD3BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F22CFDFF1CE9635B006CD3BC /* LaunchScreen.storyboard */; };
 		F23FD5CE1CEB674A00E1D5B8 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23FD5CD1CEB674A00E1D5B8 /* SearchResult.swift */; };
-		F23FD5D11CEC2E3C00E1D5B8 /* SearchingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */; };
-		F23FD5D31CEC360F00E1D5B8 /* NothingFoundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */; };
 		F248DC191D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F248DC181D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift */; };
 		F24C49BE1D3607F100D029FF /* NewReleasesCollectionSpacerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F24C49BD1D3607F100D029FF /* NewReleasesCollectionSpacerCell.xib */; };
 		F2672A541CFEAACA00D38C3E /* ArtistTrackerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2672A531CFEAACA00D38C3E /* ArtistTrackerCell.xib */; };
@@ -42,8 +40,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F21257A91CED5F5C00FD0200 /* ErrorCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ErrorCell.xib; sourceTree = "<group>"; };
 		F21257AB1CED8D1900FD0200 /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
+		F21FC76D1ED951F5007854BF /* SearchingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchingCell.xib; sourceTree = "<group>"; };
 		F222D8331CFD17C100E53E15 /* NewReleaseHoldingCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewReleaseHoldingCollectionCell.xib; sourceTree = "<group>"; };
 		F222D8351CFD187100E53E15 /* NewReleaseHoldingCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewReleaseHoldingCollectionCell.swift; sourceTree = "<group>"; };
 		F222D8371CFD601800E53E15 /* NewReleaseCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewReleaseCollectionCell.swift; sourceTree = "<group>"; };
@@ -57,8 +55,6 @@
 		F22CFE001CE9635B006CD3BC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F22CFE021CE9635B006CD3BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F23FD5CD1CEB674A00E1D5B8 /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
-		F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchingCell.xib; sourceTree = "<group>"; };
-		F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NothingFoundCell.xib; sourceTree = "<group>"; };
 		F248DC181D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
 		F24C49BD1D3607F100D029FF /* NewReleasesCollectionSpacerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewReleasesCollectionSpacerCell.xib; sourceTree = "<group>"; };
 		F2672A531CFEAACA00D38C3E /* ArtistTrackerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistTrackerCell.xib; sourceTree = "<group>"; };
@@ -92,6 +88,7 @@
 		F222D8311CFD175900E53E15 /* New Release Nibs */ = {
 			isa = PBXGroup;
 			children = (
+				F21FC76D1ED951F5007854BF /* SearchingCell.xib */,
 				F2A172181CFA5FA600D816E4 /* NewReleaseCollectionCell.xib */,
 				F222D8371CFD601800E53E15 /* NewReleaseCollectionCell.swift */,
 				F222D8331CFD17C100E53E15 /* NewReleaseHoldingCollectionCell.xib */,
@@ -158,9 +155,6 @@
 		F2A1721A1CFA66C300D816E4 /* Search Nibs */ = {
 			isa = PBXGroup;
 			children = (
-				F21257A91CED5F5C00FD0200 /* ErrorCell.xib */,
-				F23FD5D21CEC360F00E1D5B8 /* NothingFoundCell.xib */,
-				F23FD5D01CEC2E3C00E1D5B8 /* SearchingCell.xib */,
 				F2C45DD01D06979B00CDA206 /* SearchResultCell.xib */,
 				F2C45DD21D06995A00CDA206 /* SearchResultCell.swift */,
 			);
@@ -270,13 +264,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				F22CFE011CE9635B006CD3BC /* LaunchScreen.storyboard in Resources */,
-				F23FD5D31CEC360F00E1D5B8 /* NothingFoundCell.xib in Resources */,
 				F2672A541CFEAACA00D38C3E /* ArtistTrackerCell.xib in Resources */,
 				F22CFDFE1CE9635B006CD3BC /* Assets.xcassets in Resources */,
-				F21257AA1CED5F5C00FD0200 /* ErrorCell.xib in Resources */,
 				F2C45DD11D06979B00CDA206 /* SearchResultCell.xib in Resources */,
+				F21FC76E1ED951F5007854BF /* SearchingCell.xib in Resources */,
 				F222D8341CFD17C100E53E15 /* NewReleaseHoldingCollectionCell.xib in Resources */,
-				F23FD5D11CEC2E3C00E1D5B8 /* SearchingCell.xib in Resources */,
 				F2A172191CFA5FA600D816E4 /* NewReleaseCollectionCell.xib in Resources */,
 				F29B74C01D0CE105004A9281 /* NoNewReleasesCollectionCell.xib in Resources */,
 				F22CFDFC1CE9635B006CD3BC /* Main.storyboard in Resources */,

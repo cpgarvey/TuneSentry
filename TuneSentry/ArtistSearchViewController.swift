@@ -124,7 +124,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         artistSearchResultLayout.minimumLineSpacing = 6
         artistSearchResultLayout.scrollDirection = .vertical
         
-        let height = 100
+        let height = 50
         let width = Int(self.view.bounds.size.width - 16)
         
         artistSearchResultLayout.itemSize = CGSize(width: width, height: height)
