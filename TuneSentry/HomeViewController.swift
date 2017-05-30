@@ -97,7 +97,7 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
         
         // set up the flow layout for the collection view cells
         let mainLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        mainLayout.sectionInset = UIEdgeInsets(top: 6, left: 0, bottom: 0, right: 0)
+        mainLayout.sectionInset = UIEdgeInsets(top: 6, left: 0, bottom: 8, right: 0)
         mainLayout.minimumLineSpacing = 8
         mainLayout.scrollDirection = .vertical
         mainLayout.headerReferenceSize = CGSize(width: self.view.frame.size.width, height: 90)
@@ -228,7 +228,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 return CGSize(width: width, height: height)
             } else {
                 // if it is section 1 of the main collection view, then the collection cells need appropriate right and left margins
-                let height = 184
+                let height = 154
                 let width = Int(self.view.bounds.size.width - 16)
                 return CGSize(width: width, height: height)
             }

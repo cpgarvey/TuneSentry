@@ -1,134 +1,99 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ArtistTrackerCell" id="aKI-Gh-ASD" customClass="ArtistTrackerCell" customModule="TuneSentry">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ArtistTrackerCell" id="9ZP-QC-v1b" customClass="ArtistTrackerCell" customModule="TuneSentry" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="304" height="154"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
+                <rect key="frame" x="0.0" y="0.0" width="304" height="154"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N9A-HR-uIc">
-                        <rect key="frame" x="0.0" y="134" width="320" height="50"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="abv-kO-791">
-                                <rect key="frame" x="8" y="3" width="146" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="146" id="yC1-pn-tyJ"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <state key="normal" title="View in iTunes"/>
-                                <connections>
-                                    <action selector="openArtistUrl:" destination="aKI-Gh-ASD" eventType="touchUpInside" id="LHe-ij-ofw"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jnp-2D-xxX">
-                                <rect key="frame" x="162" y="3" width="150" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="r2l-vO-tga"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <state key="normal" title="Remove From Tracker"/>
-                                <connections>
-                                    <action selector="removeArtistFromWatchlist:" destination="aKI-Gh-ASD" eventType="touchUpInside" id="tX2-8b-bcB"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XFc-sY-jEy">
+                        <rect key="frame" x="8" y="8" width="100" height="100"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="50" id="5ge-cV-UpG"/>
-                            <constraint firstAttribute="trailing" secondItem="Jnp-2D-xxX" secondAttribute="trailing" constant="8" id="5vW-sX-aqP"/>
-                            <constraint firstAttribute="bottom" secondItem="abv-kO-791" secondAttribute="bottom" constant="3" id="CdO-86-sg0"/>
-                            <constraint firstItem="abv-kO-791" firstAttribute="leading" secondItem="N9A-HR-uIc" secondAttribute="leading" constant="8" id="WUX-T9-oXP"/>
-                            <constraint firstItem="abv-kO-791" firstAttribute="top" secondItem="N9A-HR-uIc" secondAttribute="top" constant="3" id="Zbt-fd-ppz"/>
-                            <constraint firstAttribute="bottom" secondItem="Jnp-2D-xxX" secondAttribute="bottom" constant="3" id="Zx8-7F-LJA"/>
-                            <constraint firstItem="Jnp-2D-xxX" firstAttribute="top" secondItem="N9A-HR-uIc" secondAttribute="top" constant="3" id="krQ-5n-dg2"/>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="pa6-OY-dti"/>
-                        </constraints>
-                    </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X5q-YT-GwB">
-                        <rect key="frame" x="8" y="26" width="186" height="37"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="37" id="y9E-GS-pX1"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Uiz-7q-fjJ">
-                        <rect key="frame" x="202" y="18" width="100" height="100"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="100" id="JSK-md-Fw0"/>
-                            <constraint firstAttribute="width" constant="100" id="c8S-Fi-TIn"/>
+                            <constraint firstAttribute="height" constant="100" id="enq-vM-lP7"/>
+                            <constraint firstAttribute="width" constant="100" id="hBv-dV-pPs"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eXh-Gr-5pt">
-                        <rect key="frame" x="8" y="87" width="186" height="21"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3nI-2A-gHL">
+                        <rect key="frame" x="8" y="116" width="288" height="30"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="21" id="ZEY-3l-PVy"/>
+                            <constraint firstAttribute="height" constant="30" id="XNO-2Y-UvE"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="15"/>
+                        <state key="normal" title="Remove Artist From Watchlist">
+                            <color key="titleColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="removeArtistFromWatchlist:" destination="9ZP-QC-v1b" eventType="touchUpInside" id="2OD-Xp-XvZ"/>
+                            <action selector="removeArtistFromWatchlistTouchDown:" destination="9ZP-QC-v1b" eventType="touchDown" id="50w-zA-xwP"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="trQ-qC-Xsl">
+                        <rect key="frame" x="116" y="16" width="180" height="34"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="34" id="8Uh-GP-qaK"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="17"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Genre" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v2Q-3b-weB">
-                        <rect key="frame" x="8" y="62" width="186" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Genre" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NPq-MJ-UdW">
+                        <rect key="frame" x="117" y="50" width="179" height="25"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="21" id="OaJ-SI-rep"/>
+                            <constraint firstAttribute="height" constant="25" id="tll-5r-I5U"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="15"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iTunes ID#" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s8c-4k-C8d">
+                        <rect key="frame" x="117" y="77" width="179" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="tJw-gi-vgR"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="15"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <color key="backgroundColor" red="0.97280417172169031" green="0.88523719669909084" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="N9A-HR-uIc" secondAttribute="bottom" id="Bfq-6D-iwm"/>
-                <constraint firstItem="v2Q-3b-weB" firstAttribute="top" secondItem="X5q-YT-GwB" secondAttribute="bottom" constant="1" id="Bj8-mm-Kg3"/>
-                <constraint firstAttribute="trailing" secondItem="N9A-HR-uIc" secondAttribute="trailing" id="E6k-0S-bOI"/>
-                <constraint firstItem="v2Q-3b-weB" firstAttribute="top" secondItem="X5q-YT-GwB" secondAttribute="bottom" constant="1" id="E8q-ab-SNb"/>
-                <constraint firstAttribute="trailing" secondItem="Uiz-7q-fjJ" secondAttribute="trailing" constant="18" id="L8o-Mg-oHQ"/>
-                <constraint firstItem="Uiz-7q-fjJ" firstAttribute="leading" secondItem="X5q-YT-GwB" secondAttribute="trailing" constant="8" id="NZ7-2n-bew"/>
-                <constraint firstItem="Uiz-7q-fjJ" firstAttribute="top" secondItem="aKI-Gh-ASD" secondAttribute="top" constant="18" id="P7N-A0-Zzg"/>
-                <constraint firstItem="v2Q-3b-weB" firstAttribute="width" secondItem="eXh-Gr-5pt" secondAttribute="width" id="PwJ-mu-iQx"/>
-                <constraint firstItem="eXh-Gr-5pt" firstAttribute="width" secondItem="X5q-YT-GwB" secondAttribute="width" id="Qro-oB-9Ji"/>
-                <constraint firstItem="X5q-YT-GwB" firstAttribute="top" secondItem="aKI-Gh-ASD" secondAttribute="top" constant="26" id="aO5-ac-9KD"/>
-                <constraint firstItem="v2Q-3b-weB" firstAttribute="leading" secondItem="aKI-Gh-ASD" secondAttribute="leading" constant="8" id="bf3-OT-V1W"/>
-                <constraint firstItem="eXh-Gr-5pt" firstAttribute="top" secondItem="v2Q-3b-weB" secondAttribute="bottom" constant="4" id="dou-ag-k7K"/>
-                <constraint firstItem="v2Q-3b-weB" firstAttribute="width" secondItem="X5q-YT-GwB" secondAttribute="width" id="dw0-4Q-FsB"/>
-                <constraint firstItem="v2Q-3b-weB" firstAttribute="top" secondItem="eXh-Gr-5pt" secondAttribute="bottom" constant="1" id="jMU-Vx-3mE"/>
-                <constraint firstItem="v2Q-3b-weB" firstAttribute="top" secondItem="X5q-YT-GwB" secondAttribute="bottom" constant="-1" id="k1c-Co-FMg"/>
-                <constraint firstItem="N9A-HR-uIc" firstAttribute="leading" secondItem="aKI-Gh-ASD" secondAttribute="leading" id="kTD-S9-0bp"/>
-                <constraint firstItem="eXh-Gr-5pt" firstAttribute="top" secondItem="X5q-YT-GwB" secondAttribute="bottom" constant="-3" id="nsz-xl-l02"/>
-                <constraint firstItem="eXh-Gr-5pt" firstAttribute="leading" secondItem="aKI-Gh-ASD" secondAttribute="leading" constant="8" id="pgu-uo-Yrn"/>
-                <constraint firstItem="X5q-YT-GwB" firstAttribute="leading" secondItem="aKI-Gh-ASD" secondAttribute="leading" constant="8" id="xA7-Vw-5WW"/>
+                <constraint firstAttribute="trailing" secondItem="NPq-MJ-UdW" secondAttribute="trailing" constant="8" id="3RV-sr-pc9"/>
+                <constraint firstItem="3nI-2A-gHL" firstAttribute="top" secondItem="XFc-sY-jEy" secondAttribute="bottom" constant="8" id="9y6-tl-h8P"/>
+                <constraint firstAttribute="trailing" secondItem="trQ-qC-Xsl" secondAttribute="trailing" constant="8" id="BZE-oI-vUY"/>
+                <constraint firstItem="trQ-qC-Xsl" firstAttribute="leading" secondItem="XFc-sY-jEy" secondAttribute="trailing" constant="8" id="NVK-Yz-dd6"/>
+                <constraint firstItem="s8c-4k-C8d" firstAttribute="top" secondItem="NPq-MJ-UdW" secondAttribute="bottom" constant="2" id="Nd3-3y-dyp"/>
+                <constraint firstItem="trQ-qC-Xsl" firstAttribute="top" secondItem="9ZP-QC-v1b" secondAttribute="top" constant="16" id="RsQ-3w-QqE"/>
+                <constraint firstItem="NPq-MJ-UdW" firstAttribute="top" secondItem="trQ-qC-Xsl" secondAttribute="bottom" id="Ts5-w5-v6q"/>
+                <constraint firstItem="XFc-sY-jEy" firstAttribute="leading" secondItem="9ZP-QC-v1b" secondAttribute="leading" constant="8" id="UF7-9x-9hE"/>
+                <constraint firstAttribute="trailing" secondItem="3nI-2A-gHL" secondAttribute="trailing" constant="8" id="cTn-vj-q3q"/>
+                <constraint firstItem="XFc-sY-jEy" firstAttribute="top" secondItem="9ZP-QC-v1b" secondAttribute="top" constant="8" id="hyV-9Z-Piz"/>
+                <constraint firstItem="NPq-MJ-UdW" firstAttribute="leading" secondItem="XFc-sY-jEy" secondAttribute="trailing" constant="9" id="lHG-Zb-luS"/>
+                <constraint firstItem="3nI-2A-gHL" firstAttribute="leading" secondItem="9ZP-QC-v1b" secondAttribute="leading" constant="8" id="lef-nq-WJo"/>
+                <constraint firstAttribute="trailing" secondItem="s8c-4k-C8d" secondAttribute="trailing" constant="8" id="sT4-2R-Uv1"/>
+                <constraint firstItem="s8c-4k-C8d" firstAttribute="leading" secondItem="XFc-sY-jEy" secondAttribute="trailing" constant="9" id="sW4-bf-Ajp"/>
             </constraints>
-            <size key="customSize" width="320" height="184"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="Bj8-mm-Kg3"/>
-                    <exclude reference="E8q-ab-SNb"/>
-                    <exclude reference="PwJ-mu-iQx"/>
-                    <exclude reference="jMU-Vx-3mE"/>
-                    <exclude reference="nsz-xl-l02"/>
-                </mask>
-            </variation>
             <connections>
-                <outlet property="artistId" destination="eXh-Gr-5pt" id="YLV-ct-J7d"/>
-                <outlet property="artistNameLabel" destination="X5q-YT-GwB" id="Jte-cw-wa4"/>
-                <outlet property="bottomView" destination="N9A-HR-uIc" id="yTC-xR-nYp"/>
-                <outlet property="genreLabel" destination="v2Q-3b-weB" id="cJW-Y7-aPH"/>
-                <outlet property="mostRecentArtwork" destination="Uiz-7q-fjJ" id="gSu-kC-nE1"/>
+                <outlet property="artistId" destination="s8c-4k-C8d" id="5il-Lz-Wit"/>
+                <outlet property="artistNameLabel" destination="trQ-qC-Xsl" id="3Ql-CI-Inb"/>
+                <outlet property="genreLabel" destination="NPq-MJ-UdW" id="HF2-z6-NDI"/>
+                <outlet property="mostRecentArtwork" destination="XFc-sY-jEy" id="Dwi-5l-Jft"/>
+                <outlet property="removeArtistFromWatchlistButton" destination="3nI-2A-gHL" id="QIV-bu-r6u"/>
             </connections>
-            <point key="canvasLocation" x="385" y="419"/>
+            <point key="canvasLocation" x="385" y="635"/>
         </collectionViewCell>
     </objects>
 </document>
