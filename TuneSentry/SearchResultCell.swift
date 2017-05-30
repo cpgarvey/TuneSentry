@@ -52,11 +52,14 @@ class SearchResultCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.lightGray.cgColor
-        layer.cornerRadius = 5
-        
-        
+        /* configure whole cell to be rounded with shadow */
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        self.layer.shadowRadius = 2
+        self.layer.masksToBounds = false
+        self.clipsToBounds = false
+        self.layer.cornerRadius = 5
     }
     
     
