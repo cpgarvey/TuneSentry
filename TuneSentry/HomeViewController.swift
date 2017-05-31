@@ -154,11 +154,25 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
         NewRelease.artistsToCheck = trackedArtists.count
         print("Artists to check: \(NewRelease.artistsToCheck)")
         
-        for artist in trackedArtists {
-            artist.delegate = self
-            artist.checkForNewRelease()
-            
+        if NewRelease.artistsToCheck <= 20 {
+            print("artists to check less than or equal to 20")
+            for artist in trackedArtists {
+                artist.delegate = self
+                artist.checkForNewRelease()
+                
+            }
+        } else {
+            print("artists to check is more than 20")
+            for artist in trackedArtists {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
+                    artist.delegate = self
+                    artist.checkForNewRelease()
+                }
+                
+            }
         }
+        
+        
     }
     
     func removeArtistFromTracker(_ artist: Artist) {

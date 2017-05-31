@@ -58,7 +58,8 @@ class Artist: NSManagedObject {
     }
     
     func checkForNewRelease() {
-        
+        let now = NSDate()
+        print("\(self.artistId): \(now)")
         let search = AppleClient()
         
         search.checkNewRelease(self.artistId, mostRecentRelease: self.mostRecentRelease) { success, newReleases, updatedMostRecentRelease, errorString in

@@ -29,6 +29,7 @@ class ArtistTrackerCell: UICollectionViewCell {
     var artist: Artist? {
         didSet {
             configureViewFor(button: removeArtistFromWatchlistButton)
+            configureViewForArtwork(imageView: mostRecentArtwork)
         }
     }
 
@@ -110,6 +111,13 @@ class ArtistTrackerCell: UICollectionViewCell {
         button.layer.masksToBounds = false
         button.clipsToBounds = false
         button.layer.cornerRadius = 5
+    }
+    
+    func configureViewForArtwork(imageView: UIImageView) {
+        
+        imageView.layer.cornerRadius = 5
+        imageView.layer.masksToBounds = true
+        
     }
 
     
