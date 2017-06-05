@@ -22,13 +22,12 @@ class NewReleaseCollectionCell: UICollectionViewCell {
     
     var newRelease: NewRelease! {
         didSet {
-            // if the newRelease variable is set, then it's safe to download the artwork
+            
             downloadAlbumCover()
         }
     }
     
     var downloadTask: URLSessionDownloadTask?
-    
     
     // MARK: - Life Cycle
     
@@ -38,6 +37,14 @@ class NewReleaseCollectionCell: UICollectionViewCell {
         layer.borderWidth = 1
         layer.borderColor = UIColor.darkGray.cgColor
         layer.cornerRadius = 5
+        
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        self.layer.shadowRadius = 2
+        self.layer.masksToBounds = false
+        self.clipsToBounds = false
+        self.layer.cornerRadius = 5
         
     }
     

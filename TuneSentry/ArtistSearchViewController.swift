@@ -24,6 +24,11 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     @IBOutlet weak var searchingStackView: UIStackView!
     @IBOutlet weak var errorUnableToContactiTunes: UILabel!
     
+    @IBAction func doneButtonPressed(_ sender: UIButton) {
+        
+        dismiss(animated: true, completion: nil)
+        
+    }
     
     var searchResults: [SearchResult]?
     
@@ -45,7 +50,6 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad called")
         
         configureView()
         
@@ -112,7 +116,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         searchBar.becomeFirstResponder()
         
         // set the contentInset so that the first rows of the table always fully appears: 44 pts (search bar)
-        collectionView.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: 82, left: 0, bottom: 0, right: 0)
         
         // load the nib
         let cellNib = UINib(nibName: CollectionViewCellIdentifiers.searchResultCell, bundle: nil)
@@ -120,7 +124,7 @@ class ArtistSearchViewController: UIViewController, SearchResultCellDelegate {
         
         // set up the flow layout for the collection view cells
         let artistSearchResultLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        artistSearchResultLayout.sectionInset = UIEdgeInsets(top: 6, left: 8, bottom: 8, right: 8)
+        artistSearchResultLayout.sectionInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         artistSearchResultLayout.minimumLineSpacing = 6
         artistSearchResultLayout.scrollDirection = .vertical
         

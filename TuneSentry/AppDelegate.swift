@@ -18,8 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        
         _ = coreDataStack.mainContext
         
-        guard let navigationController = window?.rootViewController as? UINavigationController,
-            let homeViewController = navigationController.topViewController as? HomeViewController else {
+        guard let homeViewController = window?.rootViewController as? HomeViewController else {
                 fatalError("Application Storyboard mis-configuration")
         }
         

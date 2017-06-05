@@ -11,7 +11,7 @@ import Foundation
 import CoreData
 
 protocol ArtistDelegate: class {
-    func updateNewReleasesCollectionView()
+    func updateNewReleasesView()
 }
 
 
@@ -80,7 +80,7 @@ class Artist: NSManagedObject {
                     NewRelease.artistsHaveBeenChecked += 1
                     print("Artists checked: \(NewRelease.artistsHaveBeenChecked)")
                     if NewRelease.artistsToCheck == NewRelease.artistsHaveBeenChecked {
-                        self.delegate?.updateNewReleasesCollectionView()
+                        self.delegate?.updateNewReleasesView()
                         print("Reload called from Artist")
                     }
                     
@@ -91,7 +91,7 @@ class Artist: NSManagedObject {
                 NewRelease.artistsHaveBeenChecked += 1
                 if NewRelease.artistsToCheck == NewRelease.artistsHaveBeenChecked {
                     NewRelease.checkingForNewReleases = false
-                    self.delegate?.updateNewReleasesCollectionView()
+                    self.delegate?.updateNewReleasesView()
                     print("Reload called from Artist")
                 }
             }
