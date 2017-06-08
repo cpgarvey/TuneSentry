@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="eRq-St-K4i">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="eRq-St-K4i">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -137,39 +137,6 @@
             </objects>
             <point key="canvasLocation" x="1087.5" y="428.87323943661971"/>
         </scene>
-        <!--About-->
-        <scene sceneID="bBW-fz-hMs">
-            <objects>
-                <viewController title="About" id="rWb-MM-6o6" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="PUH-er-iTX"/>
-                        <viewControllerLayoutGuide type="bottom" id="oQp-HH-Vu4"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="9rf-y7-KZM">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="20" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dxl-53-jFx">
-                                <rect key="frame" x="20" y="72" width="280" height="476"/>
-                                <string key="text">TuneSentry allows you to search for new releases on the iTunes store using a list of chosen music artists. Using the search icon, you can add artists from the iTunes store to your tracker list. After each app launch, the app will check for new releases from those artists and display them at the top of the screen. Click the new release to be taken directly to the iTunes page for that new release.  </string>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="dxl-53-jFx" secondAttribute="trailing" constant="20" id="93g-zW-58T"/>
-                            <constraint firstItem="oQp-HH-Vu4" firstAttribute="top" secondItem="dxl-53-jFx" secondAttribute="bottom" constant="20" id="Qfn-eW-iqz"/>
-                            <constraint firstItem="dxl-53-jFx" firstAttribute="leading" secondItem="9rf-y7-KZM" secondAttribute="leading" constant="20" id="Zzp-OS-Bsb"/>
-                            <constraint firstItem="dxl-53-jFx" firstAttribute="top" secondItem="PUH-er-iTX" secondAttribute="bottom" constant="8" id="ui4-Ur-YAc"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mkC-Cv-KCc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="392" y="1149"/>
-        </scene>
         <!--TuneSentry-->
         <scene sceneID="kcg-Dh-9eP">
             <objects>
@@ -203,10 +170,21 @@
                                             <segue destination="BYZ-38-t0r" kind="showDetail" identifier="SearchSegue" action="showViewController:sender:" id="tzL-uG-KXL"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="q51-eE-9Oa">
+                                        <rect key="frame" x="18" y="28" width="32" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="32" id="3Vu-y8-es2"/>
+                                            <constraint firstAttribute="height" constant="32" id="Mfn-IK-o2t"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="11"/>
+                                        <state key="normal" title="WISH LIST"/>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="q51-eE-9Oa" firstAttribute="leading" secondItem="uO1-pE-IVw" secondAttribute="leading" constant="18" id="2pW-LO-U8u"/>
                                     <constraint firstAttribute="height" constant="64" id="5yz-1f-wos"/>
+                                    <constraint firstItem="q51-eE-9Oa" firstAttribute="top" secondItem="uO1-pE-IVw" secondAttribute="top" constant="28" id="CPh-TF-PEd"/>
                                     <constraint firstItem="9kT-Iu-RlN" firstAttribute="centerX" secondItem="uO1-pE-IVw" secondAttribute="centerX" id="Z53-SE-1uz"/>
                                     <constraint firstItem="9kT-Iu-RlN" firstAttribute="top" secondItem="uO1-pE-IVw" secondAttribute="top" constant="28" id="jhd-Ak-4Wc"/>
                                 </constraints>
@@ -304,11 +282,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="TuneSentry" id="fbr-aC-o5W">
-                        <barButtonItem key="leftBarButtonItem" title="About" id="KyT-6Q-Vgj">
-                            <connections>
-                                <segue destination="rWb-MM-6o6" kind="show" id="emS-Ic-g7Z"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" title="About" id="KyT-6Q-Vgj"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="Hr7-PO-Tm3"/>
                     </navigationItem>
                     <connections>

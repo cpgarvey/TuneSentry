@@ -18,6 +18,8 @@
 		F22CFDFE1CE9635B006CD3BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F22CFDFD1CE9635B006CD3BC /* Assets.xcassets */; };
 		F22CFE011CE9635B006CD3BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F22CFDFF1CE9635B006CD3BC /* LaunchScreen.storyboard */; };
 		F23FD5CE1CEB674A00E1D5B8 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23FD5CD1CEB674A00E1D5B8 /* SearchResult.swift */; };
+		F24139981EE90985009E2ADF /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24139971EE90985009E2ADF /* Collection.swift */; };
+		F241399A1EE909C1009E2ADF /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24139991EE909C1009E2ADF /* Track.swift */; };
 		F248DC191D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F248DC181D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift */; };
 		F2672A541CFEAACA00D38C3E /* ArtistTrackerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2672A531CFEAACA00D38C3E /* ArtistTrackerCell.xib */; };
 		F2672A561CFEB02700D38C3E /* ArtistTrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2672A551CFEB02700D38C3E /* ArtistTrackerCell.swift */; };
@@ -48,6 +50,8 @@
 		F22CFE001CE9635B006CD3BC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F22CFE021CE9635B006CD3BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F23FD5CD1CEB674A00E1D5B8 /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
+		F24139971EE90985009E2ADF /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
+		F24139991EE909C1009E2ADF /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		F248DC181D1ADF56005AC1E6 /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
 		F2672A531CFEAACA00D38C3E /* ArtistTrackerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArtistTrackerCell.xib; sourceTree = "<group>"; };
 		F2672A551CFEB02700D38C3E /* ArtistTrackerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistTrackerCell.swift; sourceTree = "<group>"; };
@@ -133,6 +137,8 @@
 				F279E5CE1CF51F2900BFCDF0 /* NewRelease.swift */,
 				F23FD5CD1CEB674A00E1D5B8 /* SearchResult.swift */,
 				F229BD321E9EC26700A3767C /* CoreDataStack.swift */,
+				F24139971EE90985009E2ADF /* Collection.swift */,
+				F24139991EE909C1009E2ADF /* Track.swift */,
 			);
 			name = "Data Objects";
 			sourceTree = "<group>";
@@ -275,6 +281,7 @@
 				F2A172171CFA301300D816E4 /* HomeViewController.swift in Sources */,
 				F23FD5CE1CEB674A00E1D5B8 /* SearchResult.swift in Sources */,
 				F2672A561CFEB02700D38C3E /* ArtistTrackerCell.swift in Sources */,
+				F24139981EE90985009E2ADF /* Collection.swift in Sources */,
 				F2E8CD891CEAE19900313C2B /* AppleConstants.swift in Sources */,
 				F27CA3761CEEB3B1006EC066 /* HudView.swift in Sources */,
 				F22CFDF71CE9635B006CD3BC /* AppDelegate.swift in Sources */,
@@ -283,6 +290,7 @@
 				F21257AC1CED8D1900FD0200 /* Functions.swift in Sources */,
 				F2C45DD31D06995A00CDA206 /* SearchResultCell.swift in Sources */,
 				F279E5CD1CF51ED800BFCDF0 /* Artist+CoreDataProperties.swift in Sources */,
+				F241399A1EE909C1009E2ADF /* Track.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

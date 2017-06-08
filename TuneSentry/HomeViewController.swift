@@ -41,21 +41,15 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
     }
     
     
-    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureView()
+        
+        
     }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        // reload the main collection view so that new artists can be displayed after being added from the search
-//        mainCollectionView.reloadSections(IndexSet(integer: 1))
-//    }
-    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -69,9 +63,8 @@ class HomeViewController: UIViewController, ArtistTrackerCellDelegate, ArtistDel
                 /* Check for new releases from the artists currently in the tracker */
                 checkForNewReleases()
             }
-        } else {
-            newlyOpened = !newlyOpened
         }
+        
     }
     
     
